@@ -1,0 +1,109 @@
+{
+  "societe": {
+    "nom": "BIO N TRUFFE",
+    "slogan": "L'épicerie fine à la truffe, certifiée bio",
+    "email_commandes": "commandes@bio-n-truffe.fr",
+    "telephone": "+33 (0)4 XX XX XX XX",
+    "adresse": "France",
+    "site_web": "www.bio-n-truffe.fr",
+    "siret": "XXX XXX XXX XXXXX"
+  },
+  "apparence": {
+    "couleur_primaire": "#2d4a2d",
+    "couleur_secondaire": "#8b7355",
+    "couleur_accent": "#f5f0e8",
+    "logo_url": "",
+    "logo_texte": "BIO N TRUFFE"
+  },
+  "tva": {
+    "taux_reduit": 5.5,
+    "taux_normal": 20.0
+  },
+  "catalogue": [
+    {
+      "id": "cat1",
+      "nom": "Huiles & Condiments",
+      "produits": [
+        { "id": "p01", "nom": "Huile d'olive bio à la truffe noire 100ml", "unite": "bouteille", "prix_ht": 14.50, "tva": 5.5, "description": "Huile d'olive extra vierge bio, aromatisée truffe noire" },
+        { "id": "p02", "nom": "Huile d'olive bio à la truffe noire 250ml", "unite": "bouteille", "prix_ht": 28.90, "tva": 5.5, "description": "Format familial, huile d'olive bio et truffe noire" },
+        { "id": "p03", "nom": "Vinaigre balsamique à la truffe 100ml", "unite": "bouteille", "prix_ht": 12.80, "tva": 5.5, "description": "Vinaigre balsamique de Modène IGP et truffe noire" },
+        { "id": "p04", "nom": "Sel de Guérande à la truffe noire 100g", "unite": "pot", "prix_ht": 8.90, "tva": 5.5, "description": "Sel de Guérande Label Rouge et brisures de truffe noire" },
+        { "id": "p05", "nom": "Fleur de sel à la truffe blanche 80g", "unite": "pot", "prix_ht": 12.50, "tva": 5.5, "description": "Fleur de sel et arôme truffe blanche d'Alba" }
+      ]
+    },
+    {
+      "id": "cat2",
+      "nom": "Pâtes & Sauces",
+      "produits": [
+        { "id": "p06", "nom": "Pâte de truffe noire bio 50g", "unite": "pot", "prix_ht": 19.80, "tva": 5.5, "description": "30% truffe melanosporum, huile d'olive bio, sel" },
+        { "id": "p07", "nom": "Sauce à la truffe noire 90g", "unite": "pot", "prix_ht": 16.50, "tva": 5.5, "description": "Sauce champignons et truffe noire, idéale sur pâtes" },
+        { "id": "p08", "nom": "Tapenade truffée bio 90g", "unite": "pot", "prix_ht": 11.90, "tva": 5.5, "description": "Olives noires bio et truffe noire, recette artisanale" },
+        { "id": "p09", "nom": "Beurre de truffe noire 100g", "unite": "pot", "prix_ht": 14.20, "tva": 5.5, "description": "Beurre doux bio et brisures de truffe noire" }
+      ]
+    },
+    {
+      "id": "cat3",
+      "nom": "Féculents & Épicerie",
+      "produits": [
+        { "id": "p10", "nom": "Tagliatelles à la truffe noire bio 250g", "unite": "sachet", "prix_ht": 9.80, "tva": 5.5, "description": "Pâtes aux œufs bio, parfumées à la truffe noire" },
+        { "id": "p11", "nom": "Risotto à la truffe noire bio 300g", "unite": "sachet", "prix_ht": 11.50, "tva": 5.5, "description": "Riz Arborio bio, champignons séchés et truffe noire" },
+        { "id": "p12", "nom": "Polenta à la truffe 375g", "unite": "sachet", "prix_ht": 8.60, "tva": 5.5, "description": "Polenta de maïs bio et arôme truffe" },
+        { "id": "p13", "nom": "Miel de fleurs à la truffe noire 150g", "unite": "pot", "prix_ht": 16.50, "tva": 5.5, "description": "Miel toutes fleurs bio et truffe noire, accord sucré-salé" },
+        { "id": "p14", "nom": "Chips à la truffe noire 100g", "unite": "sachet", "prix_ht": 6.90, "tva": 5.5, "description": "Chips artisanales huile de tournesol et truffe noire" }
+      ]
+    },
+    {
+      "id": "cat4",
+      "nom": "Fromages & Charcuterie",
+      "produits": [
+        { "id": "p15", "nom": "Saucisson sec à la truffe noire 200g", "unite": "pièce", "prix_ht": 18.90, "tva": 5.5, "description": "Saucisson pur porc, affiné et parfumé à la truffe noire" },
+        { "id": "p16", "nom": "Foie gras de canard à la truffe 100g", "unite": "bocal", "prix_ht": 34.50, "tva": 5.5, "description": "Foie gras de canard IGP Sud-Ouest et truffe noire" }
+      ]
+    },
+    {
+      "id": "cat5",
+      "nom": "Coffrets Cadeaux",
+      "produits": [
+        { "id": "p17", "nom": "Coffret Découverte 3 produits", "unite": "coffret", "prix_ht": 42.00, "tva": 20.0, "description": "Huile, sel et pâte de truffe noire bio — format cadeau" },
+        { "id": "p18", "nom": "Coffret Prestige 5 produits", "unite": "coffret", "prix_ht": 89.00, "tva": 20.0, "description": "Sélection de 5 produits phares, emballage luxe recyclé" },
+        { "id": "p19", "nom": "Box Épicerie Fine Mensuelle", "unite": "box", "prix_ht": 59.00, "tva": 20.0, "description": "Box surprise de saison, 4 à 5 produits expédiés chaque mois" }
+      ]
+    }
+  ],
+  "revendeurs": [
+    {
+      "id": "rev1",
+      "nom": "Revendeur Standard",
+      "remise_globale": 10,
+      "remises_categories": {}
+    },
+    {
+      "id": "rev2",
+      "nom": "Revendeur Premium",
+      "remise_globale": 15,
+      "remises_categories": {
+        "cat1": 18,
+        "cat2": 17
+      }
+    },
+    {
+      "id": "rev3",
+      "nom": "Distributeur Exclusif",
+      "remise_globale": 20,
+      "remises_categories": {
+        "cat1": 22,
+        "cat2": 20,
+        "cat3": 18,
+        "cat4": 18
+      }
+    }
+  ],
+  "conditions": {
+    "minimum_commande_ht": 150,
+    "delai_livraison": "3 à 5 jours ouvrés",
+    "franco_port": 500,
+    "conditions_paiement": "30 jours fin de mois"
+  },
+  "version": "1.0.0",
+  "date_creation": "2026-03-31"
+}

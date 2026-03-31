@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO N TRUFFE — Bon de Commande</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert-fonce:  #1e3320;
+    --vert:        #2d4a2d;
+    --vert-mid:    #3d6140;
+    --vert-clair:  #5a8a5a;
+    --vert-pale:   #c8dcc8;
+    --beige-fonce: #8b7355;
+    --beige:       #c4a882;
+    --beige-clair: #e8dcc8;
+    --beige-pale:  #f5f0e8;
+    --blanc:       #fdfcf9;
+    --texte:       #2a2218;
+    --texte-doux:  #5a4e3a;
+    --ligne:       #ddd5c5;
+    --ok:          #2d7a3a;
+    --err:         #c0392b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--beige-pale); color:var(--texte); font-family:'Lato',sans-serif; min-height:100vh; font-size:14px; }
+
+  /* HEADER */
+  .top-header {
+    background:var(--vert-fonce);
+    border-bottom:3px solid var(--vert-mid);
+    padding:1rem 2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .logo { text-decoration:none; }
+  .logo-main { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:700; color:var(--beige-clair); }
+  .logo-main .leaf { color:var(--vert-pale); }
+  .logo-sub { font-size:0.62rem; color:rgba(200,220,200,0.6); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:2px; }
+  #header-revendeur { font-size:0.75rem; color:var(--beige); font-style:italic; }
+
+  /* LAYOUT */
+  .layout {
+    display:grid;
+    grid-template-columns: 1fr 320px;
+    min-height:calc(100vh - 67px);
+  }
+
+  /* LEFT */
+  .left { padding:2rem; border-right:2px solid var(--ligne); }
+
+  /* RIGHT */
+  .right {
+    padding:1.5rem;
+    position:sticky; top:67px;
+    height:calc(100vh - 67px); overflow-y:auto;
+    background:var(--blanc);
+    display:flex; flex-direction:column; gap:0.75rem;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family:'Libre Baskerville',serif;
+    font-size:0.95rem; font-weight:700; color:var(--vert-fonce);
+    padding-bottom:0.5rem;
+    border-bottom:2px solid var(--ligne);
+    margin-bottom:1rem;
+    display:flex; align-items:center; gap:0.5rem;
+  }
+
+  /* FORMS */
+  .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:0.75rem; margin-bottom:2rem; }
+  .form-group { display:flex; flex-direction:column; gap:0.3rem; }
+  label { font-size:0.66rem; color:var(--texte-doux); letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
+  input, select, textarea {
+    background:var(--blanc);
+    border:1px solid var(--ligne);
+    border-radius:4px;
+    color:var(--texte);
+    font-family:inherit; font-size:0.82rem;
+    padding:0.48rem 0.7rem;
+    width:100%; transition:border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--vert-mid); background:var(--blanc); }
+  textarea { resize:vertical; min-height:60px; }
+
+  /* CATALOGUE */
+  .catalogue-block { margin-bottom:1.75rem; }
+  .cat-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.65rem 1rem;
+    background:var(--vert-fonce);
+    border-radius:4px 4px 0 0;
+    cursor:pointer; user-select:none;
+  }
+  .cat-header-name {
+    font-family:'Libre Baskerville',serif;
+    font-size:0.9rem; font-weight:700;
+    color:var(--beige-clair);
+  }
+  .cat-remise { font-size:0.7rem; color:var(--vert-pale); font-weight:400; font-style:italic; }
+  .cat-toggle { color:var(--beige); font-size:0.75rem; }
+  .cat-body {
+    border:1px solid var(--ligne); border-top:none;
+    border-radius:0 0 4px 4px;
+    background:var(--blanc);
+    overflow:hidden;
+  }
+  .product-row {
+    display:grid;
+    grid-template-columns:1fr 95px 80px 100px;
+    gap:0.5rem; align-items:center;
+    padding:0.6rem 1rem;
+    border-bottom:1px solid var(--ligne);
+    transition:background 0.15s;
+  }
+  .product-row:last-child { border-bottom:none; }
+  .product-row:hover { background:#faf8f3; }
+  .product-row.header {
+    background:var(--beige-pale);
+    border-bottom:2px solid var(--ligne);
+  }
+  .product-row.header > div { font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--texte-doux); font-weight:700; }
+
+  .product-name { font-size:0.82rem; color:var(--texte); line-height:1.3; }
+  .product-name small { display:block; color:var(--texte-doux); font-size:0.67rem; margin-top:2px; }
+  .product-price { font-size:0.8rem; text-align:right; }
+
+  .qty-input {
+    width:70px; text-align:center;
+    background:var(--beige-pale);
+    border:1px solid var(--ligne);
+    border-radius:4px;
+    font-size:0.85rem; font-weight:700;
+    color:var(--vert-fonce); padding:0.3rem;
+  }
+  .qty-input:focus { border-color:var(--vert-mid); background:var(--blanc); outline:none; }
+  .line-total { font-size:0.8rem; font-weight:700; color:var(--vert-fonce); text-align:right; }
+
+  /* RECAP */
+  .recap-title { font-family:'Libre Baskerville',serif; font-size:1rem; font-weight:700; color:var(--vert-fonce); }
+  .recap-empty { color:var(--texte-doux); font-size:0.8rem; font-style:italic; text-align:center; padding:1.5rem 0; }
+  .recap-sep { border:none; border-top:1px solid var(--ligne); margin:0.5rem 0; }
+
+  .recap-item {
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:0.5rem; padding:0.4rem 0;
+    border-bottom:1px solid var(--ligne);
+    font-size:0.77rem;
+  }
+  .recap-item:last-child { border-bottom:none; }
+  .recap-item-name { color:var(--texte); flex:1; line-height:1.3; }
+  .recap-item-sub { color:var(--texte-doux); font-size:0.67rem; }
+  .recap-item-prix { color:var(--vert-fonce); font-weight:700; white-space:nowrap; }
+
+  .recap-ligne { display:flex; justify-content:space-between; font-size:0.78rem; color:var(--texte-doux); padding:0.12rem 0; }
+  .recap-total { display:flex; justify-content:space-between; align-items:center; font-family:'Libre Baskerville',serif; font-size:1.05rem; color:var(--vert-fonce); margin-top:0.4rem; font-weight:700; }
+
+  .recap-alert {
+    border-radius:4px; padding:0.55rem 0.75rem;
+    font-size:0.74rem; line-height:1.4;
+  }
+  .recap-alert.warn { background:rgba(192,57,43,0.07); border:1px solid rgba(192,57,43,0.25); color:var(--err); }
+  .recap-alert.ok { background:rgba(45,122,58,0.08); border:1px solid rgba(45,122,58,0.25); color:var(--ok); }
+
+  .btn-submit {
+    width:100%; background:var(--vert); color:var(--blanc);
+    border:none; border-radius:4px; padding:0.9rem;
+    font-family:inherit; font-size:0.85rem; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase;
+    cursor:pointer; transition:background 0.2s;
+    margin-top:auto;
+  }
+  .btn-submit:hover { background:var(--vert-mid); }
+  .btn-submit:disabled { background:var(--vert-pale); color:rgba(0,0,0,0.35); cursor:not-allowed; }
+  .btn-reset {
+    width:100%; background:transparent;
+    border:1.5px solid var(--ligne); color:var(--texte-doux);
+    border-radius:4px; padding:0.5rem;
+    font-family:inherit; font-size:0.74rem; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-reset:hover { border-color:var(--beige-fonce); color:var(--texte); }
+
+  /* SUCCESS */
+  .success-overlay {
+    position:fixed; inset:0; z-index:999;
+    background:var(--beige-pale);
+    display:none;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:1.25rem;
+  }
+  .success-overlay .icon { font-size:4rem; }
+  .success-overlay h2 { font-family:'Libre Baskerville',serif; font-size:2rem; color:var(--vert-fonce); }
+  .success-overlay p { color:var(--texte-doux); font-size:0.9rem; max-width:400px; line-height:1.6; }
+  .success-overlay a {
+    color:var(--vert); border:1.5px solid var(--vert);
+    padding:0.6rem 1.5rem; border-radius:4px;
+    text-decoration:none; font-size:0.8rem; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase; transition:all 0.2s;
+  }
+  .success-overlay a:hover { background:var(--vert); color:var(--blanc); }
+
+  @media(max-width:900px){
+    .layout { grid-template-columns:1fr; }
+    .right { position:static; height:auto; border-top:2px solid var(--ligne); }
+  }
+</style>
+</head>
+<body>
+
+<div class="success-overlay" id="success">
+  <div class="icon">🌿</div>
+  <h2>Commande envoyée !</h2>
+  <p>Votre bon de commande BIO N TRUFFE a été transmis. Vous recevrez une confirmation par email sous 24h.</p>
+  <a href="commande.html">Nouvelle commande</a>
+</div>
+
+<header class="top-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main"><span class="leaf">🌿</span> BIO N TRUFFE</span>
+    <span class="logo-sub">Bon de commande revendeur</span>
+  </a>
+  <span id="header-revendeur">Sélectionnez votre profil revendeur</span>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="section-title">📋 Identification</div>
+    <div class="form-grid" style="margin-bottom:2rem">
+      <div class="form-group">
+        <label>Profil revendeur</label>
+        <select id="sel-revendeur" onchange="onRevendeurChange()">
+          <option value="">— Sélectionner —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Société / Nom</label>
+        <input type="text" id="f-societe" placeholder="Votre société">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="contact@votresociete.fr">
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" id="f-tel" placeholder="+33 6 …">
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label>Adresse de livraison</label>
+        <textarea id="f-adresse" rows="2" placeholder="Adresse, code postal, ville"></textarea>
+      </div>
+      <div class="form-group" style="grid-column:1/-1">
+        <label>Commentaire (optionnel)</label>
+        <textarea id="f-comment" rows="2" placeholder="Instructions, date souhaitée…"></textarea>
+      </div>
+    </div>
+
+    <div class="section-title">🍄 Sélection des produits</div>
+    <div id="catalogue-container"><p style="color:var(--texte-doux);font-style:italic;padding:1rem 0">Chargement du catalogue…</p></div>
+  </div>
+
+  <!-- RIGHT: RECAP -->
+  <div class="right">
+    <div class="recap-title">🧾 Récapitulatif</div>
+    <div id="recap-items"><div class="recap-empty">Aucun article sélectionné</div></div>
+    <hr class="recap-sep">
+    <div id="recap-totaux"></div>
+    <div id="recap-status"></div>
+    <button class="btn-submit" id="btn-submit" onclick="submitCommande()" disabled>📧 Envoyer la commande</button>
+    <button class="btn-reset" onclick="resetForm()">↺ Réinitialiser</button>
+  </div>
+
+</div>
+
+<script>
+let config=null;
+let remiseGlobale=0;
+let remisesCategories={};
+
+async function init() {
+  try { const r=await fetch('config.json'); config=await r.json(); }
+  catch(e) { alert('Impossible de charger config.json'); return; }
+  populateRevendeurs();
+  renderCatalogue();
+  updateRecap();
+}
+
+function populateRevendeurs() {
+  const sel=document.getElementById('sel-revendeur');
+  config.revendeurs.forEach(r=>{
+    const o=document.createElement('option');
+    o.value=r.id; o.textContent=r.nom; sel.appendChild(o);
+  });
+}
+
+function onRevendeurChange() {
+  const id=document.getElementById('sel-revendeur').value;
+  if(!id){remiseGlobale=0;remisesCategories={};document.getElementById('header-revendeur').textContent='Sélectionnez votre profil revendeur';}
+  else {
+    const rev=config.revendeurs.find(r=>r.id===id);
+    remiseGlobale=rev.remise_globale||0;
+    remisesCategories=rev.remises_categories||{};
+    document.getElementById('header-revendeur').textContent=`${rev.nom} — ${remiseGlobale}% de remise`;
+  }
+  renderCatalogue(); updateRecap();
+}
+
+function getRemise(catId) {
+  return remisesCategories[catId]!==undefined ? remisesCategories[catId] : remiseGlobale;
+}
+
+function renderCatalogue() {
+  const container=document.getElementById('catalogue-container');
+  if(!config||!config.catalogue.length){container.innerHTML='<p style="color:var(--texte-doux);font-style:italic">Catalogue vide</p>';return;}
+
+  container.innerHTML=config.catalogue.map(cat=>{
+    const remise=getRemise(cat.id);
+    const produits=cat.produits.map(p=>{
+      const prixRemise=remise>0?p.prix_ht*(1-remise/100):null;
+      const prixAffiche=prixRemise!==null?prixRemise:p.prix_ht;
+      return `
+      <div class="product-row">
+        <div class="product-name">
+          ${p.nom}
+          ${p.description?`<small>${p.description}</small>`:''}
+        </div>
+        <div class="product-price">
+          ${prixRemise!==null
+            ?`<span style="text-decoration:line-through;color:var(--texte-doux);font-size:0.72rem">${p.prix_ht.toFixed(2)} €</span><br><span style="color:var(--vert-mid);font-weight:700">${prixRemise.toFixed(2)} €</span>`
+            :`<span style="color:var(--texte-doux)">${p.prix_ht.toFixed(2)} €</span>`
+          }
+          <small style="display:block;color:var(--texte-doux);font-size:0.63rem">HT / ${p.unite}</small>
+        </div>
+        <div style="text-align:center">
+          <input class="qty-input" type="number" id="qty-${p.id}" min="0" step="1" value="0"
+            data-prix="${prixAffiche.toFixed(4)}"
+            data-nom="${p.nom.replace(/"/g,'&quot;')}"
+            data-unite="${p.unite}"
+            data-tva="${p.tva}"
+            onchange="updateRecap()" oninput="updateRecap()">
+        </div>
+        <div class="line-total" id="total-${p.id}">—</div>
+      </div>`;
+    }).join('');
+
+    return `
+    <div class="catalogue-block">
+      <div class="cat-header" onclick="toggleCat(this)">
+        <span class="cat-header-name">${cat.nom}${remise>0?` <span class="cat-remise">(-${remise}%)</span>`:''}</span>
+        <span class="cat-toggle">▾</span>
+      </div>
+      <div class="cat-body">
+        <div class="product-row header">
+          <div>Produit</div><div style="text-align:right">Prix HT</div>
+          <div style="text-align:center">Qté</div><div style="text-align:right">Total HT</div>
+        </div>
+        ${produits}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCat(header) {
+  const body=header.nextElementSibling;
+  const icon=header.querySelector('.cat-toggle');
+  if(body.style.display==='none'){body.style.display='';icon.textContent='▾';}
+  else{body.style.display='none';icon.textContent='▸';}
+}
+
+function updateRecap() {
+  const inputs=document.querySelectorAll('.qty-input');
+  let lignes=[]; let totalHT=0; let tvaMap={};
+
+  inputs.forEach(inp=>{
+    const qty=parseInt(inp.value)||0;
+    const pid=inp.id.replace('qty-','');
+    const el=document.getElementById('total-'+pid);
+    if(qty<=0){if(el)el.textContent='—';return;}
+    const prix=parseFloat(inp.dataset.prix);
+    const tva=parseFloat(inp.dataset.tva);
+    const ht=prix*qty;
+    const montantTVA=ht*tva/100;
+    totalHT+=ht; tvaMap[tva]=(tvaMap[tva]||0)+montantTVA;
+    lignes.push({nom:inp.dataset.nom,unite:inp.dataset.unite,qty,prix,ht});
+    if(el)el.textContent=ht.toFixed(2)+' €';
+  });
+
+  // Items
+  const itemsEl=document.getElementById('recap-items');
+  if(!lignes.length){itemsEl.innerHTML='<div class="recap-empty">Aucun article sélectionné</div>';}
+  else{
+    itemsEl.innerHTML=lignes.map(l=>`
+      <div class="recap-item">
+        <div class="recap-item-name">${l.nom}<div class="recap-item-sub">${l.qty} ${l.unite} × ${l.prix.toFixed(2)} €</div></div>
+        <div class="recap-item-prix">${l.ht.toFixed(2)} €</div>
+      </div>`).join('');
+  }
+
+  // Totaux
+  const totalTVA=Object.values(tvaMap).reduce((s,v)=>s+v,0);
+  const totalTTC=totalHT+totalTVA;
+  const tvaLines=Object.entries(tvaMap).map(([t,m])=>`<div class="recap-ligne"><span>TVA ${t}%</span><span>${m.toFixed(2)} €</span></div>`).join('');
+  document.getElementById('recap-totaux').innerHTML=`
+    <div class="recap-ligne"><span>Total HT</span><span>${totalHT.toFixed(2)} €</span></div>
+    ${tvaLines}
+    <div class="recap-total"><span>Total TTC</span><span>${totalTTC.toFixed(2)} €</span></div>`;
+
+  // Status
+  const minCmd=config.conditions?.minimum_commande_ht||150;
+  const franco=config.conditions?.franco_port||500;
+  let statusHtml='';
+  if(lignes.length&&totalHT<minCmd){
+    statusHtml=`<div class="recap-alert warn">⚠️ Minimum : ${minCmd} € HT — Manque ${(minCmd-totalHT).toFixed(2)} € HT</div>`;
+  } else if(lignes.length&&totalHT<franco){
+    statusHtml=`<div class="recap-alert ok">✅ Commande validée — Franco à partir de ${franco} € HT</div>`;
+  } else if(lignes.length){
+    statusHtml=`<div class="recap-alert ok">🌿 Franco de port atteint ! Livraison offerte.</div>`;
+  }
+  document.getElementById('recap-status').innerHTML=statusHtml;
+
+  document.getElementById('btn-submit').disabled=!(lignes.length>0&&totalHT>=minCmd);
+}
+
+function submitCommande() {
+  const societe=document.getElementById('f-societe').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!societe||!email){alert('Merci de renseigner votre société et email.');return;}
+
+  const revId=document.getElementById('sel-revendeur').value;
+  const revNom=revId?config.revendeurs.find(r=>r.id===revId)?.nom:'Non précisé';
+  const tel=document.getElementById('f-tel').value.trim();
+  const adresse=document.getElementById('f-adresse').value.trim();
+  const comment=document.getElementById('f-comment').value.trim();
+
+  const inputs=document.querySelectorAll('.qty-input');
+  let lignes=[]; let totalHT=0;
+  inputs.forEach(inp=>{
+    const qty=parseInt(inp.value)||0; if(!qty)return;
+    const prix=parseFloat(inp.dataset.prix); const ht=prix*qty;
+    totalHT+=ht;
+    lignes.push(`${inp.dataset.nom} — ${qty} ${inp.dataset.unite} × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
+  });
+
+  const subject=encodeURIComponent(`BDC BIO N TRUFFE — ${societe} — ${new Date().toLocaleDateString('fr-FR')}`);
+  const body=encodeURIComponent([
+    `BON DE COMMANDE — BIO N TRUFFE`,`Date : ${new Date().toLocaleDateString('fr-FR')}`,``,
+    `=== REVENDEUR ===`,`Profil : ${revNom}`,`Société : ${societe}`,
+    `Email : ${email}`,`Téléphone : ${tel||'—'}`,`Adresse : ${adresse||'—'}`,``,
+    `=== COMMANDE ===`,...lignes,``,`TOTAL HT : ${totalHT.toFixed(2)} €`,``,
+    comment?`=== COMMENTAIRE ===\n${comment}`:'',``,`— Envoyé via BIO N TRUFFE CRM`
+  ].join('\n'));
+
+  window.location.href=`mailto:${config.societe.email_commandes}?subject=${subject}&body=${body}`;
+  setTimeout(()=>{document.getElementById('success').style.display='flex';},800);
+}
+
+function resetForm() {
+  if(!confirm('Réinitialiser le bon de commande ?'))return;
+  document.querySelectorAll('.qty-input').forEach(i=>i.value=0);
+  ['f-societe','f-email','f-tel','f-adresse','f-comment'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sel-revendeur').value='';
+  onRevendeurChange(); updateRecap();
+}
+
+init();
+</script>
+</body>
+</html>

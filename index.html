@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO N TRUFFE — Portail</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert-fonce:  #1e3320;
+    --vert:        #2d4a2d;
+    --vert-mid:    #3d6140;
+    --vert-clair:  #5a8a5a;
+    --vert-pale:   #c8dcc8;
+    --beige-fonce: #8b7355;
+    --beige:       #c4a882;
+    --beige-clair: #e8dcc8;
+    --beige-pale:  #f5f0e8;
+    --blanc:       #fdfcf9;
+    --texte:       #2a2218;
+    --texte-doux:  #5a4e3a;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--beige-pale);
+    color: var(--texte);
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Texture naturelle */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    background: var(--vert-fonce);
+    border-bottom: 3px solid var(--vert-mid);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 0;
+  }
+  .logo { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+  .logo-main {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--beige-clair);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .logo-main .leaf { color: var(--vert-pale); margin-right: 0.3rem; }
+  .logo-sub {
+    font-size: 0.68rem; font-weight: 300;
+    color: var(--vert-pale);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .badge-bio {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(200,220,200,0.3);
+    color: var(--vert-pale);
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0.3rem 0.9rem; border-radius: 20px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 0 4rem;
+    text-align: center;
+  }
+  .hero-leaf {
+    font-size: 3rem; margin-bottom: 1.2rem;
+    animation: float 3s ease-in-out infinite;
+    display: block;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--vert-fonce);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--vert-mid); }
+  .hero-desc {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--texte-doux);
+    max-width: 460px; margin: 0 auto 3rem;
+    line-height: 1.7;
+    opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+  }
+
+  /* ORNEMENT */
+  .ornament {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+  .ornament-line { width: 70px; height: 1px; background: var(--beige); }
+  .ornament-icon { color: var(--beige-fonce); font-size: 1rem; }
+
+  /* CARDS */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.7s forwards;
+  }
+  .card {
+    background: var(--blanc);
+    border: 1px solid var(--beige-clair);
+    border-radius: 6px;
+    padding: 2.5rem 2rem;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 1rem;
+    box-shadow: 0 2px 12px rgba(45,74,45,0.07);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--vert), var(--vert-mid));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(45,74,45,0.12);
+    border-color: var(--vert-pale);
+  }
+  .card:hover::before { opacity: 1; }
+  .card-icon { font-size: 2rem; }
+  .card-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--vert-fonce);
+  }
+  .card-desc {
+    font-size: 0.83rem; font-weight: 300;
+    color: var(--texte-doux); line-height: 1.6;
+  }
+  .card-cta {
+    margin-top: auto;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--vert-mid);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .card-cta::after { content: '→'; transition: transform 0.2s; }
+  .card:hover .card-cta::after { transform: translateX(5px); }
+
+  /* FOOTER */
+  .footer-strip {
+    background: var(--vert-fonce);
+    padding: 1.5rem 0;
+  }
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.75rem;
+  }
+  .footer-inner p { font-size: 0.75rem; color: var(--vert-pale); }
+  .footer-inner span { color: var(--beige); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  @media(max-width:600px){
+    .cards { grid-template-columns:1fr; }
+    .hero { padding:3rem 0 2.5rem; }
+    .footer-inner { flex-direction:column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-main"><span class="leaf">🌿</span>BIO N TRUFFE</span>
+        <span class="logo-sub">L'épicerie fine à la truffe, certifiée bio</span>
+      </a>
+      <span class="badge-bio">AB · Agriculture Biologique</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="hero">
+      <span class="hero-leaf">🍄</span>
+      <h1>Bienvenue sur votre<br>espace <em>BIO N TRUFFE</em></h1>
+      <p class="hero-desc">Portail professionnel dédié à nos revendeurs. Passez vos commandes et gérez votre catalogue d'épicerie fine à la truffe.</p>
+      <div class="ornament">
+        <div class="ornament-line"></div>
+        <span class="ornament-icon">✦</span>
+        <div class="ornament-line"></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <a href="commande.html" class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Bon de Commande</div>
+        <div class="card-desc">Sélectionnez vos produits, bénéficiez de vos remises revendeur et recevez votre récapitulatif par email.</div>
+        <div class="card-cta">Passer une commande</div>
+      </a>
+      <a href="admin.html" class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Administration</div>
+        <div class="card-desc">Gérez votre catalogue produits, les profils revendeurs, les remises et la configuration de l'espace BIO N TRUFFE.</div>
+        <div class="card-cta">Accéder au back-office</div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer-strip">
+  <div class="container">
+    <div class="footer-inner">
+      <p>BIO N TRUFFE — <span>commandes@bio-n-truffe.fr</span></p>
+      <p>Minimum commande : <span>150 € HT</span> &nbsp;·&nbsp; Franco port : <span>500 € HT</span></p>
+      <p style="width:100%;text-align:center;margin-top:0.5rem;opacity:0.4;font-size:0.68rem">Propulsé par MDM BDC 26 — Kit CRM Revendeurs</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
