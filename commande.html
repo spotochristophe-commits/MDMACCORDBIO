@@ -121,17 +121,17 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
   border-radius:0 0 8px 8px;overflow:hidden;
 }
 .product-row{
-  display:grid;grid-template-columns:32px 1fr 90px 75px 70px 85px;
+  display:grid;grid-template-columns:32px 1fr 95px 70px 80px 88px;
   gap:.4rem;align-items:center;
-  padding:.55rem .85rem;border-bottom:1px solid rgba(255,255,255,.04);
+  padding:.55rem .85rem;border-bottom:1px solid rgba(0,0,0,.05);
   transition:background .12s;
 }
 .product-row:last-child{border-bottom:none;}
 .product-row:hover{background:rgba(34,197,94,.03);}
 .product-row.header{
-  background:rgba(34,197,94,.03);border-bottom:1px solid var(--border);
+  background:#f0fdf4;border-bottom:1px solid var(--border);
 }
-.product-row.header>div{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);}
+.product-row.header>div{font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);}
 .product-row.coffret{background:rgba(245,158,11,.04);}
 .photo-col{display:flex;align-items:center;justify-content:center;}
 .photo-placeholder{width:26px;height:26px;border-radius:6px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.1);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
@@ -140,18 +140,24 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
 .new-badge{display:inline-block;background:var(--amber);color:#000;font-size:.58rem;font-weight:700;padding:.05rem .35rem;border-radius:3px;letter-spacing:.04em;vertical-align:middle;margin-left:3px;}
 .pcb-info{display:block;font-size:.62rem;color:var(--s600);margin-top:1px;}
 .ean-code{font-size:.58rem;color:var(--s600);font-family:monospace;display:block;margin-top:1px;}
-.prix-col{font-size:.78rem;text-align:right;color:var(--s400);}
-.prix-col .prix-remise{color:#22c55e;font-weight:600;display:block;}
-.prix-col .prix-barre{text-decoration:line-through;font-size:.68rem;color:var(--s600);}
-.prix-col small{display:block;font-size:.6rem;color:var(--s600);}
-.carton-col{font-size:.72rem;text-align:right;color:var(--s500);}
+/* Prix carton HT */
+.carton-col{font-size:.78rem;text-align:right;color:var(--s200);}
+.carton-col .carton-remise{color:#22c55e;font-weight:700;display:block;}
+.carton-col .carton-barre{text-decoration:line-through;font-size:.65rem;color:var(--s600);}
+.carton-col small{display:block;font-size:.6rem;color:var(--s600);}
+/* Saisie colis */
 .qty-input{
-  width:62px;text-align:center;
-  background:#f1f5f9;border:1px solid #e2e8f0;
-  border-radius:6px;font-size:.85rem;font-weight:600;color:#1e293b;padding:.28rem;
+  width:58px;text-align:center;
+  background:#f1f5f9;border:1.5px solid #e2e8f0;
+  border-radius:6px;font-size:.9rem;font-weight:700;color:#1e293b;padding:.3rem;
 }
 .qty-input:focus{border-color:#22c55e;background:rgba(34,197,94,.06);outline:none;}
-.total-col{font-size:.78rem;font-weight:600;color:#22c55e;text-align:right;}
+/* UVC calculées */
+.uvc-col{font-size:.75rem;text-align:center;color:var(--s400);}
+.uvc-col strong{display:block;font-size:.82rem;font-weight:700;color:#15803d;}
+.uvc-col span{font-size:.6rem;color:var(--s500);}
+/* Total HT */
+.total-col{font-size:.8rem;font-weight:700;color:#16a34a;text-align:right;}
 .sur-demande{font-size:.72rem;color:var(--amber);font-style:italic;}
 
 /* ── RIGHT PANEL ── */
@@ -233,7 +239,7 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
 <div class="success-overlay" id="success">
   <div class="icon">✅</div>
   <h2>Commande envoyée !</h2>
-  <p>Le bon de commande a été transmis à Christophe SPOTO. Vous recevrez une confirmation sous 24h.</p>
+  <p>Le bon de commande a été transmis directement à <strong>loacdev@outlook.fr</strong>. Christophe SPOTO vous contactera pour confirmer la livraison.</p>
   <a href="commande.html">Nouvelle commande</a>
 </div>
 
@@ -318,8 +324,8 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
     <div class="search-no-result" id="search-no-result">Aucun produit trouvé.</div>
 
     <div class="info-banner">
+      <span>📦 Vente <strong>au colis</strong> — saisir le nombre de colis souhaités</span>
       <span><strong>TVA 5,5%</strong> sur tous les produits</span>
-      <span>Prix <strong>SANS</strong> port</span>
       <span>Franco : <strong>5 colis</strong> ou <strong>450 € HT</strong></span>
     </div>
 
@@ -331,7 +337,14 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
     <div class="recap-title">Récapitulatif</div>
     <div class="franco-info">Franco : <strong>5 colis</strong> ou <strong>450 € HT</strong></div>
     <div id="recap-colis" style="display:none" class="recap-colis-count">
-      <span>Colis commandés</span><strong id="recap-colis-count">0</strong>
+      <div>
+        <span style="font-size:.7rem;color:var(--s400);display:block">Colis commandés</span>
+        <strong id="recap-colis-count" style="font-size:1.1rem;color:#15803d">0</strong>
+      </div>
+      <div style="text-align:right">
+        <span style="font-size:.7rem;color:var(--s400);display:block">UVC totales</span>
+        <strong id="recap-uvc-count" style="font-size:1.1rem;color:#22c55e">0</strong>
+      </div>
     </div>
     <div id="recap-items"><div class="recap-empty">Aucun article sélectionné</div></div>
     <hr class="recap-sep">
@@ -422,10 +435,11 @@ function renderCatalogue() {
 
     const headerRow = `
       <div class="product-row header">
-        <div></div><div>Désignation</div>
-        <div style="text-align:right">Prix HT/u</div>
+        <div></div>
+        <div>Désignation</div>
+        <div style="text-align:right">Prix carton HT</div>
         <div style="text-align:center">Colis</div>
-        <div style="text-align:center">Qté</div>
+        <div style="text-align:center">UVC</div>
         <div style="text-align:right">Total HT</div>
       </div>`;
 
@@ -442,9 +456,11 @@ function renderCatalogue() {
         </div>`;
       }
 
-      const prixRemise = remise > 0 ? p.prix_ht * (1 - remise / 100) : null;
-      const prixAffiche = prixRemise !== null ? prixRemise : p.prix_ht;
-      const cartonRemise = prixAffiche * p.pcb;
+      const prixUnitHT  = p.prix_ht;
+      const prixRemise  = remise > 0 ? prixUnitHT * (1 - remise / 100) : null;
+      const prixU       = prixRemise !== null ? prixRemise : prixUnitHT;
+      const prixCarton  = prixU * p.pcb;          // prix HT d'1 colis
+      const prixCartonBase = prixUnitHT * p.pcb;  // prix carton sans remise (pour barré)
       const isNew = p.description && p.description.includes('✨');
 
       return `
@@ -452,28 +468,29 @@ function renderCatalogue() {
         <div class="photo-col"><div class="photo-placeholder">🍄</div></div>
         <div class="product-name">
           ${p.nom}${isNew ? '<span class="new-badge">NEW</span>' : ''}
-          <small>${p.poids} · ${p.description.replace('✨ Nouveauté — ','').replace('✨ Nouveauté snacking — ','')}</small>
-          <span class="pcb-info">PCB ${p.pcb} · EAN ${p.ean}</span>
-        </div>
-        <div class="prix-col">
-          ${prixRemise !== null
-            ? `<span class="prix-barre">${p.prix_ht.toFixed(2)} €</span><span class="prix-remise">${prixRemise.toFixed(2)} €</span>`
-            : `${p.prix_ht.toFixed(2)} €`}
-          <small>HT / ${p.unite}</small>
+          <small>${p.poids} · PCB ${p.pcb} · ${p.description.replace('✨ Nouveauté — ','').replace('✨ Nouveauté snacking — ','')}</small>
+          <span class="ean-code">EAN ${p.ean}</span>
         </div>
         <div class="carton-col">
-          ${cartonRemise.toFixed(2)} €<br>
-          <span style="font-size:.6rem;color:var(--s600)">/carton</span>
+          ${prixRemise !== null
+            ? `<span class="carton-barre">${prixCartonBase.toFixed(2)} €</span><span class="carton-remise">${prixCarton.toFixed(2)} €</span>`
+            : `<strong style="color:#1e293b">${prixCarton.toFixed(2)} €</strong>`}
+          <small>${p.pcb} × ${prixU.toFixed(2)} € HT</small>
         </div>
         <div style="text-align:center">
           <input class="qty-input" type="number" id="qty-${p.id}" min="0" step="1" value="0"
-            data-prix="${prixAffiche.toFixed(4)}"
+            data-prix-unit="${prixU.toFixed(4)}"
+            data-prix-carton="${prixCarton.toFixed(4)}"
             data-nom="${p.nom.replace(/"/g,'&quot;')}"
             data-poids="${p.poids}"
             data-pcb="${p.pcb}"
             data-tva="${p.tva}"
             data-catid="${cat.id}"
             onchange="updateRecap()" oninput="updateRecap()">
+        </div>
+        <div class="uvc-col" id="uvc-${p.id}">
+          <strong>—</strong>
+          <span>UVC</span>
         </div>
         <div class="total-col" id="total-${p.id}">—</div>
       </div>`;
@@ -499,24 +516,40 @@ function toggleCat(header) {
 
 function updateRecap() {
   const inputs = document.querySelectorAll('.qty-input');
-  let lignes = []; let totalHT = 0; let tvaAmount = 0; let totalColis = 0;
+  let lignes = []; let totalHT = 0; let tvaAmount = 0;
+  let totalColis = 0; let totalUVC = 0;
 
   inputs.forEach(inp => {
-    const qty = parseInt(inp.value) || 0;
+    const nbColis = parseInt(inp.value) || 0;
     const pid = inp.id.replace('qty-', '');
-    const el = document.getElementById('total-' + pid);
-    if (qty <= 0) { if (el) el.textContent = '—'; return; }
-    const prix = parseFloat(inp.dataset.prix);
-    const tva = parseFloat(inp.dataset.tva);
-    const pcb = parseInt(inp.dataset.pcb) || 1;
-    const ht = prix * qty;
+    const elTotal = document.getElementById('total-' + pid);
+    const elUVC   = document.getElementById('uvc-'   + pid);
+
+    if (nbColis <= 0) {
+      if (elTotal) elTotal.textContent = '—';
+      if (elUVC)   elUVC.innerHTML = '<strong>—</strong><span>UVC</span>';
+      return;
+    }
+
+    const prixCarton = parseFloat(inp.dataset.prixCarton); // HT d'1 colis
+    const pcb        = parseInt(inp.dataset.pcb) || 1;
+    const tva        = parseFloat(inp.dataset.tva);
+    const uvc        = nbColis * pcb;                      // nombre d'unités
+    const ht         = nbColis * prixCarton;               // total HT
     const montantTVA = ht * tva / 100;
-    totalHT += ht; tvaAmount += montantTVA;
-    totalColis += Math.ceil(qty / pcb);
-    lignes.push({ nom: inp.dataset.nom, poids: inp.dataset.poids, qty, prix, ht, pcb });
-    if (el) el.textContent = ht.toFixed(2) + ' €';
+
+    totalHT    += ht;
+    tvaAmount  += montantTVA;
+    totalColis += nbColis;
+    totalUVC   += uvc;
+
+    lignes.push({ nom:inp.dataset.nom, poids:inp.dataset.poids, nbColis, uvc, pcb, prixCarton, ht });
+
+    if (elTotal) elTotal.textContent = ht.toFixed(2) + ' €';
+    if (elUVC)   elUVC.innerHTML = `<strong>${uvc}</strong><span>UVC</span>`;
   });
 
+  // ── Recap items ──
   const itemsEl = document.getElementById('recap-items');
   if (!lignes.length) {
     itemsEl.innerHTML = '<div class="recap-empty">Aucun article sélectionné</div>';
@@ -524,30 +557,40 @@ function updateRecap() {
     itemsEl.innerHTML = lignes.map(l => `
       <div class="recap-item">
         <div class="recap-item-name">${l.nom}
-          <div class="recap-item-sub">${l.qty} × ${l.poids} · ${l.prix.toFixed(2)} € HT</div>
+          <div class="recap-item-sub">
+            ${l.nbColis} colis · ${l.uvc} UVC (PCB ${l.pcb}) · ${l.prixCarton.toFixed(2)} €/colis
+          </div>
         </div>
         <div class="recap-item-prix">${l.ht.toFixed(2)} €</div>
       </div>`).join('');
   }
 
+  // ── Compteurs colis + UVC ──
   const colisEl = document.getElementById('recap-colis');
-  if (lignes.length) { colisEl.style.display = 'flex'; document.getElementById('recap-colis-count').textContent = totalColis; }
-  else { colisEl.style.display = 'none'; }
+  if (lignes.length) {
+    colisEl.style.display = 'flex';
+    document.getElementById('recap-colis-count').textContent = totalColis;
+    document.getElementById('recap-uvc-count').textContent   = totalUVC;
+  } else {
+    colisEl.style.display = 'none';
+  }
 
+  // ── Totaux ──
   const totalTTC = totalHT + tvaAmount;
   document.getElementById('recap-totaux').innerHTML = `
     <div class="recap-ligne"><span>Total HT</span><span>${totalHT.toFixed(2)} €</span></div>
     <div class="recap-ligne"><span>TVA 5,5%</span><span>${tvaAmount.toFixed(2)} €</span></div>
     <div class="recap-total"><span>Total TTC</span><span>${totalTTC.toFixed(2)} €</span></div>`;
 
-  const minHT = config.conditions?.minimum_commande_ht || 450;
-  const francoHT = config.conditions?.franco_port_ht || 450;
-  const francoColis = config.conditions?.franco_port_colis || 5;
-  const francoOk = totalHT >= francoHT || totalColis >= francoColis;
+  // ── Franco ──
+  const minHT      = config.conditions?.minimum_commande_ht  || 450;
+  const francoHT   = config.conditions?.franco_port_ht       || 450;
+  const francoColis= config.conditions?.franco_port_colis    || 5;
+  const francoOk   = totalHT >= francoHT || totalColis >= francoColis;
 
   let statusHtml = '';
   if (lignes.length && totalHT < minHT && totalColis < francoColis) {
-    statusHtml = `<div class="recap-alert warn">⚠ Minimum : ${minHT} € HT ou ${francoColis} colis — Manque ${(minHT - totalHT).toFixed(2)} €</div>`;
+    statusHtml = `<div class="recap-alert warn">⚠ Minimum : ${francoColis} colis ou ${minHT} € HT — Manque ${Math.max(0, francoColis - totalColis)} colis ou ${(minHT - totalHT).toFixed(2)} €</div>`;
   } else if (lignes.length && !francoOk) {
     statusHtml = `<div class="recap-alert ok">✓ Commande valide — port en sus</div>`;
   } else if (lignes.length) {
@@ -561,66 +604,156 @@ function setVal(id, val) { const el = document.getElementById(id); if (el && val
 
 function submitCommande() {
   const societe = document.getElementById('f-societe').value.trim();
-  const email = document.getElementById('f-email').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
   if (!societe || !email) { alert('Merci de renseigner le magasin et l\'email.'); return; }
 
-  const revId = document.getElementById('sel-revendeur').value;
+  const revId  = document.getElementById('sel-revendeur').value;
   const revNom = revId ? config.revendeurs.find(r => r.id === revId)?.nom : 'Tarif Général';
-  const ville = document.getElementById('f-ville').value.trim();
-  const cp = document.getElementById('f-cp').value.trim();
-  const tel = document.getElementById('f-tel').value.trim();
-  const nom = document.getElementById('f-nom').value.trim();
-  const dateL = document.getElementById('f-date').value;
-  const comment = document.getElementById('f-comment').value.trim();
+  const ville  = document.getElementById('f-ville').value.trim();
+  const cp     = document.getElementById('f-cp').value.trim();
+  const tel    = document.getElementById('f-tel').value.trim();
+  const nom    = document.getElementById('f-nom').value.trim();
+  const dateL  = document.getElementById('f-date').value;
+  const comment= document.getElementById('f-comment').value.trim();
 
   const inputs = document.querySelectorAll('.qty-input');
-  let lignes = []; let totalHT = 0; let totalColis = 0;
+  let lignes = []; let totalHT = 0; let totalColis = 0; let totalUVC = 0;
+
   inputs.forEach(inp => {
-    const qty = parseInt(inp.value) || 0; if (!qty) return;
-    const prix = parseFloat(inp.dataset.prix);
-    const pcb = parseInt(inp.dataset.pcb) || 1;
-    const ht = prix * qty; totalHT += ht;
-    totalColis += Math.ceil(qty / pcb);
-    lignes.push(`${inp.dataset.nom} (${inp.dataset.poids}) — ${qty} u × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
+    const nbColis = parseInt(inp.value) || 0; if (!nbColis) return;
+    const prixCarton = parseFloat(inp.dataset.prixCarton);
+    const pcb        = parseInt(inp.dataset.pcb) || 1;
+    const uvc        = nbColis * pcb;
+    const ht         = nbColis * prixCarton;
+    totalHT    += ht;
+    totalColis += nbColis;
+    totalUVC   += uvc;
+    lignes.push(
+      `${inp.dataset.nom} (${inp.dataset.poids}) — ${nbColis} colis · ${uvc} UVC (PCB ${pcb}) · ${prixCarton.toFixed(2)} €/colis = ${ht.toFixed(2)} € HT`
+    );
   });
 
-  const tva = totalHT * 0.055;
-  const subject = encodeURIComponent(`BDC BIO N TRUFFE — ${societe} ${ville} — ${new Date().toLocaleDateString('fr-FR')}`);
-  const body = encodeURIComponent([
-    `BON DE COMMANDE — BIO N TRUFFE`,`Tarif V15 — 01/03/2026`,`Date : ${new Date().toLocaleDateString('fr-FR')}`,``,
-    `=== CLIENT ===`,`Profil : ${revNom}`,`Magasin : ${societe}`,`Ville : ${cp} ${ville}`,
-    `Téléphone : ${tel || '—'}`,`Email : ${email}`,`Contact : ${nom || '—'}`,`Livraison souhaitée : ${dateL || 'Sur accord'}`,``,
-    `=== COMMANDE ===`,...lignes,``,
-    `Colis estimés : ${totalColis}`,`TOTAL HT : ${totalHT.toFixed(2)} €`,
-    `TVA 5,5% : ${tva.toFixed(2)} €`,`TOTAL TTC : ${(totalHT + tva).toFixed(2)} €`,``,
-    `Franco : ${totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus'}`,``,
-    comment ? `=== COMMENTAIRE ===\n${comment}` : '',``,`— BIO N TRUFFE CRM · Christophe SPOTO`
-  ].filter(Boolean).join('\n'));
+  const tva     = totalHT * 0.055;
+  const totalTTC = totalHT + tva;
+  const dateStr  = new Date().toLocaleDateString('fr-FR');
+  const franco   = totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus';
 
-  window.location.href = `mailto:${config.societe.email_commandes}?subject=${subject}&body=${body}`;
+  // ── Construction du message structuré ──
+  const lignesText = lignes.map(l =>
+    `• ${l.nom} (${l.poids}) : ${l.nbColis} colis × ${l.prixCarton.toFixed(2)} € = ${l.ht.toFixed(2)} € HT  |  ${l.uvc} UVC (PCB ${l.pcb})`
+  ).join('\n');
 
-  if (window._crmClient) {
-    const inputsAll = document.querySelectorAll('.qty-input');
-    const crmLignes = [];
-    inputsAll.forEach(inp => {
-      const qty = parseInt(inp.value)||0; if (!qty) return;
-      const prix = parseFloat(inp.dataset.prix);
-      crmLignes.push({ nom:inp.dataset.nom, poids:inp.dataset.poids, qty, prix, ht:prix*qty });
+  const message = [
+    `BON DE COMMANDE — BIO N TRUFFE`,
+    `Tarif V15 · 01/03/2026 · ${dateStr}`,
+    ``,
+    `CLIENT`,
+    `Profil        : ${revNom}`,
+    `Magasin       : ${societe}`,
+    `Adresse       : ${cp} ${ville}`,
+    `Téléphone     : ${tel||'—'}`,
+    `Email         : ${email}`,
+    `Contact       : ${nom||'—'}`,
+    `Livraison     : ${dateL||'Sur accord'}`,
+    ``,
+    `COMMANDE (vendue au colis)`,
+    lignesText,
+    ``,
+    `Colis total   : ${totalColis}`,
+    `UVC total     : ${totalUVC}`,
+    `Total HT      : ${totalHT.toFixed(2)} €`,
+    `TVA 5,5%      : ${tva.toFixed(2)} €`,
+    `Total TTC     : ${totalTTC.toFixed(2)} €`,
+    `Franco port   : ${franco}`,
+    comment ? `\nCOMMENTAIRE\n${comment}` : '',
+    ``,
+    `— Envoyé via BIO N TRUFFE CRM`,
+  ].filter(l => l !== undefined).join('\n');
+
+  // ── Bouton en chargement ──
+  const btnSubmit = document.getElementById('btn-submit');
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = 'Envoi en cours…';
+
+  // ── Envoi via FormSubmit AJAX (reste sur la page) ──
+  fetch('https://formsubmit.co/ajax/loacdev@outlook.fr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      _subject: `BDC BIO N TRUFFE — ${societe} ${ville} — ${dateStr}`,
+      _template: 'table',
+      _captcha: 'false',
+      Magasin:     societe,
+      Profil:      revNom,
+      Ville:       `${cp} ${ville}`,
+      Email:       email,
+      Contact:     nom||'—',
+      Telephone:   tel||'—',
+      Livraison:   dateL||'Sur accord',
+      Colis_total: String(totalColis),
+      UVC_total:   String(totalUVC),
+      Total_HT:    `${totalHT.toFixed(2)} €`,
+      TVA_5_5:     `${tva.toFixed(2)} €`,
+      Total_TTC:   `${totalTTC.toFixed(2)} €`,
+      Franco_port: franco,
+      Commande:    lignesText,
+      Commentaire: comment||'—',
+      message,
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success === 'true' || data.success === true) {
+      // Sauvegarde CRM si besoin
+      _saveCRM();
+      setTimeout(() => { document.getElementById('success').style.display = 'flex'; }, 200);
+    } else {
+      alert('Erreur lors de l\'envoi. Vérifiez votre connexion et réessayez.');
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Envoyer la commande →';
+    }
+  })
+  .catch(() => {
+    alert('Erreur réseau. Vérifiez votre connexion internet et réessayez.');
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = 'Envoyer la commande →';
+  });
+
+}
+
+function _saveCRM() {
+  if (!window._crmClient) return;
+  const inputs = document.querySelectorAll('.qty-input');
+  const crmLignes = [];
+  inputs.forEach(inp => {
+    const nbColis = parseInt(inp.value)||0; if (!nbColis) return;
+    const prixCarton = parseFloat(inp.dataset.prixCarton);
+    const pcb        = parseInt(inp.dataset.pcb)||1;
+    crmLignes.push({
+      nom:inp.dataset.nom, poids:inp.dataset.poids,
+      nbColis, uvc:nbColis*pcb, pcb, prixCarton, ht:nbColis*prixCarton
     });
-    const ref = `BDC-${window._crmClient.numClient}-${Date.now().toString().slice(-5)}`;
-    sessionStorage.setItem('bnt_new_commande', JSON.stringify({
-      id:'cmd_'+Date.now(), ref, clientId:window._crmClient.clientId,
-      numClient:window._crmClient.numClient, date:new Date().toISOString().slice(0,10),
-      totalHT, profil:window._crmClient.profil, lignes:crmLignes
-    }));
-  }
-
-  setTimeout(() => { document.getElementById('success').style.display = 'flex'; }, 800);
+  });
+  const totalHT    = crmLignes.reduce((s,l)=>s+l.ht, 0);
+  const totalColis = crmLignes.reduce((s,l)=>s+l.nbColis, 0);
+  const totalUVC   = crmLignes.reduce((s,l)=>s+l.uvc, 0);
+  const ref = `BDC-${window._crmClient.numClient}-${Date.now().toString().slice(-5)}`;
+  sessionStorage.setItem('bnt_new_commande', JSON.stringify({
+    id:'cmd_'+Date.now(), ref,
+    clientId:window._crmClient.clientId,
+    numClient:window._crmClient.numClient,
+    date:new Date().toISOString().slice(0,10),
+    totalHT, totalColis, totalUVC,
+    profil:window._crmClient.profil,
+    lignes:crmLignes
+  }));
 }
 
 function resetForm() {
   if (!confirm('Réinitialiser le bon de commande ?')) return;
   document.querySelectorAll('.qty-input').forEach(i => i.value = 0);
+  document.querySelectorAll('.uvc-col').forEach(el => el.innerHTML = '<strong>—</strong><span>UVC</span>');
+  document.querySelectorAll('.total-col').forEach(el => el.textContent = '—');
   ['f-societe','f-ville','f-cp','f-tel','f-email','f-nom','f-date','f-comment'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
