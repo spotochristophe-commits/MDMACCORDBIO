@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --s950:#f8faff;--s900:#ffffff;--s800:#f1f5f9;--s700:#e2e8f0;
+  --s950:#f7fdf9;--s900:#ffffff;--s800:#f1f5f9;--s700:#e2e8f0;
   --s600:#64748b;--s500:#94a3b8;--s400:#64748b;--s300:#475569;
   --s200:#334155;--s100:#1e293b;
-  --em700:#4338ca;--em600:#6366f1;--em500:#818cf8;--em400:#6366f1;
+  --em700:#15803d;--em600:#22c55e;--em500:#4ade80;--em400:#16a34a;
   --amber:#f59e0b;--red:#ef4444;--orange:#f97316;--white:#fff;
   --fd:'DM Sans',sans-serif;--fdisp:'DM Serif Display',serif;
   --border:rgba(0,0,0,.08);
@@ -39,24 +39,24 @@ body::before{content:'';position:fixed;inset:0;background:none;pointer-events:no
   font-family:var(--fd);background:#f1f5f9;color:#1e293b;
   margin-bottom:1rem;transition:border-color .2s;
 }
-.lock-box input:focus{outline:none;border-color:#6366f1;}
+.lock-box input:focus{outline:none;border-color:#22c55e;}
 .lock-box input.shake{animation:sk .35s ease;border-color:var(--red);}
 @keyframes sk{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 .lock-box button{
-  width:100%;background:#6366f1;color:#1e293b;border:none;border-radius:8px;
+  width:100%;background:#22c55e;color:#1e293b;border:none;border-radius:8px;
   padding:11px;font-family:var(--fd);font-size:.85rem;font-weight:600;cursor:pointer;
   letter-spacing:.05em;text-transform:uppercase;transition:background .2s;
 }
-.lock-box button:hover{background:#818cf8;}
+.lock-box button:hover{background:#4ade80;}
 .lock-error{font-size:.72rem;color:#fca5a5;margin-top:.5rem;min-height:1rem;}
 .lock-hint{font-size:.68rem;color:var(--s700);margin-top:1rem;}
 
 /* ── TOAST ── */
 #toast{
   position:fixed;bottom:1.5rem;right:1.5rem;z-index:9998;
-  background:#f1f5f9;color:#6366f1;
+  background:#f1f5f9;color:#22c55e;
   padding:10px 18px;border-radius:8px;font-size:.82rem;font-weight:600;
-  border:1px solid rgba(99,102,241,.2);
+  border:1px solid rgba(34,197,94,.18);
   transform:translateY(120%);transition:transform .3s;
   box-shadow:0 4px 20px rgba(0,0,0,.4);
 }
@@ -74,7 +74,7 @@ body::before{content:'';position:fixed;inset:0;background:none;pointer-events:no
 }
 .sidebar-logo{padding:1.25rem 1rem;border-bottom:1px solid var(--border);}
 .sidebar-logo a{text-decoration:none;display:flex;align-items:center;gap:9px;}
-.logo-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#818cf8);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.logo-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#22c55e,#4ade80);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .logo-name{font-family:var(--fdisp);font-size:.95rem;color:#1e293b;display:block;}
 .logo-sub{font-size:.6rem;color:var(--s500);display:block;letter-spacing:.04em;text-transform:uppercase;margin-top:1px;}
 nav{flex:1;padding:.5rem 0;}
@@ -86,11 +86,11 @@ nav{flex:1;padding:.5rem 0;}
   transition:all .15s;border-radius:0 6px 6px 0;margin-right:.5rem;
 }
 .nav-item:hover{color:#1e293b;background:#f8f9fb;}
-.nav-item.active{color:#6366f1;border-left-color:#6366f1;background:rgba(99,102,241,.06);}
+.nav-item.active{color:#22c55e;border-left-color:#22c55e;background:rgba(34,197,94,.06);}
 .nav-item .ico{font-size:.9rem;width:16px;text-align:center;flex-shrink:0;}
-.nav-count{margin-left:auto;background:rgba(99,102,241,.1);color:#6366f1;font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:10px;min-width:18px;text-align:center;}
+.nav-count{margin-left:auto;background:rgba(34,197,94,.1);color:#22c55e;font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:10px;min-width:18px;text-align:center;}
 .sidebar-footer{padding:.85rem 1rem;border-top:1px solid var(--border);}
-.sidebar-footer a{font-size:.72rem;color:#6366f1;text-decoration:none;display:block;margin-bottom:.3rem;}
+.sidebar-footer a{font-size:.72rem;color:#22c55e;text-decoration:none;display:block;margin-bottom:.3rem;}
 .sidebar-footer a:hover{color:var(--em300);}
 .sidebar-footer span{font-size:.64rem;color:var(--s700);display:block;margin-top:.5rem;}
 
@@ -112,7 +112,7 @@ nav{flex:1;padding:.5rem 0;}
 .stats{display:flex;gap:.85rem;margin-bottom:1.5rem;flex-wrap:wrap;}
 .stat{
   background:#f1f5f9;border:1px solid var(--border);border-radius:9px;
-  padding:1rem 1.1rem;flex:1;min-width:110px;border-top:2px solid #6366f1;
+  padding:1rem 1.1rem;flex:1;min-width:110px;border-top:2px solid #22c55e;
 }
 .stat-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);margin-bottom:.35rem;}
 .stat-val{font-family:var(--fdisp);font-size:1.6rem;color:#1e293b;}
@@ -128,7 +128,7 @@ nav{flex:1;padding:.5rem 0;}
   font-family:var(--fd);font-size:.83rem;
   transition:border-color .2s;
 }
-.search-wrap input:focus{outline:none;border-color:#6366f1;}
+.search-wrap input:focus{outline:none;border-color:#22c55e;}
 .search-wrap input::placeholder{color:var(--s600);}
 .search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--s500);font-size:.85rem;pointer-events:none;}
 .filter-btn{
@@ -136,7 +136,7 @@ nav{flex:1;padding:.5rem 0;}
   border:1px solid var(--border);background:#f8f9fb;color:var(--s400);
   font-family:var(--fd);transition:all .15s;white-space:nowrap;
 }
-.filter-btn.active{background:#6366f1;color:#1e293b;border-color:#6366f1;}
+.filter-btn.active{background:#22c55e;color:#1e293b;border-color:#22c55e;}
 
 /* ── CARD TABLE ── */
 .card-table{
@@ -146,19 +146,19 @@ nav{flex:1;padding:.5rem 0;}
 table{width:100%;border-collapse:collapse;font-size:.82rem;}
 th{
   text-align:left;padding:8px 12px;
-  background:rgba(99,102,241,.02);
+  background:rgba(34,197,94,.02);
   font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
   color:var(--s500);font-weight:600;border-bottom:1px solid var(--border);
   white-space:nowrap;
 }
 td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(99,102,241,.02);}
+tr:hover td{background:rgba(34,197,94,.02);}
 .empty-row td{text-align:center;color:var(--s500);font-style:italic;padding:2.5rem;}
 
 /* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:.65rem;font-weight:700;letter-spacing:.05em;white-space:nowrap;}
-.badge-client{background:rgba(99,102,241,.08);color:#6366f1;border:1px solid rgba(99,102,241,.2);}
+.badge-client{background:rgba(34,197,94,.08);color:#22c55e;border:1px solid rgba(34,197,94,.18);}
 .badge-prospect{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.25);}
 
 /* ── BUTTONS ── */
@@ -168,8 +168,8 @@ tr:hover td{background:rgba(99,102,241,.02);}
   font-family:var(--fd);font-size:.76rem;font-weight:600;
   letter-spacing:.03em;transition:all .15s;
 }
-.btn-vert{background:#6366f1;color:#1e293b;}
-.btn-vert:hover{background:#818cf8;}
+.btn-vert{background:#22c55e;color:#1e293b;}
+.btn-vert:hover{background:#4ade80;}
 .btn-orange{background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.25);color:var(--orange);}
 .btn-orange:hover{background:rgba(249,115,22,.2);}
 .btn-outline{background:transparent;border:1px solid var(--border);color:var(--s400);}
@@ -182,10 +182,10 @@ tr:hover td{background:rgba(99,102,241,.02);}
 /* ── MINI CARDS (dashboard) ── */
 .mini-card{
   border:1px solid var(--border);border-radius:8px;padding:.65rem .9rem;
-  margin-bottom:.45rem;cursor:pointer;background:rgba(99,102,241,.02);
+  margin-bottom:.45rem;cursor:pointer;background:rgba(34,197,94,.02);
   transition:border-color .15s,background .15s;
 }
-.mini-card:hover{border-color:rgba(99,102,241,.2);background:rgba(99,102,241,.04);}
+.mini-card:hover{border-color:rgba(34,197,94,.18);background:rgba(34,197,94,.04);}
 .mini-card-name{font-size:.83rem;font-weight:600;color:#1e293b;}
 .mini-card-sub{font-size:.7rem;color:var(--s500);margin-top:2px;}
 
@@ -221,17 +221,17 @@ tr:hover td{background:rgba(99,102,241,.02);}
 
 /* ── FICHE ── */
 .fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-.fiche-block{background:rgba(99,102,241,.03);border:1px solid var(--border);border-radius:8px;padding:.95rem 1.1rem;}
-.fiche-block h3{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#6366f1;margin-bottom:.65rem;font-weight:600;}
+.fiche-block{background:rgba(34,197,94,.03);border:1px solid var(--border);border-radius:8px;padding:.95rem 1.1rem;}
+.fiche-block h3{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#22c55e;margin-bottom:.65rem;font-weight:600;}
 .fiche-row{display:flex;gap:.5rem;margin-bottom:.3rem;font-size:.8rem;}
 .fiche-key{color:var(--s500);min-width:115px;flex-shrink:0;font-size:.75rem;}
 .fiche-val{color:#1e293b;font-weight:600;word-break:break-word;}
 
 /* ── HISTO ── */
-.histo-item{border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;background:rgba(99,102,241,.02);}
-.histo-item:hover{border-color:rgba(99,102,241,.2);}
+.histo-item{border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;background:rgba(34,197,94,.02);}
+.histo-item:hover{border-color:rgba(34,197,94,.18);}
 .histo-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
-.histo-ref{font-size:.78rem;font-weight:700;color:#6366f1;}
+.histo-ref{font-size:.78rem;font-weight:700;color:#22c55e;}
 .histo-date{font-size:.72rem;color:var(--s500);}
 .histo-total{font-family:var(--fdisp);font-size:1rem;color:var(--em500);font-weight:700;}
 .histo-detail{margin-top:.65rem;font-size:.75rem;display:none;}
@@ -247,19 +247,19 @@ tr:hover td{background:rgba(99,102,241,.02);}
   border-radius:7px;color:#1e293b;font-family:var(--fd);font-size:.83rem;
   padding:8px 11px;width:100%;transition:border-color .2s;
 }
-.conv-form input:focus,.conv-form select:focus,.conv-form textarea:focus{outline:none;border-color:#6366f1;}
+.conv-form input:focus,.conv-form select:focus,.conv-form textarea:focus{outline:none;border-color:#22c55e;}
 .conv-form select option{background:#f1f5f9;}
 .conv-form textarea{resize:vertical;min-height:60px;}
 .conv-form .full{grid-column:1/-1;}
-.num-display{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);color:#6366f1;font-weight:700;}
+.num-display{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:#22c55e;font-weight:700;}
 
 /* ── IMPORT/EXPORT ── */
 .import-drop{
-  border:2px dashed rgba(99,102,241,.2);border-radius:8px;padding:1.5rem;
-  text-align:center;cursor:pointer;background:rgba(99,102,241,.03);position:relative;
+  border:2px dashed rgba(34,197,94,.18);border-radius:8px;padding:1.5rem;
+  text-align:center;cursor:pointer;background:rgba(34,197,94,.03);position:relative;
   transition:all .2s;
 }
-.import-drop:hover{border-color:#6366f1;background:rgba(99,102,241,.05);}
+.import-drop:hover{border-color:#22c55e;background:rgba(34,197,94,.05);}
 .import-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 
 /* ── DASHBOARD GRID ── */
@@ -317,7 +317,7 @@ tr:hover td{background:rgba(99,102,241,.02);}
       <button class="modal-close" onclick="closeModal('modal-conv')">✕</button>
     </div>
     <div class="modal-body">
-      <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:7px;padding:9px 13px;margin-bottom:1.1rem;font-size:.8rem;color:#6366f1">
+      <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:7px;padding:9px 13px;margin-bottom:1.1rem;font-size:.8rem;color:#22c55e">
         ✅ Attribution d'un numéro client et activation du compte revendeur.
       </div>
       <div class="conv-form">
@@ -605,7 +605,7 @@ function renderDashboard() {
   const rp = [...db.prospects].reverse().slice(0,5);
   document.getElementById('db-prospects').innerHTML = rp.length
     ? rp.map(p => miniCard(p,'prospect')).join('')
-    : '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun prospect — <a href="prospect.html" style="color:#6366f1">en créer un</a></p>';
+    : '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun prospect — <a href="prospect.html" style="color:#22c55e">en créer un</a></p>';
   const rc = [...db.clients].reverse().slice(0,5);
   document.getElementById('db-clients').innerHTML = rc.length
     ? rc.map(c => miniCard(c,'client')).join('')
@@ -629,7 +629,7 @@ function renderProspects() {
   const tbody = document.getElementById('tbody-prospects');
   if (!tbody) return;
   if (!list.length) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">${q ? 'Aucun résultat' : 'Aucun prospect — <a href="prospect.html" style="color:#6366f1">Créer un prospect</a>'}</td></tr>`;
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">${q ? 'Aucun résultat' : 'Aucun prospect — <a href="prospect.html" style="color:#22c55e">Créer un prospect</a>'}</td></tr>`;
     return;
   }
   tbody.innerHTML = list.map(p => `
@@ -691,12 +691,12 @@ function renderClients() {
     const ca   = cmds.reduce((s,o) => s+(o.totalHT||0), 0);
     return `
     <tr>
-      <td><strong style="font-family:var(--fdisp);color:#6366f1">${c.numClient}</strong></td>
+      <td><strong style="font-family:var(--fdisp);color:#22c55e">${c.numClient}</strong></td>
       <td><strong style="color:#1e293b">${c.raisonSociale}</strong></td>
       <td style="font-size:.78rem;color:var(--s400)">${c.cp||''} ${c.ville||''}</td>
       <td><span class="badge badge-client">${c.profil||'—'}</span></td>
       <td style="text-align:center;font-weight:600">${cmds.length}</td>
-      <td style="font-weight:700;color:#6366f1">${ca.toFixed(2)} €</td>
+      <td style="font-weight:700;color:#22c55e">${ca.toFixed(2)} €</td>
       <td style="white-space:nowrap">
         <button class="btn btn-outline btn-sm" onclick="openFicheClient('${c.id}')">👁 Fiche</button>
         <button class="btn btn-vert btn-sm" onclick="openBDCModal('${c.id}')">📋 BDC</button>
@@ -720,7 +720,7 @@ function openFicheClient(id) {
           <span class="histo-total">${(o.totalHT||0).toFixed(2)} € HT</span>
         </div>
         <div class="histo-detail">
-          ${(o.lignes||[]).map(l=>`<div class="histo-line"><span>${l.nom} × ${l.qty}</span><span style="font-weight:600;color:#6366f1">${(l.ht||0).toFixed(2)} €</span></div>`).join('')}
+          ${(o.lignes||[]).map(l=>`<div class="histo-line"><span>${l.nom} × ${l.qty}</span><span style="font-weight:600;color:#22c55e">${(l.ht||0).toFixed(2)} €</span></div>`).join('')}
           <div style="font-size:.72rem;color:var(--s500);margin-top:.4rem">TVA 5,5% : ${((o.totalHT||0)*0.055).toFixed(2)} € · TTC : ${((o.totalHT||0)*1.055).toFixed(2)} €</div>
         </div>
       </div>`).join('')
@@ -731,7 +731,7 @@ function openFicheClient(id) {
     <div style="margin-top:1.25rem">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
         <span style="font-family:var(--fdisp);font-size:.95rem;color:#1e293b">Historique commandes</span>
-        <span style="font-size:.78rem;color:var(--s500)">${cmds.length} cmd · CA : <strong style="color:#6366f1">${ca.toFixed(2)} € HT</strong></span>
+        <span style="font-size:.78rem;color:var(--s500)">${cmds.length} cmd · CA : <strong style="color:#22c55e">${ca.toFixed(2)} € HT</strong></span>
       </div>
       ${histoHTML}
     </div>`;
@@ -821,7 +821,7 @@ function openBDCModal(id) {
   const c = db.clients.find(x => x.id === id);
   if (!c) return;
   document.getElementById('modal-bdc-body').innerHTML = `
-    <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:12px 16px;margin-bottom:14px">
+    <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:8px;padding:12px 16px;margin-bottom:14px">
       <div style="font-size:.85rem;font-weight:700;color:#1e293b;margin-bottom:3px">${c.raisonSociale} · ${c.numClient}</div>
       <div style="font-size:.75rem;color:var(--s500)">${c.cp||''} ${c.ville||''} · ${c.profil||''}</div>
     </div>
@@ -829,7 +829,7 @@ function openBDCModal(id) {
       Le bon de commande s'ouvrira avec les informations de ce client pré-remplies (magasin, email, profil revendeur). La commande sera enregistrée dans son historique.
     </p>
     <div style="background:#f8f9fb;border:1px solid var(--border);border-radius:7px;padding:9px 13px;font-size:.75rem;color:var(--s500)">
-      CA actuel : <strong style="color:#6366f1">${db.commandes.filter(o=>o.clientId===c.id).reduce((s,o)=>s+(o.totalHT||0),0).toFixed(2)} € HT</strong>
+      CA actuel : <strong style="color:#22c55e">${db.commandes.filter(o=>o.clientId===c.id).reduce((s,o)=>s+(o.totalHT||0),0).toFixed(2)} € HT</strong>
       · ${db.commandes.filter(o=>o.clientId===c.id).length} commande(s)
     </div>`;
   openModal('modal-bdc');
@@ -860,10 +860,10 @@ function renderCommandes() {
     const c = db.clients.find(x => x.id === o.clientId);
     return `
     <tr>
-      <td><strong style="font-family:var(--fdisp);color:#6366f1;font-size:.82rem">${o.ref}</strong></td>
+      <td><strong style="font-family:var(--fdisp);color:#22c55e;font-size:.82rem">${o.ref}</strong></td>
       <td>${c?.raisonSociale||'—'}<br><span style="font-size:.68rem;color:var(--s500)">${c?.numClient||''}</span></td>
       <td style="font-size:.76rem;color:var(--s500)">${formatDate(o.date)}</td>
-      <td style="font-weight:700;color:#6366f1">${(o.totalHT||0).toFixed(2)} €</td>
+      <td style="font-weight:700;color:#22c55e">${(o.totalHT||0).toFixed(2)} €</td>
       <td style="font-size:.72rem;color:var(--s500)">${o.profil||'—'}</td>
       <td style="text-align:center">${(o.lignes||[]).length}</td>
       <td><button class="btn btn-danger btn-sm" onclick="deleteCommande('${o.id}')">🗑</button></td>
