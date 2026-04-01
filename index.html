@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --slate-950: #020617;
-  --slate-900: #0f172a;
+  --slate-950: #f8f9fb;
+  --slate-900: #ffffff;
   --slate-800: #1e293b;
   --slate-700: #334155;
   --slate-600: #475569;
@@ -60,7 +60,7 @@ body::before {
 .topbar {
   background: rgba(15,23,42,.85);
   border-bottom: 1px solid rgba(255,255,255,.06);
-  backdrop-filter: blur(12px);
+  ;
   position: sticky; top:0; z-index:100;
 }
 .topbar-inner {
@@ -72,11 +72,11 @@ body::before {
   width:36px; height:36px; border-radius:9px;
   background: linear-gradient(135deg, var(--em-600), var(--em-400));
   display:flex; align-items:center; justify-content:center;
-  font-size:18px; box-shadow:0 0 0 1px rgba(52,211,153,.2);
+  font-size:18px; box-shadow:0 0 0 1px rgba(51,65,85,.2);
 }
 .brand-name {
   font-family: var(--font-disp);
-  font-size:1.1rem; color:var(--white);
+  font-size:1.1rem; color:#1e293b;
   letter-spacing:.01em;
 }
 .brand-sub {
@@ -86,16 +86,16 @@ body::before {
 }
 .topbar-right { display:flex; align-items:center; gap:10px; }
 .badge-pill {
-  background: rgba(5,150,105,.15);
-  border: 1px solid rgba(52,211,153,.25);
+  background: rgba(51,65,85,.1);
+  border: 1px solid rgba(51,65,85,.2);
   color: var(--em-400); font-size:0.7rem; font-weight:600;
   letter-spacing:.06em; text-transform:uppercase;
   padding:4px 12px; border-radius:20px;
 }
 .user-chip {
   display:flex; align-items:center; gap:8px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
+  background:#f8f9fb;
+  border:1px solid #e2e8f0;
   border-radius:8px; padding:5px 12px 5px 5px;
   font-size:0.78rem; color:var(--slate-300);
 }
@@ -103,7 +103,7 @@ body::before {
   width:26px; height:26px; border-radius:6px;
   background:linear-gradient(135deg,var(--em-600),var(--em-400));
   display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:700; color:#fff;
+  font-size:11px; font-weight:700; color:#1e293b;
 }
 
 /* ── HERO ── */
@@ -114,7 +114,7 @@ body::before {
 .hero-left { }
 .hero-eyebrow {
   display:inline-flex; align-items:center; gap:6px;
-  background:rgba(5,150,105,.12); border:1px solid rgba(52,211,153,.2);
+  background:rgba(51,65,85,.08); border:1px solid rgba(51,65,85,.2);
   color:var(--em-400); font-size:0.72rem; font-weight:600;
   letter-spacing:.08em; text-transform:uppercase;
   padding:4px 12px; border-radius:20px; margin-bottom:1.25rem;
@@ -125,7 +125,7 @@ body::before {
   font-family: var(--font-disp);
   font-size: clamp(2rem,4vw,3rem);
   font-weight:400; line-height:1.15;
-  color:var(--white);
+  color:#1e293b;
   margin-bottom:1rem;
 }
 .hero h1 em { font-style:italic; color:var(--em-400); }
@@ -137,7 +137,7 @@ body::before {
 .hero-actions { display:flex; gap:10px; flex-wrap:wrap; }
 .btn-primary {
   display:inline-flex; align-items:center; gap:8px;
-  background:var(--em-600); color:#fff;
+  background:var(--em-600); color:#1e293b;
   font-family:inherit; font-size:0.82rem; font-weight:600;
   padding:10px 20px; border-radius:8px; text-decoration:none;
   border:none; cursor:pointer; transition:all .2s;
@@ -146,18 +146,18 @@ body::before {
 .btn-primary:hover { background:var(--em-500); transform:translateY(-1px); box-shadow:0 4px 16px rgba(5,150,105,.4); }
 .btn-ghost {
   display:inline-flex; align-items:center; gap:8px;
-  background:rgba(255,255,255,.06); color:var(--slate-300);
-  border:1px solid rgba(255,255,255,.1);
+  background:#f1f5f9; color:var(--slate-300);
+  border:1px solid #e2e8f0;
   font-family:inherit; font-size:0.82rem; font-weight:500;
   padding:10px 20px; border-radius:8px; text-decoration:none;
   transition:all .2s;
 }
-.btn-ghost:hover { background:rgba(255,255,255,.1); color:#fff; }
+.btn-ghost:hover { background:rgba(255,255,255,.1); color:#1e293b; }
 
 /* Hero right : mini dashboard preview */
 .hero-preview {
   background:rgba(30,41,59,.7);
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid #e2e8f0;
   border-radius:16px; padding:1.25rem;
   backdrop-filter:blur(8px);
   box-shadow:var(--shadow-lg);
@@ -171,10 +171,10 @@ body::before {
 .preview-title { font-size:0.72rem; font-weight:600; color:var(--slate-400); letter-spacing:.06em; text-transform:uppercase; margin-left:4px; }
 .preview-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
 .preview-stat {
-  background:rgba(15,23,42,.6); border:1px solid rgba(255,255,255,.06);
+  background:#f8f9fb; border:1px solid rgba(255,255,255,.06);
   border-radius:8px; padding:10px 12px;
 }
-.preview-stat-val { font-family:var(--font-disp); font-size:1.4rem; color:var(--white); }
+.preview-stat-val { font-family:var(--font-disp); font-size:1.4rem; color:#1e293b; }
 .preview-stat-lbl { font-size:0.65rem; color:var(--slate-500); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
 .preview-row {
   display:flex; align-items:center; justify-content:space-between;
@@ -185,21 +185,21 @@ body::before {
 .preview-row-badge {
   font-size:0.65rem; font-weight:600; padding:2px 8px; border-radius:10px;
 }
-.badge-client { background:rgba(5,150,105,.2); color:var(--em-400); }
+.badge-client { background:rgba(51,65,85,.12); color:var(--em-400); }
 .badge-prospect { background:rgba(245,158,11,.15); color:var(--amber); }
 
 /* ── STATS ROW ── */
 .stats-row {
   display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08); border-radius:var(--radius);
+  background:#f8f9fb;
+  border:1px solid #e2e8f0; border-radius:var(--radius);
   overflow:hidden; margin-bottom:3.5rem;
 }
 .stat-cell {
-  background:rgba(15,23,42,.8); padding:1.25rem 1.5rem;
+  background:#f8f9fb; padding:1.25rem 1.5rem;
   text-align:center; backdrop-filter:blur(8px);
 }
-.stat-cell-val { font-family:var(--font-disp); font-size:1.8rem; color:var(--white); }
+.stat-cell-val { font-family:var(--font-disp); font-size:1.8rem; color:#1e293b; }
 .stat-cell-lbl { font-size:0.7rem; color:var(--slate-500); text-transform:uppercase; letter-spacing:.06em; margin-top:3px; }
 
 /* ── GRID CARDS ── */
@@ -209,12 +209,12 @@ body::before {
 }
 .grid {
   display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-  gap:1px; background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08); border-radius:var(--radius);
+  gap:1px; background:#f8f9fb;
+  border:1px solid #e2e8f0; border-radius:var(--radius);
   overflow:hidden; margin-bottom:4rem;
 }
 .grid-card {
-  background:rgba(15,23,42,.85);
+  background:#ffffff;
   padding:1.75rem;
   text-decoration:none; color:inherit;
   display:flex; flex-direction:column; gap:.75rem;
@@ -232,11 +232,11 @@ body::before {
 .card-ico {
   width:40px; height:40px; border-radius:9px;
   display:flex; align-items:center; justify-content:center;
-  font-size:18px; background:rgba(5,150,105,.12);
-  border:1px solid rgba(52,211,153,.15);
+  font-size:18px; background:rgba(51,65,85,.08);
+  border:1px solid rgba(51,65,85,.15);
   flex-shrink:0;
 }
-.card-title { font-size:0.95rem; font-weight:600; color:var(--white); }
+.card-title { font-size:0.95rem; font-weight:600; color:#1e293b; }
 .card-desc { font-size:0.78rem; color:var(--slate-400); line-height:1.6; flex:1; }
 .card-link {
   display:inline-flex; align-items:center; gap:5px;
@@ -398,11 +398,5 @@ body::before {
   <div class="wrap">
     <div class="footer-inner">
       <span class="footer-text">BIO N TRUFFE · <strong>Eridan BNT SARL</strong> · 84290 Cairanne</span>
-      <span class="footer-text"><strong>Christophe SPOTO</strong> · 06 78 37 89 06 · spoto.christophe@gmail.com</span>
-      <span class="footer-text">Franco : <strong>5 colis ou 450 € HT</strong> · TVA <strong>5,5%</strong> sur tous les produits</span>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
+      <span class="footer-text"><strong>Christophe SPOTO</strong> · 06 78 37 89 06 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef9c9f809b80c18c879d869c9b809f878aaf88828e8683c18c8082">[email&#160;protected]</a></span>
+      <span class="footer-text">Franco : <strong>5 colis
