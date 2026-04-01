@@ -4,345 +4,251 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BIO N TRUFFE — Bon de Commande 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --vert-fonce:  #1e3320;
-    --vert:        #2d4a2d;
-    --vert-mid:    #3d6140;
-    --vert-clair:  #5a8a5a;
-    --vert-pale:   #c8dcc8;
-    --beige-fonce: #8b7355;
-    --beige:       #c4a882;
-    --beige-clair: #e8dcc8;
-    --beige-pale:  #f5f0e8;
-    --blanc:       #fdfcf9;
-    --texte:       #2a2218;
-    --texte-doux:  #5a4e3a;
-    --ligne:       #ddd5c5;
-    --ok:          #2d7a3a;
-    --err:         #c0392b;
-    --new:         #c47a00;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--beige-pale); color:var(--texte); font-family:'Lato',sans-serif; min-height:100vh; font-size:14px; }
+:root {
+  --s950:#020617;--s900:#0f172a;--s800:#1e293b;--s700:#334155;
+  --s600:#475569;--s500:#64748b;--s400:#94a3b8;--s300:#cbd5e1;
+  --s200:#e2e8f0;--s100:#f1f5f9;--s50:#f8fafc;
+  --em700:#047857;--em600:#059669;--em500:#10b981;--em400:#34d399;
+  --em100:#d1fae5;--em50:#ecfdf5;
+  --amber:#f59e0b;--red:#ef4444;--white:#fff;
+  --fd:'DM Sans',sans-serif;--fdisp:'DM Serif Display',serif;
+  --border:rgba(255,255,255,.07);
+  --border-card:rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--fd);background:var(--s950);color:var(--s200);font-size:14px;line-height:1.5;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 50% 60% at 100% 0%,rgba(5,150,105,.12) 0%,transparent 60%);pointer-events:none;z-index:0;}
 
-  /* HEADER */
-  .top-header {
-    background:var(--vert-fonce);
-    border-bottom:3px solid var(--vert-mid);
-    padding:0.9rem 2rem;
-    display:flex; align-items:center; justify-content:space-between;
-    position:sticky; top:0; z-index:100;
-  }
-  .logo { text-decoration:none; }
-  .logo-main { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:700; color:var(--beige-clair); }
-  .logo-sub { font-size:0.6rem; color:rgba(200,220,200,0.55); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:2px; }
-  .header-right { text-align:right; }
-  .header-tarif { font-size:0.68rem; color:var(--beige); letter-spacing:0.08em; }
-  #header-revendeur { font-size:0.75rem; color:var(--vert-pale); display:block; margin-top:2px; font-style:italic; }
+/* ── TOPBAR ── */
+.topbar{
+  background:rgba(15,23,42,.9);border-bottom:1px solid var(--border);
+  padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--em600),var(--em400));display:flex;align-items:center;justify-content:center;font-size:15px;}
+.brand-name{font-family:var(--fdisp);font-size:1rem;color:var(--white);}
+.brand-sub{font-size:0.62rem;color:var(--s500);display:block;letter-spacing:.04em;text-transform:uppercase;}
+.topbar-right{display:flex;align-items:center;gap:10px;font-size:0.78rem;}
+.tag{background:rgba(5,150,105,.15);border:1px solid rgba(52,211,153,.2);color:var(--em400);font-size:0.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+#header-revendeur{color:var(--s400);font-size:0.75rem;}
+.crm-badge{background:rgba(5,150,105,.2);border:1px solid rgba(52,211,153,.3);color:var(--em400);font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:6px;display:none;}
 
-  /* LAYOUT */
-  .layout { display:grid; grid-template-columns:1fr 330px; min-height:calc(100vh - 63px); }
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:1fr 320px;min-height:calc(100vh - 56px);position:relative;z-index:1;}
 
-  /* LEFT */
-  .left { padding:1.75rem 2rem; border-right:2px solid var(--ligne); }
+/* ── LEFT ── */
+.left{padding:1.5rem 2rem;border-right:1px solid var(--border);}
 
-  /* RIGHT */
-  .right {
-    padding:1.25rem;
-    position:sticky; top:63px;
-    height:calc(100vh - 63px); overflow-y:auto;
-    background:var(--blanc);
-    display:flex; flex-direction:column; gap:0.65rem;
-    border-left:1px solid var(--ligne);
-  }
+/* ── SECTION TITLES ── */
+.stitle{
+  font-size:0.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--s500);margin-bottom:.85rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* SECTION TITLE */
-  .section-title {
-    font-family:'Libre Baskerville',serif;
-    font-size:0.9rem; font-weight:700; color:var(--vert-fonce);
-    padding-bottom:0.45rem;
-    border-bottom:2px solid var(--ligne);
-    margin-bottom:0.9rem;
-  }
+/* ── FORMS ── */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.65rem;margin-bottom:1.5rem;}
+.fg-full{grid-column:1/-1;}
+.fgrp{display:flex;flex-direction:column;gap:.3rem;}
+label{font-size:0.68rem;font-weight:600;color:var(--s400);letter-spacing:.05em;text-transform:uppercase;}
+input,select,textarea{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:7px;color:var(--s100);font-family:var(--fd);font-size:.83rem;
+  padding:8px 11px;width:100%;transition:border-color .2s,background .2s;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--em500);background:rgba(5,150,105,.06);}
+select option{background:var(--s800);}
+textarea{resize:vertical;min-height:56px;}
+input::placeholder,textarea::placeholder{color:var(--s600);}
 
-  /* FORMS */
-  .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.65rem; margin-bottom:1.75rem; }
-  .form-group { display:flex; flex-direction:column; gap:0.28rem; }
-  label { font-size:0.64rem; color:var(--texte-doux); letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
-  input, select, textarea {
-    background:var(--blanc); border:1px solid var(--ligne); border-radius:4px;
-    color:var(--texte); font-family:inherit; font-size:0.82rem;
-    padding:0.45rem 0.65rem; width:100%; transition:border-color 0.2s;
-  }
-  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--vert-mid); }
-  textarea { resize:vertical; min-height:55px; }
+/* ── SEARCH ── */
+.search-bar{display:flex;align-items:center;gap:.6rem;margin-bottom:.85rem;}
+.search-wrap{position:relative;flex:1;}
+.search-icon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--s500);font-size:.85rem;pointer-events:none;}
+#search-input{padding:8px 11px 8px 2.2rem;}
+.search-clear{position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--s500);font-size:1rem;padding:.1rem;display:none;}
+.search-clear.visible{display:block;}
+.search-clear:hover{color:var(--s200);}
+.search-mode-btn{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:7px;color:var(--s400);font-family:var(--fd);
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;
+  padding:7px 12px;cursor:pointer;transition:all .15s;text-transform:uppercase;
+  white-space:nowrap;
+}
+.search-mode-btn.active{background:var(--em600);color:var(--white);border-color:var(--em600);}
+.search-results-bar{
+  display:none;background:rgba(5,150,105,.08);border:1px solid rgba(52,211,153,.2);
+  border-radius:7px;padding:6px 12px;font-size:.75rem;color:var(--em400);
+  margin-bottom:.75rem;align-items:center;justify-content:space-between;
+}
+.search-results-bar.visible{display:flex;}
+.search-results-bar span:last-child{cursor:pointer;font-weight:600;}
+.search-results-bar span:last-child:hover{color:var(--em300);}
+.highlight{background:rgba(245,158,11,.25);border-radius:2px;padding:0 2px;}
+.product-row.search-hidden{display:none;}
+.catalogue-block.search-hidden .cat-body{display:none!important;}
+.catalogue-block.search-hidden .cat-header{opacity:.35;pointer-events:none;}
+.search-no-result{text-align:center;padding:2rem;color:var(--s500);font-style:italic;font-size:.85rem;display:none;}
 
-  /* CATALOGUE */
-  .catalogue-block { margin-bottom:1.5rem; }
-  .cat-header {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0.6rem 0.9rem;
-    background:var(--vert-fonce);
-    border-radius:4px 4px 0 0;
-    cursor:pointer; user-select:none;
-  }
-  .cat-header-name { font-family:'Libre Baskerville',serif; font-size:0.88rem; font-weight:700; color:var(--beige-clair); }
-  .cat-remise-badge { font-size:0.68rem; color:var(--vert-pale); font-style:italic; }
-  .cat-toggle { color:var(--beige); font-size:0.7rem; }
+/* ── INFO BANNER ── */
+.info-banner{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  border-radius:8px;padding:.6rem 1rem;margin-bottom:1.25rem;
+  font-size:.75rem;color:var(--s400);display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;
+}
+.info-banner strong{color:var(--em400);}
 
-  .cat-body { border:1px solid var(--ligne); border-top:none; border-radius:0 0 4px 4px; background:var(--blanc); overflow:hidden; }
+/* ── CATALOGUE ── */
+.catalogue-block{margin-bottom:1.25rem;}
+.cat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem 1rem;
+  background:var(--s800);border:1px solid var(--border);
+  border-radius:8px 8px 0 0;cursor:pointer;user-select:none;
+  transition:background .15s;
+}
+.cat-header:hover{background:var(--s700);}
+.cat-header-name{font-size:.85rem;font-weight:600;color:var(--s100);}
+.cat-remise-badge{font-size:.7rem;font-weight:600;color:var(--em400);margin-left:6px;}
+.cat-toggle{color:var(--s500);font-size:.72rem;}
+.cat-body{
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 8px 8px;overflow:hidden;
+}
+.product-row{
+  display:grid;grid-template-columns:32px 1fr 90px 75px 70px 85px;
+  gap:.4rem;align-items:center;
+  padding:.55rem .85rem;border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .12s;
+}
+.product-row:last-child{border-bottom:none;}
+.product-row:hover{background:rgba(255,255,255,.03);}
+.product-row.header{
+  background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);
+}
+.product-row.header>div{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);}
+.product-row.coffret{background:rgba(245,158,11,.04);}
+.photo-col{display:flex;align-items:center;justify-content:center;}
+.photo-placeholder{width:26px;height:26px;border-radius:6px;background:rgba(5,150,105,.12);border:1px solid rgba(52,211,153,.1);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+.product-name{font-size:.8rem;color:var(--s200);line-height:1.25;}
+.product-name small{display:block;color:var(--s500);font-size:.65rem;margin-top:1px;}
+.new-badge{display:inline-block;background:var(--amber);color:#000;font-size:.58rem;font-weight:700;padding:.05rem .35rem;border-radius:3px;letter-spacing:.04em;vertical-align:middle;margin-left:3px;}
+.pcb-info{display:block;font-size:.62rem;color:var(--s600);margin-top:1px;}
+.ean-code{font-size:.58rem;color:var(--s600);font-family:monospace;display:block;margin-top:1px;}
+.prix-col{font-size:.78rem;text-align:right;color:var(--s400);}
+.prix-col .prix-remise{color:var(--em400);font-weight:600;display:block;}
+.prix-col .prix-barre{text-decoration:line-through;font-size:.68rem;color:var(--s600);}
+.prix-col small{display:block;font-size:.6rem;color:var(--s600);}
+.carton-col{font-size:.72rem;text-align:right;color:var(--s500);}
+.qty-input{
+  width:62px;text-align:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:6px;font-size:.85rem;font-weight:600;color:var(--s100);padding:.28rem;
+}
+.qty-input:focus{border-color:var(--em500);background:rgba(5,150,105,.08);outline:none;}
+.total-col{font-size:.78rem;font-weight:600;color:var(--em400);text-align:right;}
+.sur-demande{font-size:.72rem;color:var(--amber);font-style:italic;}
 
-  /* PRODUCT ROWS */
-  .product-row {
-    display:grid;
-    grid-template-columns: 32px 1fr 80px 70px 70px 85px;
-    gap:0.4rem; align-items:center;
-    padding:0.55rem 0.75rem;
-    border-bottom:1px solid var(--ligne);
-    transition:background 0.15s;
-  }
-  .product-row:last-child { border-bottom:none; }
-  .product-row:hover { background:#faf8f3; }
-  .product-row.header {
-    background:var(--beige-pale);
-    border-bottom:2px solid var(--ligne);
-  }
-  .product-row.header > div {
-    font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--texte-doux); font-weight:700;
-  }
-  .product-row.coffret {
-    background:rgba(196,168,130,0.08);
-  }
+/* ── RIGHT PANEL ── */
+.right{
+  padding:1.25rem;
+  position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
+  background:rgba(15,23,42,.6);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;gap:.65rem;
+  backdrop-filter:blur(8px);
+}
+.recap-title{font-family:var(--fdisp);font-size:1rem;color:var(--white);}
+.recap-empty{color:var(--s500);font-size:.78rem;font-style:italic;text-align:center;padding:1.2rem 0;}
+.recap-sep{border:none;border-top:1px solid var(--border);margin:.25rem 0;}
+.recap-item{display:flex;justify-content:space-between;align-items:flex-start;gap:.4rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.75rem;}
+.recap-item:last-child{border-bottom:none;}
+.recap-item-name{color:var(--s200);flex:1;line-height:1.3;}
+.recap-item-sub{color:var(--s500);font-size:.65rem;}
+.recap-item-prix{color:var(--em400);font-weight:700;white-space:nowrap;}
+.recap-colis-count{
+  background:rgba(5,150,105,.08);border:1px solid rgba(52,211,153,.15);
+  border-radius:7px;padding:.4rem .7rem;
+  font-size:.72rem;color:var(--em400);
+  display:flex;justify-content:space-between;
+}
+.recap-colis-count strong{font-weight:700;}
+.recap-ligne{display:flex;justify-content:space-between;font-size:.77rem;color:var(--s400);padding:.1rem 0;}
+.recap-total{display:flex;justify-content:space-between;align-items:center;font-family:var(--fdisp);font-size:1.05rem;color:var(--white);margin-top:.35rem;}
+.franco-info{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:.5rem .75rem;font-size:.72rem;color:var(--s400);text-align:center;line-height:1.5;}
+.franco-info strong{color:var(--em400);}
+.recap-alert{border-radius:7px;padding:.5rem .75rem;font-size:.72rem;line-height:1.4;}
+.recap-alert.warn{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
+.recap-alert.ok{background:rgba(5,150,105,.08);border:1px solid rgba(52,211,153,.2);color:var(--em400);}
+.btn-submit{
+  width:100%;background:var(--em600);color:var(--white);
+  border:none;border-radius:8px;padding:.85rem;
+  font-family:var(--fd);font-size:.83rem;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;margin-top:auto;
+}
+.btn-submit:hover{background:var(--em500);box-shadow:0 4px 16px rgba(5,150,105,.35);}
+.btn-submit:disabled{background:rgba(5,150,105,.2);color:rgba(255,255,255,.3);cursor:not-allowed;box-shadow:none;}
+.btn-reset{
+  width:100%;background:transparent;border:1px solid var(--border);
+  color:var(--s500);border-radius:8px;padding:.5rem;
+  font-family:var(--fd);font-size:.73rem;cursor:pointer;transition:all .2s;
+}
+.btn-reset:hover{border-color:rgba(255,255,255,.15);color:var(--s300);}
 
-  /* PHOTO COL */
-  .photo-col { display:flex; align-items:center; justify-content:center; }
-  .photo-placeholder {
-    width:28px; height:28px; border-radius:3px;
-    background:var(--beige-clair);
-    display:flex; align-items:center; justify-content:center;
-    font-size:0.9rem;
-  }
+/* ── SUCCESS ── */
+.success-overlay{
+  position:fixed;inset:0;z-index:999;
+  background:var(--s950);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:1.25rem;
+}
+.success-overlay .icon{font-size:3.5rem;}
+.success-overlay h2{font-family:var(--fdisp);font-size:1.8rem;color:var(--white);}
+.success-overlay p{color:var(--s400);max-width:400px;line-height:1.7;font-size:.9rem;}
+.success-overlay a{
+  color:var(--em400);border:1px solid rgba(52,211,153,.3);
+  padding:.6rem 1.5rem;border-radius:8px;
+  text-decoration:none;font-size:.8rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;transition:all .2s;
+}
+.success-overlay a:hover{background:var(--em600);color:var(--white);border-color:var(--em600);}
 
-  /* PRODUCT NAME */
-  .product-name { font-size:0.8rem; color:var(--texte); line-height:1.25; }
-  .product-name small { display:block; color:var(--texte-doux); font-size:0.65rem; margin-top:1px; }
-  .product-name .new-badge {
-    display:inline-block; background:var(--new);
-    color:#fff; font-size:0.58rem; font-weight:700;
-    padding:0.05rem 0.35rem; border-radius:2px;
-    letter-spacing:0.05em; vertical-align:middle; margin-left:3px;
-  }
-  .product-name .pcb-info {
-    display:block; font-size:0.62rem; color:var(--beige-fonce);
-    margin-top:1px;
-  }
-
-  /* PRICE COL */
-  .prix-col { font-size:0.78rem; text-align:right; color:var(--texte-doux); }
-  .prix-col .prix-remise { color:var(--vert-mid); font-weight:700; }
-  .prix-col .prix-barre { text-decoration:line-through; font-size:0.68rem; color:var(--beige-fonce); display:block; }
-  .prix-col small { display:block; font-size:0.6rem; color:var(--beige-fonce); }
-
-  .carton-col { font-size:0.72rem; text-align:right; color:var(--texte-doux); }
-
-  /* QTY */
-  .qty-input {
-    width:60px; text-align:center;
-    background:var(--beige-pale);
-    border:1px solid var(--ligne); border-radius:4px;
-    font-size:0.85rem; font-weight:700;
-    color:var(--vert-fonce); padding:0.28rem;
-  }
-  .qty-input:focus { border-color:var(--vert-mid); background:var(--blanc); outline:none; }
-
-  .total-col { font-size:0.78rem; font-weight:700; color:var(--vert-fonce); text-align:right; }
-
-  /* SUR DEMANDE tag */
-  .sur-demande {
-    font-size:0.7rem; color:var(--beige-fonce);
-    font-style:italic; text-align:center;
-  }
-
-  /* RECAP */
-  .recap-title { font-family:'Libre Baskerville',serif; font-size:0.95rem; font-weight:700; color:var(--vert-fonce); }
-  .recap-empty { color:var(--texte-doux); font-size:0.78rem; font-style:italic; text-align:center; padding:1.2rem 0; }
-  .recap-sep { border:none; border-top:1px solid var(--ligne); margin:0.4rem 0; }
-
-  .recap-item {
-    display:flex; justify-content:space-between; align-items:flex-start;
-    gap:0.4rem; padding:0.35rem 0;
-    border-bottom:1px solid var(--ligne); font-size:0.75rem;
-  }
-  .recap-item:last-child { border-bottom:none; }
-  .recap-item-name { color:var(--texte); flex:1; line-height:1.3; }
-  .recap-item-sub { color:var(--texte-doux); font-size:0.65rem; }
-  .recap-item-prix { color:var(--vert-fonce); font-weight:700; white-space:nowrap; }
-
-  .recap-ligne { display:flex; justify-content:space-between; font-size:0.76rem; color:var(--texte-doux); padding:0.1rem 0; }
-  .recap-total { display:flex; justify-content:space-between; align-items:center; font-family:'Libre Baskerville',serif; font-size:1rem; color:var(--vert-fonce); font-weight:700; margin-top:0.3rem; }
-
-  .recap-colis-count {
-    background:rgba(45,74,45,0.07);
-    border:1px solid rgba(45,74,45,0.15);
-    border-radius:3px; padding:0.4rem 0.65rem;
-    font-size:0.72rem; color:var(--vert-fonce);
-    display:flex; justify-content:space-between;
-  }
-  .recap-colis-count strong { color:var(--vert-mid); }
-
-  .recap-alert { border-radius:4px; padding:0.5rem 0.7rem; font-size:0.72rem; line-height:1.4; }
-  .recap-alert.warn { background:rgba(192,57,43,0.07); border:1px solid rgba(192,57,43,0.25); color:var(--err); }
-  .recap-alert.ok { background:rgba(45,122,58,0.08); border:1px solid rgba(45,122,58,0.25); color:var(--ok); }
-
-  /* FRANCO INFO */
-  .franco-info {
-    background:var(--beige-pale);
-    border:1px solid var(--beige-clair);
-    border-radius:4px; padding:0.5rem 0.75rem;
-    font-size:0.72rem; color:var(--beige-fonce);
-    text-align:center; line-height:1.5;
-  }
-  .franco-info strong { color:var(--vert); }
-
-  .btn-submit {
-    width:100%; background:var(--vert); color:var(--blanc);
-    border:none; border-radius:4px; padding:0.8rem;
-    font-family:inherit; font-size:0.82rem; font-weight:700;
-    letter-spacing:0.1em; text-transform:uppercase;
-    cursor:pointer; transition:background 0.2s; margin-top:auto;
-  }
-  .btn-submit:hover { background:var(--vert-mid); }
-  .btn-submit:disabled { background:var(--vert-pale); color:rgba(0,0,0,0.3); cursor:not-allowed; }
-  .btn-reset {
-    width:100%; background:transparent;
-    border:1.5px solid var(--ligne); color:var(--texte-doux);
-    border-radius:4px; padding:0.45rem;
-    font-family:inherit; font-size:0.72rem; cursor:pointer; transition:all 0.2s;
-  }
-  .btn-reset:hover { border-color:var(--beige-fonce); color:var(--texte); }
-
-  /* EAN tooltip */
-  .ean-code { font-size:0.58rem; color:var(--beige); font-family:monospace; display:block; margin-top:1px; }
-
-  /* SUCCESS */
-  .success-overlay {
-    position:fixed; inset:0; z-index:999;
-    background:var(--beige-pale);
-    display:none;
-    flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; gap:1.25rem;
-  }
-  .success-overlay .icon { font-size:3.5rem; }
-  .success-overlay h2 { font-family:'Libre Baskerville',serif; font-size:1.8rem; color:var(--vert-fonce); }
-  .success-overlay p { color:var(--texte-doux); max-width:400px; line-height:1.6; font-size:0.88rem; }
-  .success-overlay a {
-    color:var(--vert); border:1.5px solid var(--vert);
-    padding:0.55rem 1.4rem; border-radius:4px;
-    text-decoration:none; font-size:0.78rem; font-weight:700;
-    letter-spacing:0.1em; text-transform:uppercase; transition:all 0.2s;
-  }
-  .success-overlay a:hover { background:var(--vert); color:var(--blanc); }
-
-  /* SEARCH BAR */
-  .search-bar {
-    display:flex; align-items:center; gap:0.6rem;
-    margin-bottom:1rem;
-  }
-  .search-wrap {
-    position:relative; flex:1;
-  }
-  .search-wrap .search-icon {
-    position:absolute; left:0.75rem; top:50%; transform:translateY(-50%);
-    color:var(--beige-fonce); font-size:0.9rem; pointer-events:none;
-  }
-  #search-input {
-    width:100%;
-    padding:0.55rem 0.75rem 0.55rem 2.2rem;
-    background:var(--blanc);
-    border:2px solid var(--ligne);
-    border-radius:5px;
-    font-family:inherit; font-size:0.85rem; color:var(--texte);
-    transition:border-color 0.2s, box-shadow 0.2s;
-  }
-  #search-input:focus {
-    outline:none; border-color:var(--vert-mid);
-    box-shadow:0 0 0 3px rgba(61,97,64,0.1);
-  }
-  #search-input::placeholder { color:var(--beige-fonce); }
-  .search-clear {
-    position:absolute; right:0.6rem; top:50%; transform:translateY(-50%);
-    background:none; border:none; cursor:pointer;
-    color:var(--beige-fonce); font-size:1rem; padding:0.1rem;
-    display:none;
-    transition:color 0.2s;
-  }
-  .search-clear:hover { color:var(--texte); }
-  .search-clear.visible { display:block; }
-  .search-mode-btn {
-    background:var(--beige-pale);
-    border:1.5px solid var(--ligne); border-radius:5px;
-    color:var(--texte-doux); font-family:inherit;
-    font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
-    padding:0.5rem 0.8rem; cursor:pointer;
-    white-space:nowrap; transition:all 0.2s;
-    text-transform:uppercase;
-  }
-  .search-mode-btn.active {
-    background:var(--vert); color:var(--blanc); border-color:var(--vert);
-  }
-  .search-results-bar {
-    display:none;
-    background:rgba(61,97,64,0.07);
-    border:1px solid rgba(61,97,64,0.2);
-    border-radius:4px; padding:0.45rem 0.85rem;
-    font-size:0.75rem; color:var(--vert-fonce);
-    margin-bottom:0.75rem;
-    align-items:center; justify-content:space-between;
-  }
-  .search-results-bar.visible { display:flex; }
-  /* highlight match */
-  .highlight { background:#fff3c4; border-radius:2px; padding:0 1px; }
-  /* product-row hidden by search */
-  .product-row.search-hidden { display:none; }
-  /* cat body hidden when all products hidden */
-  .catalogue-block.search-hidden .cat-body { display:none !important; }
-  .catalogue-block.search-hidden .cat-header { opacity:0.4; pointer-events:none; }
-  .search-no-result {
-    text-align:center; padding:2rem;
-    color:var(--texte-doux); font-style:italic; font-size:0.85rem;
-    display:none;
-  }
-
-  @media(max-width:1000px){
-    .product-row { grid-template-columns:1fr 75px 60px 80px; }
-    .photo-col, .carton-col { display:none; }
-  }
-  @media(max-width:900px){
-    .layout { grid-template-columns:1fr; }
-    .right { position:static; height:auto; }
-  }
+@media(max-width:1000px){
+  .product-row{grid-template-columns:1fr 80px 65px 80px;}
+  .photo-col,.carton-col{display:none;}
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .right{position:static;height:auto;}
+}
 </style>
 </head>
 <body>
 
 <div class="success-overlay" id="success">
-  <div class="icon">🌿</div>
+  <div class="icon">✅</div>
   <h2>Commande envoyée !</h2>
-  <p>Votre bon de commande a été transmis à BIO N TRUFFE. Christophe SPOTO vous contactera pour confirmer et organiser la livraison.</p>
+  <p>Le bon de commande a été transmis à Christophe SPOTO. Vous recevrez une confirmation sous 24h.</p>
   <a href="commande.html">Nouvelle commande</a>
 </div>
 
-<header class="top-header">
-  <a href="index.html" class="logo">
-    <span class="logo-main">🌿 BIO N TRUFFE</span>
-    <span class="logo-sub">Bon de commande revendeur · Tarifs HT 2026</span>
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <div class="brand-ico">🌿</div>
+    <div>
+      <span class="brand-name">BIO N TRUFFE</span>
+      <span class="brand-sub">Bon de commande · Tarifs HT 2026</span>
+    </div>
   </a>
-  <div class="header-right">
-    <span class="header-tarif">V15 · applicable au 01/03/2026</span>
-    <span id="header-revendeur">Sélectionnez votre profil revendeur</span>
+  <div class="topbar-right">
+    <span class="tag">V15 · 01/03/2026</span>
+    <span id="header-revendeur">Sélectionnez un profil revendeur</span>
+    <span class="crm-badge" id="crm-badge"></span>
   </div>
 </header>
 
@@ -351,93 +257,87 @@
   <!-- LEFT -->
   <div class="left">
 
-    <div class="section-title">📋 Identification</div>
-    <div class="form-grid" style="margin-bottom:2rem">
-      <div class="form-group">
+    <div class="stitle">Identification</div>
+    <div class="fg" style="margin-bottom:1.75rem">
+      <div class="fgrp">
         <label>Profil revendeur</label>
         <select id="sel-revendeur" onchange="onRevendeurChange()">
           <option value="">— Sélectionner —</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Client / Magasin</label>
         <input type="text" id="f-societe" placeholder="Nom du magasin">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Ville</label>
         <input type="text" id="f-ville" placeholder="Ville">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Code postal</label>
         <input type="text" id="f-cp" placeholder="84000">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Téléphone</label>
         <input type="tel" id="f-tel" placeholder="06 …">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Email</label>
         <input type="email" id="f-email" placeholder="contact@…">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Nom du contact</label>
         <input type="text" id="f-nom" placeholder="Prénom NOM">
       </div>
-      <div class="form-group">
+      <div class="fgrp">
         <label>Date de livraison souhaitée</label>
         <input type="date" id="f-date">
       </div>
-      <div class="form-group" style="grid-column:1/-1">
+      <div class="fgrp fg-full">
         <label>Commentaire</label>
         <textarea id="f-comment" rows="2" placeholder="Instructions spéciales…"></textarea>
       </div>
     </div>
 
-    <div class="section-title">🍄 Sélection des produits</div>
+    <div class="stitle">Sélection des produits</div>
 
-    <!-- SEARCH BAR -->
+    <!-- SEARCH -->
     <div class="search-bar">
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon">⌕</span>
         <input type="text" id="search-input" placeholder="Rechercher par désignation ou EAN…" oninput="onSearch()" onkeydown="if(event.key==='Escape')clearSearch()">
-        <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Effacer">✕</button>
+        <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
       </div>
       <button class="search-mode-btn active" id="btn-mode-nom" onclick="setMode('nom')">Désignation</button>
       <button class="search-mode-btn" id="btn-mode-ean" onclick="setMode('ean')">EAN</button>
     </div>
     <div class="search-results-bar" id="search-results-bar">
       <span id="search-results-text"></span>
-      <span style="cursor:pointer;color:var(--vert-mid);font-weight:700" onclick="clearSearch()">Voir tout</span>
+      <span onclick="clearSearch()">Voir tout</span>
     </div>
-    <div class="search-no-result" id="search-no-result">Aucun produit trouvé pour cette recherche.</div>
+    <div class="search-no-result" id="search-no-result">Aucun produit trouvé.</div>
 
-    <div style="background:rgba(196,168,130,0.15);border:1px solid var(--beige-clair);border-radius:4px;padding:0.6rem 0.9rem;margin-bottom:1.25rem;font-size:0.75rem;color:var(--beige-fonce);">
-      <strong style="color:var(--vert-fonce)">TVA 5,5% sur tous les produits</strong> &nbsp;·&nbsp;
-      Les prix sont <strong>SANS</strong> compter le port &nbsp;·&nbsp;
-      <strong style="color:var(--vert)">Franco à partir de 5 colis ou 450 €</strong>
+    <div class="info-banner">
+      <span><strong>TVA 5,5%</strong> sur tous les produits</span>
+      <span>Prix <strong>SANS</strong> port</span>
+      <span>Franco : <strong>5 colis</strong> ou <strong>450 € HT</strong></span>
     </div>
 
-    <div id="catalogue-container"><p style="color:var(--texte-doux);font-style:italic;padding:1rem 0">Chargement du catalogue…</p></div>
-
+    <div id="catalogue-container"><p style="color:var(--s500);font-style:italic;padding:1rem 0">Chargement du catalogue…</p></div>
   </div>
 
-  <!-- RIGHT: RECAP -->
+  <!-- RIGHT -->
   <div class="right">
-    <div class="recap-title">🧾 Récapitulatif</div>
-
-    <div class="franco-info">
-      Franco port : <strong>5 colis</strong> ou <strong>450 € HT</strong>
-    </div>
-
+    <div class="recap-title">Récapitulatif</div>
+    <div class="franco-info">Franco : <strong>5 colis</strong> ou <strong>450 € HT</strong></div>
     <div id="recap-colis" style="display:none" class="recap-colis-count">
       <span>Colis commandés</span><strong id="recap-colis-count">0</strong>
     </div>
-
     <div id="recap-items"><div class="recap-empty">Aucun article sélectionné</div></div>
     <hr class="recap-sep">
     <div id="recap-totaux"></div>
     <div id="recap-status"></div>
-    <button class="btn-submit" id="btn-submit" onclick="submitCommande()" disabled>📧 Envoyer la commande</button>
+    <button class="btn-submit" id="btn-submit" onclick="submitCommande()" disabled>Envoyer la commande →</button>
     <button class="btn-reset" onclick="resetForm()">↺ Réinitialiser</button>
   </div>
 
@@ -453,15 +353,12 @@ async function init() {
   catch(e) { alert('Impossible de charger config.json'); return; }
   populateRevendeurs();
 
-  // ── Pré-remplissage depuis CRM client ──
   const clientCtx = sessionStorage.getItem('bnt_bdc_client');
   if (clientCtx) {
     try {
       const c = JSON.parse(clientCtx);
       sessionStorage.removeItem('bnt_bdc_client');
-      // Stocker pour la sauvegarde
       window._crmClient = c;
-      // Pré-remplir les champs
       setTimeout(() => {
         setVal('f-societe', c.societe);
         setVal('f-ville',   c.ville);
@@ -469,17 +366,14 @@ async function init() {
         setVal('f-email',   c.email);
         setVal('f-tel',     c.tel);
         setVal('f-nom',     c.nom);
-        // Sélectionner le profil revendeur
         if (c.profil) {
           const sel = document.getElementById('sel-revendeur');
           const opt = Array.from(sel.options).find(o => o.textContent.startsWith(c.profil));
           if (opt) { sel.value = opt.value; onRevendeurChange(); }
         }
-        // Bandeau CRM
-        document.querySelector('.top-header').insertAdjacentHTML('beforeend',
-          `<div style="background:rgba(45,74,45,0.9);color:var(--vert-pale);font-size:0.72rem;padding:0.35rem 0.85rem;border-radius:4px;margin-left:1rem">
-            🔗 Client CRM : <strong style="color:var(--beige-clair)">${c.numClient} — ${c.societe}</strong>
-          </div>`);
+        const badge = document.getElementById('crm-badge');
+        badge.textContent = `🔗 ${c.numClient} — ${c.societe}`;
+        badge.style.display = 'inline-block';
       }, 100);
     } catch(e) {}
   }
@@ -502,13 +396,13 @@ function onRevendeurChange() {
   const id = document.getElementById('sel-revendeur').value;
   if (!id) {
     remiseGlobale = 0; remisesCategories = {};
-    document.getElementById('header-revendeur').textContent = 'Sélectionnez votre profil revendeur';
+    document.getElementById('header-revendeur').textContent = 'Sélectionnez un profil revendeur';
   } else {
     const rev = config.revendeurs.find(r => r.id === id);
     remiseGlobale = rev.remise_globale || 0;
     remisesCategories = rev.remises_categories || {};
     document.getElementById('header-revendeur').textContent =
-      remiseGlobale > 0 ? `${rev.nom} — remise ${remiseGlobale}%` : rev.nom;
+      remiseGlobale > 0 ? `${rev.nom} — −${remiseGlobale}%` : rev.nom;
   }
   renderCatalogue(); updateRecap();
 }
@@ -521,15 +415,14 @@ function isCoffret(p) { return p.prix_ht === null; }
 
 function renderCatalogue() {
   const container = document.getElementById('catalogue-container');
-  if (!config || !config.catalogue.length) { container.innerHTML = '<p style="color:var(--texte-doux);font-style:italic">Catalogue vide</p>'; return; }
+  if (!config || !config.catalogue.length) { container.innerHTML = '<p style="color:var(--s500);font-style:italic">Catalogue vide</p>'; return; }
 
   container.innerHTML = config.catalogue.map(cat => {
     const remise = getRemise(cat.id);
 
     const headerRow = `
       <div class="product-row header">
-        <div></div>
-        <div>Désignation</div>
+        <div></div><div>Désignation</div>
         <div style="text-align:right">Prix HT/u</div>
         <div style="text-align:center">Colis</div>
         <div style="text-align:center">Qté</div>
@@ -542,8 +435,7 @@ function renderCatalogue() {
         <div class="product-row coffret">
           <div class="photo-col"><div class="photo-placeholder">🎁</div></div>
           <div class="product-name">
-            ${p.nom}
-            <small>${p.description}</small>
+            ${p.nom}<small>${p.description}</small>
             <span class="ean-code">EAN ${p.ean}</span>
           </div>
           <div class="sur-demande" style="grid-column:3/7">Prix sur demande — contactez Christophe SPOTO : 06 78 37 89 06</div>
@@ -559,7 +451,7 @@ function renderCatalogue() {
       <div class="product-row">
         <div class="photo-col"><div class="photo-placeholder">🍄</div></div>
         <div class="product-name">
-          ${p.nom}${isNew ? '<span class="new-badge">NOUVEAU</span>' : ''}
+          ${p.nom}${isNew ? '<span class="new-badge">NEW</span>' : ''}
           <small>${p.poids} · ${p.description.replace('✨ Nouveauté — ','').replace('✨ Nouveauté snacking — ','')}</small>
           <span class="pcb-info">PCB ${p.pcb} · EAN ${p.ean}</span>
         </div>
@@ -571,7 +463,7 @@ function renderCatalogue() {
         </div>
         <div class="carton-col">
           ${cartonRemise.toFixed(2)} €<br>
-          <span style="font-size:0.6rem;color:var(--beige-fonce)">/ carton</span>
+          <span style="font-size:.6rem;color:var(--s600)">/carton</span>
         </div>
         <div style="text-align:center">
           <input class="qty-input" type="number" id="qty-${p.id}" min="0" step="1" value="0"
@@ -590,13 +482,10 @@ function renderCatalogue() {
     return `
     <div class="catalogue-block">
       <div class="cat-header" onclick="toggleCat(this)">
-        <span class="cat-header-name">${cat.nom}${remise > 0 ? ` <span class="cat-remise-badge">(−${remise}%)</span>` : ''}</span>
+        <span class="cat-header-name">${cat.nom}${remise > 0 ? ` <span class="cat-remise-badge">−${remise}%</span>` : ''}</span>
         <span class="cat-toggle">▾</span>
       </div>
-      <div class="cat-body">
-        ${headerRow}
-        ${produits}
-      </div>
+      <div class="cat-body">${headerRow}${produits}</div>
     </div>`;
   }).join('');
 }
@@ -623,41 +512,34 @@ function updateRecap() {
     const ht = prix * qty;
     const montantTVA = ht * tva / 100;
     totalHT += ht; tvaAmount += montantTVA;
-    // Colis = nb unités / PCB (arrondi au supérieur)
     totalColis += Math.ceil(qty / pcb);
     lignes.push({ nom: inp.dataset.nom, poids: inp.dataset.poids, qty, prix, ht, pcb });
     if (el) el.textContent = ht.toFixed(2) + ' €';
   });
 
-  // Items
   const itemsEl = document.getElementById('recap-items');
   if (!lignes.length) {
     itemsEl.innerHTML = '<div class="recap-empty">Aucun article sélectionné</div>';
   } else {
     itemsEl.innerHTML = lignes.map(l => `
       <div class="recap-item">
-        <div class="recap-item-name">
-          ${l.nom}
+        <div class="recap-item-name">${l.nom}
           <div class="recap-item-sub">${l.qty} × ${l.poids} · ${l.prix.toFixed(2)} € HT</div>
         </div>
         <div class="recap-item-prix">${l.ht.toFixed(2)} €</div>
       </div>`).join('');
   }
 
-  // Colis counter
   const colisEl = document.getElementById('recap-colis');
-  const colisCount = document.getElementById('recap-colis-count');
-  if (lignes.length) { colisEl.style.display = 'flex'; colisCount.textContent = totalColis; }
+  if (lignes.length) { colisEl.style.display = 'flex'; document.getElementById('recap-colis-count').textContent = totalColis; }
   else { colisEl.style.display = 'none'; }
 
-  // Totaux
   const totalTTC = totalHT + tvaAmount;
   document.getElementById('recap-totaux').innerHTML = `
     <div class="recap-ligne"><span>Total HT</span><span>${totalHT.toFixed(2)} €</span></div>
     <div class="recap-ligne"><span>TVA 5,5%</span><span>${tvaAmount.toFixed(2)} €</span></div>
     <div class="recap-total"><span>Total TTC</span><span>${totalTTC.toFixed(2)} €</span></div>`;
 
-  // Status franco
   const minHT = config.conditions?.minimum_commande_ht || 450;
   const francoHT = config.conditions?.franco_port_ht || 450;
   const francoColis = config.conditions?.franco_port_colis || 5;
@@ -665,16 +547,14 @@ function updateRecap() {
 
   let statusHtml = '';
   if (lignes.length && totalHT < minHT && totalColis < francoColis) {
-    statusHtml = `<div class="recap-alert warn">⚠️ Minimum : ${minHT} € HT ou ${francoColis} colis<br>Manque ${(minHT - totalHT).toFixed(2)} € ou ${Math.max(0, francoColis - totalColis)} colis</div>`;
+    statusHtml = `<div class="recap-alert warn">⚠ Minimum : ${minHT} € HT ou ${francoColis} colis — Manque ${(minHT - totalHT).toFixed(2)} €</div>`;
   } else if (lignes.length && !francoOk) {
-    statusHtml = `<div class="recap-alert ok">✅ Commande valide — port en sus<br>Franco : ${francoColis} colis ou ${francoHT} € HT</div>`;
+    statusHtml = `<div class="recap-alert ok">✓ Commande valide — port en sus</div>`;
   } else if (lignes.length) {
-    statusHtml = `<div class="recap-alert ok">🌿 Franco de port atteint ! Livraison offerte.</div>`;
+    statusHtml = `<div class="recap-alert ok">✓ Franco de port atteint — livraison offerte</div>`;
   }
   document.getElementById('recap-status').innerHTML = statusHtml;
-
-  const valid = lignes.length > 0 && (totalHT >= minHT || totalColis >= francoColis);
-  document.getElementById('btn-submit').disabled = !valid;
+  document.getElementById('btn-submit').disabled = !(lignes.length > 0 && (totalHT >= minHT || totalColis >= francoColis));
 }
 
 function setVal(id, val) { const el = document.getElementById(id); if (el && val) el.value = val; }
@@ -701,43 +581,24 @@ function submitCommande() {
     const pcb = parseInt(inp.dataset.pcb) || 1;
     const ht = prix * qty; totalHT += ht;
     totalColis += Math.ceil(qty / pcb);
-    lignes.push(`${inp.dataset.nom} (${inp.dataset.poids}) — ${qty} unité(s) × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
+    lignes.push(`${inp.dataset.nom} (${inp.dataset.poids}) — ${qty} u × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
   });
 
   const tva = totalHT * 0.055;
   const subject = encodeURIComponent(`BDC BIO N TRUFFE — ${societe} ${ville} — ${new Date().toLocaleDateString('fr-FR')}`);
   const body = encodeURIComponent([
-    `BON DE COMMANDE — BIO N TRUFFE`,
-    `Tarif V15 — applicable au 01/03/2026`,
-    `Date : ${new Date().toLocaleDateString('fr-FR')}`,
-    ``,
-    `=== CLIENT ===`,
-    `Profil : ${revNom}`,
-    `Magasin : ${societe}`,
-    `Ville : ${cp} ${ville}`,
-    `Téléphone : ${tel || '—'}`,
-    `Email : ${email}`,
-    `Contact : ${nom || '—'}`,
-    `Livraison souhaitée : ${dateL || 'Sur accord'}`,
-    ``,
-    `=== COMMANDE ===`,
-    ...lignes,
-    ``,
-    `Nombre de colis estimé : ${totalColis}`,
-    `TOTAL HT : ${totalHT.toFixed(2)} €`,
-    `TVA 5,5% : ${tva.toFixed(2)} €`,
-    `TOTAL TTC : ${(totalHT + tva).toFixed(2)} €`,
-    ``,
-    `Franco port : ${totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus'}`,
-    ``,
-    comment ? `=== COMMENTAIRE ===\n${comment}` : '',
-    ``,
-    `— Bon de commande généré via BIO N TRUFFE CRM`
+    `BON DE COMMANDE — BIO N TRUFFE`,`Tarif V15 — 01/03/2026`,`Date : ${new Date().toLocaleDateString('fr-FR')}`,``,
+    `=== CLIENT ===`,`Profil : ${revNom}`,`Magasin : ${societe}`,`Ville : ${cp} ${ville}`,
+    `Téléphone : ${tel || '—'}`,`Email : ${email}`,`Contact : ${nom || '—'}`,`Livraison souhaitée : ${dateL || 'Sur accord'}`,``,
+    `=== COMMANDE ===`,...lignes,``,
+    `Colis estimés : ${totalColis}`,`TOTAL HT : ${totalHT.toFixed(2)} €`,
+    `TVA 5,5% : ${tva.toFixed(2)} €`,`TOTAL TTC : ${(totalHT + tva).toFixed(2)} €`,``,
+    `Franco : ${totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus'}`,``,
+    comment ? `=== COMMENTAIRE ===\n${comment}` : '',``,`— BIO N TRUFFE CRM · Christophe SPOTO`
   ].filter(Boolean).join('\n'));
 
   window.location.href = `mailto:${config.societe.email_commandes}?subject=${subject}&body=${body}`;
 
-  // ── Sauvegarde dans le CRM si client connu ──
   if (window._crmClient) {
     const inputsAll = document.querySelectorAll('.qty-input');
     const crmLignes = [];
@@ -747,15 +608,11 @@ function submitCommande() {
       crmLignes.push({ nom:inp.dataset.nom, poids:inp.dataset.poids, qty, prix, ht:prix*qty });
     });
     const ref = `BDC-${window._crmClient.numClient}-${Date.now().toString().slice(-5)}`;
-    const commande = {
-      id: 'cmd_'+Date.now(), ref,
-      clientId: window._crmClient.clientId,
-      numClient: window._crmClient.numClient,
-      date: new Date().toISOString().slice(0,10),
-      totalHT, profil: window._crmClient.profil,
-      lignes: crmLignes
-    };
-    sessionStorage.setItem('bnt_new_commande', JSON.stringify(commande));
+    sessionStorage.setItem('bnt_new_commande', JSON.stringify({
+      id:'cmd_'+Date.now(), ref, clientId:window._crmClient.clientId,
+      numClient:window._crmClient.numClient, date:new Date().toISOString().slice(0,10),
+      totalHT, profil:window._crmClient.profil, lignes:crmLignes
+    }));
   }
 
   setTimeout(() => { document.getElementById('success').style.display = 'flex'; }, 800);
@@ -773,17 +630,14 @@ function resetForm() {
 
 init();
 
-// ============================================================
-// RECHERCHE
-// ============================================================
-let searchMode = 'nom'; // 'nom' | 'ean'
+// ── RECHERCHE ──
+let searchMode = 'nom';
 
 function setMode(mode) {
   searchMode = mode;
   document.getElementById('btn-mode-nom').classList.toggle('active', mode === 'nom');
   document.getElementById('btn-mode-ean').classList.toggle('active', mode === 'ean');
-  document.getElementById('search-input').placeholder =
-    mode === 'ean' ? 'Rechercher par code EAN…' : 'Rechercher par désignation…';
+  document.getElementById('search-input').placeholder = mode === 'ean' ? 'Rechercher par code EAN…' : 'Rechercher par désignation…';
   onSearch();
 }
 
@@ -793,117 +647,58 @@ function onSearch() {
   const clearBtn = document.getElementById('search-clear');
   const resultsBar = document.getElementById('search-results-bar');
   const noResult = document.getElementById('search-no-result');
-
   clearBtn.classList.toggle('visible', raw.length > 0);
-
   if (!q) {
-    // Tout afficher
     document.querySelectorAll('.product-row:not(.header)').forEach(r => r.classList.remove('search-hidden'));
     document.querySelectorAll('.catalogue-block').forEach(b => b.classList.remove('search-hidden'));
-    // Rétablir les cat-body si elles ont été fermées par toggle
     document.querySelectorAll('.cat-body').forEach(b => { if (b.dataset.manualClose !== '1') b.style.display = ''; });
-    resultsBar.classList.remove('visible');
-    noResult.style.display = 'none';
-    removeHighlights();
-    return;
+    resultsBar.classList.remove('visible'); noResult.style.display = 'none'; removeHighlights(); return;
   }
-
-  removeHighlights();
-  let totalMatch = 0;
-
+  removeHighlights(); let totalMatch = 0;
   document.querySelectorAll('.catalogue-block').forEach(block => {
-    const rows = block.querySelectorAll('.product-row:not(.header)');
-    let blockMatch = 0;
-
+    const rows = block.querySelectorAll('.product-row:not(.header)'); let blockMatch = 0;
     rows.forEach(row => {
       const nameEl = row.querySelector('.product-name');
       const pcbEl = row.querySelector('.pcb-info');
-      if (!nameEl) return; // header row guard
-
-      // Extraire EAN depuis .pcb-info (format "PCB 12 · EAN 3770028175086")
+      if (!nameEl) return;
       const pcbText = pcbEl ? pcbEl.textContent : '';
       const eanMatch = pcbText.match(/EAN\s*(\d+)/);
       const ean = eanMatch ? eanMatch[1] : '';
-
-      // Texte de désignation (nœud texte direct + small, sans pcb-info)
       const nameFull = nameEl.cloneNode(true);
-      nameFull.querySelectorAll('.pcb-info, .new-badge, .ean-code').forEach(n => n.remove());
+      nameFull.querySelectorAll('.pcb-info,.new-badge,.ean-code').forEach(n => n.remove());
       const designation = nameFull.textContent.toLowerCase();
-
-      let matched = false;
-      if (searchMode === 'ean') {
-        matched = ean.includes(q);
-      } else {
-        matched = designation.includes(q);
-      }
-
+      const matched = searchMode === 'ean' ? ean.includes(q) : designation.includes(q);
       if (matched) {
-        row.classList.remove('search-hidden');
-        blockMatch++;
-        totalMatch++;
-        // Highlight
+        row.classList.remove('search-hidden'); blockMatch++; totalMatch++;
         if (searchMode === 'nom') highlightText(nameEl, q);
         if (searchMode === 'ean' && pcbEl) highlightText(pcbEl, q);
-      } else {
-        row.classList.add('search-hidden');
-      }
+      } else { row.classList.add('search-hidden'); }
     });
-
-    if (blockMatch === 0) {
-      block.classList.add('search-hidden');
-    } else {
-      block.classList.remove('search-hidden');
-      // S'assurer que le body est visible
-      const body = block.querySelector('.cat-body');
-      if (body) body.style.display = '';
-    }
+    if (blockMatch === 0) { block.classList.add('search-hidden'); }
+    else { block.classList.remove('search-hidden'); const body = block.querySelector('.cat-body'); if (body) body.style.display = ''; }
   });
-
-  // Barre résultats
   resultsBar.classList.add('visible');
-  document.getElementById('search-results-text').textContent =
-    totalMatch === 0 ? 'Aucun résultat' :
-    totalMatch === 1 ? '1 produit trouvé' :
-    `${totalMatch} produits trouvés`;
+  document.getElementById('search-results-text').textContent = totalMatch === 0 ? 'Aucun résultat' : totalMatch === 1 ? '1 produit trouvé' : `${totalMatch} produits trouvés`;
   noResult.style.display = totalMatch === 0 ? 'block' : 'none';
 }
 
-function clearSearch() {
-  document.getElementById('search-input').value = '';
-  onSearch();
-}
-
-function highlightText(el, q) {
-  // Parcourir les nœuds texte directs et dans les enfants (sauf .pcb-info, .new-badge)
-  walkTextNodes(el, q);
-}
-
+function clearSearch() { document.getElementById('search-input').value = ''; onSearch(); }
+function highlightText(el, q) { walkTextNodes(el, q); }
 function walkTextNodes(node, q) {
   if (node.nodeType === Node.TEXT_NODE) {
-    const text = node.textContent;
-    const idx = text.toLowerCase().indexOf(q);
-    if (idx === -1) return;
+    const text = node.textContent; const idx = text.toLowerCase().indexOf(q); if (idx === -1) return;
     const before = document.createTextNode(text.slice(0, idx));
-    const mark = document.createElement('mark');
-    mark.className = 'highlight';
-    mark.textContent = text.slice(idx, idx + q.length);
+    const mark = document.createElement('mark'); mark.className = 'highlight'; mark.textContent = text.slice(idx, idx + q.length);
     const after = document.createTextNode(text.slice(idx + q.length));
-    const parent = node.parentNode;
-    parent.replaceChild(after, node);
-    parent.insertBefore(mark, after);
-    parent.insertBefore(before, mark);
+    const parent = node.parentNode; parent.replaceChild(after, node); parent.insertBefore(mark, after); parent.insertBefore(before, mark);
   } else if (node.nodeType === Node.ELEMENT_NODE) {
-    // Ignorer les badges et codes
     if (node.classList.contains('new-badge') || node.classList.contains('ean-code')) return;
     Array.from(node.childNodes).forEach(child => walkTextNodes(child, q));
   }
 }
-
 function removeHighlights() {
   document.querySelectorAll('.highlight').forEach(mark => {
-    const parent = mark.parentNode;
-    parent.replaceChild(document.createTextNode(mark.textContent), mark);
-    parent.normalize();
+    const parent = mark.parentNode; parent.replaceChild(document.createTextNode(mark.textContent), mark); parent.normalize();
   });
 }
 </script>
