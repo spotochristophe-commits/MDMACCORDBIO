@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BIO N TRUFFE — Bon de Commande</title>
+<title>BIO N TRUFFE — Bon de Commande 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -22,6 +22,7 @@
     --ligne:       #ddd5c5;
     --ok:          #2d7a3a;
     --err:         #c0392b;
+    --new:         #c47a00;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--beige-pale); color:var(--texte); font-family:'Lato',sans-serif; min-height:100vh; font-size:14px; }
@@ -30,88 +31,75 @@
   .top-header {
     background:var(--vert-fonce);
     border-bottom:3px solid var(--vert-mid);
-    padding:1rem 2rem;
+    padding:0.9rem 2rem;
     display:flex; align-items:center; justify-content:space-between;
     position:sticky; top:0; z-index:100;
   }
   .logo { text-decoration:none; }
   .logo-main { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:700; color:var(--beige-clair); }
-  .logo-main .leaf { color:var(--vert-pale); }
-  .logo-sub { font-size:0.62rem; color:rgba(200,220,200,0.6); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:2px; }
-  #header-revendeur { font-size:0.75rem; color:var(--beige); font-style:italic; }
+  .logo-sub { font-size:0.6rem; color:rgba(200,220,200,0.55); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:2px; }
+  .header-right { text-align:right; }
+  .header-tarif { font-size:0.68rem; color:var(--beige); letter-spacing:0.08em; }
+  #header-revendeur { font-size:0.75rem; color:var(--vert-pale); display:block; margin-top:2px; font-style:italic; }
 
   /* LAYOUT */
-  .layout {
-    display:grid;
-    grid-template-columns: 1fr 320px;
-    min-height:calc(100vh - 67px);
-  }
+  .layout { display:grid; grid-template-columns:1fr 330px; min-height:calc(100vh - 63px); }
 
   /* LEFT */
-  .left { padding:2rem; border-right:2px solid var(--ligne); }
+  .left { padding:1.75rem 2rem; border-right:2px solid var(--ligne); }
 
   /* RIGHT */
   .right {
-    padding:1.5rem;
-    position:sticky; top:67px;
-    height:calc(100vh - 67px); overflow-y:auto;
+    padding:1.25rem;
+    position:sticky; top:63px;
+    height:calc(100vh - 63px); overflow-y:auto;
     background:var(--blanc);
-    display:flex; flex-direction:column; gap:0.75rem;
+    display:flex; flex-direction:column; gap:0.65rem;
+    border-left:1px solid var(--ligne);
   }
 
   /* SECTION TITLE */
   .section-title {
     font-family:'Libre Baskerville',serif;
-    font-size:0.95rem; font-weight:700; color:var(--vert-fonce);
-    padding-bottom:0.5rem;
+    font-size:0.9rem; font-weight:700; color:var(--vert-fonce);
+    padding-bottom:0.45rem;
     border-bottom:2px solid var(--ligne);
-    margin-bottom:1rem;
-    display:flex; align-items:center; gap:0.5rem;
+    margin-bottom:0.9rem;
   }
 
   /* FORMS */
-  .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:0.75rem; margin-bottom:2rem; }
-  .form-group { display:flex; flex-direction:column; gap:0.3rem; }
-  label { font-size:0.66rem; color:var(--texte-doux); letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
+  .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.65rem; margin-bottom:1.75rem; }
+  .form-group { display:flex; flex-direction:column; gap:0.28rem; }
+  label { font-size:0.64rem; color:var(--texte-doux); letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
   input, select, textarea {
-    background:var(--blanc);
-    border:1px solid var(--ligne);
-    border-radius:4px;
-    color:var(--texte);
-    font-family:inherit; font-size:0.82rem;
-    padding:0.48rem 0.7rem;
-    width:100%; transition:border-color 0.2s;
+    background:var(--blanc); border:1px solid var(--ligne); border-radius:4px;
+    color:var(--texte); font-family:inherit; font-size:0.82rem;
+    padding:0.45rem 0.65rem; width:100%; transition:border-color 0.2s;
   }
-  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--vert-mid); background:var(--blanc); }
-  textarea { resize:vertical; min-height:60px; }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--vert-mid); }
+  textarea { resize:vertical; min-height:55px; }
 
   /* CATALOGUE */
-  .catalogue-block { margin-bottom:1.75rem; }
+  .catalogue-block { margin-bottom:1.5rem; }
   .cat-header {
     display:flex; align-items:center; justify-content:space-between;
-    padding:0.65rem 1rem;
+    padding:0.6rem 0.9rem;
     background:var(--vert-fonce);
     border-radius:4px 4px 0 0;
     cursor:pointer; user-select:none;
   }
-  .cat-header-name {
-    font-family:'Libre Baskerville',serif;
-    font-size:0.9rem; font-weight:700;
-    color:var(--beige-clair);
-  }
-  .cat-remise { font-size:0.7rem; color:var(--vert-pale); font-weight:400; font-style:italic; }
-  .cat-toggle { color:var(--beige); font-size:0.75rem; }
-  .cat-body {
-    border:1px solid var(--ligne); border-top:none;
-    border-radius:0 0 4px 4px;
-    background:var(--blanc);
-    overflow:hidden;
-  }
+  .cat-header-name { font-family:'Libre Baskerville',serif; font-size:0.88rem; font-weight:700; color:var(--beige-clair); }
+  .cat-remise-badge { font-size:0.68rem; color:var(--vert-pale); font-style:italic; }
+  .cat-toggle { color:var(--beige); font-size:0.7rem; }
+
+  .cat-body { border:1px solid var(--ligne); border-top:none; border-radius:0 0 4px 4px; background:var(--blanc); overflow:hidden; }
+
+  /* PRODUCT ROWS */
   .product-row {
     display:grid;
-    grid-template-columns:1fr 95px 80px 100px;
-    gap:0.5rem; align-items:center;
-    padding:0.6rem 1rem;
+    grid-template-columns: 32px 1fr 80px 70px 70px 85px;
+    gap:0.4rem; align-items:center;
+    padding:0.55rem 0.75rem;
     border-bottom:1px solid var(--ligne);
     transition:background 0.15s;
   }
@@ -121,66 +109,123 @@
     background:var(--beige-pale);
     border-bottom:2px solid var(--ligne);
   }
-  .product-row.header > div { font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--texte-doux); font-weight:700; }
+  .product-row.header > div {
+    font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--texte-doux); font-weight:700;
+  }
+  .product-row.coffret {
+    background:rgba(196,168,130,0.08);
+  }
 
-  .product-name { font-size:0.82rem; color:var(--texte); line-height:1.3; }
-  .product-name small { display:block; color:var(--texte-doux); font-size:0.67rem; margin-top:2px; }
-  .product-price { font-size:0.8rem; text-align:right; }
+  /* PHOTO COL */
+  .photo-col { display:flex; align-items:center; justify-content:center; }
+  .photo-placeholder {
+    width:28px; height:28px; border-radius:3px;
+    background:var(--beige-clair);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.9rem;
+  }
 
+  /* PRODUCT NAME */
+  .product-name { font-size:0.8rem; color:var(--texte); line-height:1.25; }
+  .product-name small { display:block; color:var(--texte-doux); font-size:0.65rem; margin-top:1px; }
+  .product-name .new-badge {
+    display:inline-block; background:var(--new);
+    color:#fff; font-size:0.58rem; font-weight:700;
+    padding:0.05rem 0.35rem; border-radius:2px;
+    letter-spacing:0.05em; vertical-align:middle; margin-left:3px;
+  }
+  .product-name .pcb-info {
+    display:block; font-size:0.62rem; color:var(--beige-fonce);
+    margin-top:1px;
+  }
+
+  /* PRICE COL */
+  .prix-col { font-size:0.78rem; text-align:right; color:var(--texte-doux); }
+  .prix-col .prix-remise { color:var(--vert-mid); font-weight:700; }
+  .prix-col .prix-barre { text-decoration:line-through; font-size:0.68rem; color:var(--beige-fonce); display:block; }
+  .prix-col small { display:block; font-size:0.6rem; color:var(--beige-fonce); }
+
+  .carton-col { font-size:0.72rem; text-align:right; color:var(--texte-doux); }
+
+  /* QTY */
   .qty-input {
-    width:70px; text-align:center;
+    width:60px; text-align:center;
     background:var(--beige-pale);
-    border:1px solid var(--ligne);
-    border-radius:4px;
+    border:1px solid var(--ligne); border-radius:4px;
     font-size:0.85rem; font-weight:700;
-    color:var(--vert-fonce); padding:0.3rem;
+    color:var(--vert-fonce); padding:0.28rem;
   }
   .qty-input:focus { border-color:var(--vert-mid); background:var(--blanc); outline:none; }
-  .line-total { font-size:0.8rem; font-weight:700; color:var(--vert-fonce); text-align:right; }
+
+  .total-col { font-size:0.78rem; font-weight:700; color:var(--vert-fonce); text-align:right; }
+
+  /* SUR DEMANDE tag */
+  .sur-demande {
+    font-size:0.7rem; color:var(--beige-fonce);
+    font-style:italic; text-align:center;
+  }
 
   /* RECAP */
-  .recap-title { font-family:'Libre Baskerville',serif; font-size:1rem; font-weight:700; color:var(--vert-fonce); }
-  .recap-empty { color:var(--texte-doux); font-size:0.8rem; font-style:italic; text-align:center; padding:1.5rem 0; }
-  .recap-sep { border:none; border-top:1px solid var(--ligne); margin:0.5rem 0; }
+  .recap-title { font-family:'Libre Baskerville',serif; font-size:0.95rem; font-weight:700; color:var(--vert-fonce); }
+  .recap-empty { color:var(--texte-doux); font-size:0.78rem; font-style:italic; text-align:center; padding:1.2rem 0; }
+  .recap-sep { border:none; border-top:1px solid var(--ligne); margin:0.4rem 0; }
 
   .recap-item {
     display:flex; justify-content:space-between; align-items:flex-start;
-    gap:0.5rem; padding:0.4rem 0;
-    border-bottom:1px solid var(--ligne);
-    font-size:0.77rem;
+    gap:0.4rem; padding:0.35rem 0;
+    border-bottom:1px solid var(--ligne); font-size:0.75rem;
   }
   .recap-item:last-child { border-bottom:none; }
   .recap-item-name { color:var(--texte); flex:1; line-height:1.3; }
-  .recap-item-sub { color:var(--texte-doux); font-size:0.67rem; }
+  .recap-item-sub { color:var(--texte-doux); font-size:0.65rem; }
   .recap-item-prix { color:var(--vert-fonce); font-weight:700; white-space:nowrap; }
 
-  .recap-ligne { display:flex; justify-content:space-between; font-size:0.78rem; color:var(--texte-doux); padding:0.12rem 0; }
-  .recap-total { display:flex; justify-content:space-between; align-items:center; font-family:'Libre Baskerville',serif; font-size:1.05rem; color:var(--vert-fonce); margin-top:0.4rem; font-weight:700; }
+  .recap-ligne { display:flex; justify-content:space-between; font-size:0.76rem; color:var(--texte-doux); padding:0.1rem 0; }
+  .recap-total { display:flex; justify-content:space-between; align-items:center; font-family:'Libre Baskerville',serif; font-size:1rem; color:var(--vert-fonce); font-weight:700; margin-top:0.3rem; }
 
-  .recap-alert {
-    border-radius:4px; padding:0.55rem 0.75rem;
-    font-size:0.74rem; line-height:1.4;
+  .recap-colis-count {
+    background:rgba(45,74,45,0.07);
+    border:1px solid rgba(45,74,45,0.15);
+    border-radius:3px; padding:0.4rem 0.65rem;
+    font-size:0.72rem; color:var(--vert-fonce);
+    display:flex; justify-content:space-between;
   }
+  .recap-colis-count strong { color:var(--vert-mid); }
+
+  .recap-alert { border-radius:4px; padding:0.5rem 0.7rem; font-size:0.72rem; line-height:1.4; }
   .recap-alert.warn { background:rgba(192,57,43,0.07); border:1px solid rgba(192,57,43,0.25); color:var(--err); }
   .recap-alert.ok { background:rgba(45,122,58,0.08); border:1px solid rgba(45,122,58,0.25); color:var(--ok); }
 
+  /* FRANCO INFO */
+  .franco-info {
+    background:var(--beige-pale);
+    border:1px solid var(--beige-clair);
+    border-radius:4px; padding:0.5rem 0.75rem;
+    font-size:0.72rem; color:var(--beige-fonce);
+    text-align:center; line-height:1.5;
+  }
+  .franco-info strong { color:var(--vert); }
+
   .btn-submit {
     width:100%; background:var(--vert); color:var(--blanc);
-    border:none; border-radius:4px; padding:0.9rem;
-    font-family:inherit; font-size:0.85rem; font-weight:700;
+    border:none; border-radius:4px; padding:0.8rem;
+    font-family:inherit; font-size:0.82rem; font-weight:700;
     letter-spacing:0.1em; text-transform:uppercase;
-    cursor:pointer; transition:background 0.2s;
-    margin-top:auto;
+    cursor:pointer; transition:background 0.2s; margin-top:auto;
   }
   .btn-submit:hover { background:var(--vert-mid); }
-  .btn-submit:disabled { background:var(--vert-pale); color:rgba(0,0,0,0.35); cursor:not-allowed; }
+  .btn-submit:disabled { background:var(--vert-pale); color:rgba(0,0,0,0.3); cursor:not-allowed; }
   .btn-reset {
     width:100%; background:transparent;
     border:1.5px solid var(--ligne); color:var(--texte-doux);
-    border-radius:4px; padding:0.5rem;
-    font-family:inherit; font-size:0.74rem; cursor:pointer; transition:all 0.2s;
+    border-radius:4px; padding:0.45rem;
+    font-family:inherit; font-size:0.72rem; cursor:pointer; transition:all 0.2s;
   }
   .btn-reset:hover { border-color:var(--beige-fonce); color:var(--texte); }
+
+  /* EAN tooltip */
+  .ean-code { font-size:0.58rem; color:var(--beige); font-family:monospace; display:block; margin-top:1px; }
 
   /* SUCCESS */
   .success-overlay {
@@ -190,20 +235,94 @@
     flex-direction:column; align-items:center; justify-content:center;
     text-align:center; gap:1.25rem;
   }
-  .success-overlay .icon { font-size:4rem; }
-  .success-overlay h2 { font-family:'Libre Baskerville',serif; font-size:2rem; color:var(--vert-fonce); }
-  .success-overlay p { color:var(--texte-doux); font-size:0.9rem; max-width:400px; line-height:1.6; }
+  .success-overlay .icon { font-size:3.5rem; }
+  .success-overlay h2 { font-family:'Libre Baskerville',serif; font-size:1.8rem; color:var(--vert-fonce); }
+  .success-overlay p { color:var(--texte-doux); max-width:400px; line-height:1.6; font-size:0.88rem; }
   .success-overlay a {
     color:var(--vert); border:1.5px solid var(--vert);
-    padding:0.6rem 1.5rem; border-radius:4px;
-    text-decoration:none; font-size:0.8rem; font-weight:700;
+    padding:0.55rem 1.4rem; border-radius:4px;
+    text-decoration:none; font-size:0.78rem; font-weight:700;
     letter-spacing:0.1em; text-transform:uppercase; transition:all 0.2s;
   }
   .success-overlay a:hover { background:var(--vert); color:var(--blanc); }
 
+  /* SEARCH BAR */
+  .search-bar {
+    display:flex; align-items:center; gap:0.6rem;
+    margin-bottom:1rem;
+  }
+  .search-wrap {
+    position:relative; flex:1;
+  }
+  .search-wrap .search-icon {
+    position:absolute; left:0.75rem; top:50%; transform:translateY(-50%);
+    color:var(--beige-fonce); font-size:0.9rem; pointer-events:none;
+  }
+  #search-input {
+    width:100%;
+    padding:0.55rem 0.75rem 0.55rem 2.2rem;
+    background:var(--blanc);
+    border:2px solid var(--ligne);
+    border-radius:5px;
+    font-family:inherit; font-size:0.85rem; color:var(--texte);
+    transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  #search-input:focus {
+    outline:none; border-color:var(--vert-mid);
+    box-shadow:0 0 0 3px rgba(61,97,64,0.1);
+  }
+  #search-input::placeholder { color:var(--beige-fonce); }
+  .search-clear {
+    position:absolute; right:0.6rem; top:50%; transform:translateY(-50%);
+    background:none; border:none; cursor:pointer;
+    color:var(--beige-fonce); font-size:1rem; padding:0.1rem;
+    display:none;
+    transition:color 0.2s;
+  }
+  .search-clear:hover { color:var(--texte); }
+  .search-clear.visible { display:block; }
+  .search-mode-btn {
+    background:var(--beige-pale);
+    border:1.5px solid var(--ligne); border-radius:5px;
+    color:var(--texte-doux); font-family:inherit;
+    font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
+    padding:0.5rem 0.8rem; cursor:pointer;
+    white-space:nowrap; transition:all 0.2s;
+    text-transform:uppercase;
+  }
+  .search-mode-btn.active {
+    background:var(--vert); color:var(--blanc); border-color:var(--vert);
+  }
+  .search-results-bar {
+    display:none;
+    background:rgba(61,97,64,0.07);
+    border:1px solid rgba(61,97,64,0.2);
+    border-radius:4px; padding:0.45rem 0.85rem;
+    font-size:0.75rem; color:var(--vert-fonce);
+    margin-bottom:0.75rem;
+    align-items:center; justify-content:space-between;
+  }
+  .search-results-bar.visible { display:flex; }
+  /* highlight match */
+  .highlight { background:#fff3c4; border-radius:2px; padding:0 1px; }
+  /* product-row hidden by search */
+  .product-row.search-hidden { display:none; }
+  /* cat body hidden when all products hidden */
+  .catalogue-block.search-hidden .cat-body { display:none !important; }
+  .catalogue-block.search-hidden .cat-header { opacity:0.4; pointer-events:none; }
+  .search-no-result {
+    text-align:center; padding:2rem;
+    color:var(--texte-doux); font-style:italic; font-size:0.85rem;
+    display:none;
+  }
+
+  @media(max-width:1000px){
+    .product-row { grid-template-columns:1fr 75px 60px 80px; }
+    .photo-col, .carton-col { display:none; }
+  }
   @media(max-width:900px){
     .layout { grid-template-columns:1fr; }
-    .right { position:static; height:auto; border-top:2px solid var(--ligne); }
+    .right { position:static; height:auto; }
   }
 </style>
 </head>
@@ -212,22 +331,26 @@
 <div class="success-overlay" id="success">
   <div class="icon">🌿</div>
   <h2>Commande envoyée !</h2>
-  <p>Votre bon de commande BIO N TRUFFE a été transmis. Vous recevrez une confirmation par email sous 24h.</p>
+  <p>Votre bon de commande a été transmis à BIO N TRUFFE. Pierre BAUDIN vous contactera pour confirmer et organiser la livraison.</p>
   <a href="commande.html">Nouvelle commande</a>
 </div>
 
 <header class="top-header">
   <a href="index.html" class="logo">
-    <span class="logo-main"><span class="leaf">🌿</span> BIO N TRUFFE</span>
-    <span class="logo-sub">Bon de commande revendeur</span>
+    <span class="logo-main">🌿 BIO N TRUFFE</span>
+    <span class="logo-sub">Bon de commande revendeur · Tarifs HT 2026</span>
   </a>
-  <span id="header-revendeur">Sélectionnez votre profil revendeur</span>
+  <div class="header-right">
+    <span class="header-tarif">V15 · applicable au 01/03/2026</span>
+    <span id="header-revendeur">Sélectionnez votre profil revendeur</span>
+  </div>
 </header>
 
 <div class="layout">
 
   <!-- LEFT -->
   <div class="left">
+
     <div class="section-title">📋 Identification</div>
     <div class="form-grid" style="margin-bottom:2rem">
       <div class="form-group">
@@ -237,34 +360,79 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Société / Nom</label>
-        <input type="text" id="f-societe" placeholder="Votre société">
+        <label>Client / Magasin</label>
+        <input type="text" id="f-societe" placeholder="Nom du magasin">
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="f-email" placeholder="contact@votresociete.fr">
+        <label>Ville</label>
+        <input type="text" id="f-ville" placeholder="Ville">
+      </div>
+      <div class="form-group">
+        <label>Code postal</label>
+        <input type="text" id="f-cp" placeholder="84000">
       </div>
       <div class="form-group">
         <label>Téléphone</label>
-        <input type="tel" id="f-tel" placeholder="+33 6 …">
+        <input type="tel" id="f-tel" placeholder="06 …">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="contact@…">
+      </div>
+      <div class="form-group">
+        <label>Nom du contact</label>
+        <input type="text" id="f-nom" placeholder="Prénom NOM">
+      </div>
+      <div class="form-group">
+        <label>Date de livraison souhaitée</label>
+        <input type="date" id="f-date">
       </div>
       <div class="form-group" style="grid-column:1/-1">
-        <label>Adresse de livraison</label>
-        <textarea id="f-adresse" rows="2" placeholder="Adresse, code postal, ville"></textarea>
-      </div>
-      <div class="form-group" style="grid-column:1/-1">
-        <label>Commentaire (optionnel)</label>
-        <textarea id="f-comment" rows="2" placeholder="Instructions, date souhaitée…"></textarea>
+        <label>Commentaire</label>
+        <textarea id="f-comment" rows="2" placeholder="Instructions spéciales…"></textarea>
       </div>
     </div>
 
     <div class="section-title">🍄 Sélection des produits</div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Rechercher par désignation ou EAN…" oninput="onSearch()" onkeydown="if(event.key==='Escape')clearSearch()">
+        <button class="search-clear" id="search-clear" onclick="clearSearch()" title="Effacer">✕</button>
+      </div>
+      <button class="search-mode-btn active" id="btn-mode-nom" onclick="setMode('nom')">Désignation</button>
+      <button class="search-mode-btn" id="btn-mode-ean" onclick="setMode('ean')">EAN</button>
+    </div>
+    <div class="search-results-bar" id="search-results-bar">
+      <span id="search-results-text"></span>
+      <span style="cursor:pointer;color:var(--vert-mid);font-weight:700" onclick="clearSearch()">Voir tout</span>
+    </div>
+    <div class="search-no-result" id="search-no-result">Aucun produit trouvé pour cette recherche.</div>
+
+    <div style="background:rgba(196,168,130,0.15);border:1px solid var(--beige-clair);border-radius:4px;padding:0.6rem 0.9rem;margin-bottom:1.25rem;font-size:0.75rem;color:var(--beige-fonce);">
+      <strong style="color:var(--vert-fonce)">TVA 5,5% sur tous les produits</strong> &nbsp;·&nbsp;
+      Les prix sont <strong>SANS</strong> compter le port &nbsp;·&nbsp;
+      <strong style="color:var(--vert)">Franco à partir de 5 colis ou 450 €</strong>
+    </div>
+
     <div id="catalogue-container"><p style="color:var(--texte-doux);font-style:italic;padding:1rem 0">Chargement du catalogue…</p></div>
+
   </div>
 
   <!-- RIGHT: RECAP -->
   <div class="right">
     <div class="recap-title">🧾 Récapitulatif</div>
+
+    <div class="franco-info">
+      Franco port : <strong>5 colis</strong> ou <strong>450 € HT</strong>
+    </div>
+
+    <div id="recap-colis" style="display:none" class="recap-colis-count">
+      <span>Colis commandés</span><strong id="recap-colis-count">0</strong>
+    </div>
+
     <div id="recap-items"><div class="recap-empty">Aucun article sélectionné</div></div>
     <hr class="recap-sep">
     <div id="recap-totaux"></div>
@@ -276,87 +444,157 @@
 </div>
 
 <script>
-let config=null;
-let remiseGlobale=0;
-let remisesCategories={};
+let config = null;
+let remiseGlobale = 0;
+let remisesCategories = {};
 
 async function init() {
-  try { const r=await fetch('config.json'); config=await r.json(); }
+  try { const r = await fetch('config.json'); config = await r.json(); }
   catch(e) { alert('Impossible de charger config.json'); return; }
   populateRevendeurs();
+
+  // ── Pré-remplissage depuis CRM client ──
+  const clientCtx = sessionStorage.getItem('bnt_bdc_client');
+  if (clientCtx) {
+    try {
+      const c = JSON.parse(clientCtx);
+      sessionStorage.removeItem('bnt_bdc_client');
+      // Stocker pour la sauvegarde
+      window._crmClient = c;
+      // Pré-remplir les champs
+      setTimeout(() => {
+        setVal('f-societe', c.societe);
+        setVal('f-ville',   c.ville);
+        setVal('f-cp',      c.cp);
+        setVal('f-email',   c.email);
+        setVal('f-tel',     c.tel);
+        setVal('f-nom',     c.nom);
+        // Sélectionner le profil revendeur
+        if (c.profil) {
+          const sel = document.getElementById('sel-revendeur');
+          const opt = Array.from(sel.options).find(o => o.textContent.startsWith(c.profil));
+          if (opt) { sel.value = opt.value; onRevendeurChange(); }
+        }
+        // Bandeau CRM
+        document.querySelector('.top-header').insertAdjacentHTML('beforeend',
+          `<div style="background:rgba(45,74,45,0.9);color:var(--vert-pale);font-size:0.72rem;padding:0.35rem 0.85rem;border-radius:4px;margin-left:1rem">
+            🔗 Client CRM : <strong style="color:var(--beige-clair)">${c.numClient} — ${c.societe}</strong>
+          </div>`);
+      }, 100);
+    } catch(e) {}
+  }
+
   renderCatalogue();
   updateRecap();
 }
 
 function populateRevendeurs() {
-  const sel=document.getElementById('sel-revendeur');
-  config.revendeurs.forEach(r=>{
-    const o=document.createElement('option');
-    o.value=r.id; o.textContent=r.nom; sel.appendChild(o);
+  const sel = document.getElementById('sel-revendeur');
+  config.revendeurs.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r.id;
+    o.textContent = r.remise_globale > 0 ? `${r.nom} (−${r.remise_globale}%)` : r.nom;
+    sel.appendChild(o);
   });
 }
 
 function onRevendeurChange() {
-  const id=document.getElementById('sel-revendeur').value;
-  if(!id){remiseGlobale=0;remisesCategories={};document.getElementById('header-revendeur').textContent='Sélectionnez votre profil revendeur';}
-  else {
-    const rev=config.revendeurs.find(r=>r.id===id);
-    remiseGlobale=rev.remise_globale||0;
-    remisesCategories=rev.remises_categories||{};
-    document.getElementById('header-revendeur').textContent=`${rev.nom} — ${remiseGlobale}% de remise`;
+  const id = document.getElementById('sel-revendeur').value;
+  if (!id) {
+    remiseGlobale = 0; remisesCategories = {};
+    document.getElementById('header-revendeur').textContent = 'Sélectionnez votre profil revendeur';
+  } else {
+    const rev = config.revendeurs.find(r => r.id === id);
+    remiseGlobale = rev.remise_globale || 0;
+    remisesCategories = rev.remises_categories || {};
+    document.getElementById('header-revendeur').textContent =
+      remiseGlobale > 0 ? `${rev.nom} — remise ${remiseGlobale}%` : rev.nom;
   }
   renderCatalogue(); updateRecap();
 }
 
 function getRemise(catId) {
-  return remisesCategories[catId]!==undefined ? remisesCategories[catId] : remiseGlobale;
+  return remisesCategories[catId] !== undefined ? remisesCategories[catId] : remiseGlobale;
 }
 
-function renderCatalogue() {
-  const container=document.getElementById('catalogue-container');
-  if(!config||!config.catalogue.length){container.innerHTML='<p style="color:var(--texte-doux);font-style:italic">Catalogue vide</p>';return;}
+function isCoffret(p) { return p.prix_ht === null; }
 
-  container.innerHTML=config.catalogue.map(cat=>{
-    const remise=getRemise(cat.id);
-    const produits=cat.produits.map(p=>{
-      const prixRemise=remise>0?p.prix_ht*(1-remise/100):null;
-      const prixAffiche=prixRemise!==null?prixRemise:p.prix_ht;
+function renderCatalogue() {
+  const container = document.getElementById('catalogue-container');
+  if (!config || !config.catalogue.length) { container.innerHTML = '<p style="color:var(--texte-doux);font-style:italic">Catalogue vide</p>'; return; }
+
+  container.innerHTML = config.catalogue.map(cat => {
+    const remise = getRemise(cat.id);
+
+    const headerRow = `
+      <div class="product-row header">
+        <div></div>
+        <div>Désignation</div>
+        <div style="text-align:right">Prix HT/u</div>
+        <div style="text-align:center">Colis</div>
+        <div style="text-align:center">Qté</div>
+        <div style="text-align:right">Total HT</div>
+      </div>`;
+
+    const produits = cat.produits.map(p => {
+      if (isCoffret(p)) {
+        return `
+        <div class="product-row coffret">
+          <div class="photo-col"><div class="photo-placeholder">🎁</div></div>
+          <div class="product-name">
+            ${p.nom}
+            <small>${p.description}</small>
+            <span class="ean-code">EAN ${p.ean}</span>
+          </div>
+          <div class="sur-demande" style="grid-column:3/7">Prix sur demande — contactez Pierre BAUDIN : 06 99 19 58 65</div>
+        </div>`;
+      }
+
+      const prixRemise = remise > 0 ? p.prix_ht * (1 - remise / 100) : null;
+      const prixAffiche = prixRemise !== null ? prixRemise : p.prix_ht;
+      const cartonRemise = prixAffiche * p.pcb;
+      const isNew = p.description && p.description.includes('✨');
+
       return `
       <div class="product-row">
+        <div class="photo-col"><div class="photo-placeholder">🍄</div></div>
         <div class="product-name">
-          ${p.nom}
-          ${p.description?`<small>${p.description}</small>`:''}
+          ${p.nom}${isNew ? '<span class="new-badge">NOUVEAU</span>' : ''}
+          <small>${p.poids} · ${p.description.replace('✨ Nouveauté — ','').replace('✨ Nouveauté snacking — ','')}</small>
+          <span class="pcb-info">PCB ${p.pcb} · EAN ${p.ean}</span>
         </div>
-        <div class="product-price">
-          ${prixRemise!==null
-            ?`<span style="text-decoration:line-through;color:var(--texte-doux);font-size:0.72rem">${p.prix_ht.toFixed(2)} €</span><br><span style="color:var(--vert-mid);font-weight:700">${prixRemise.toFixed(2)} €</span>`
-            :`<span style="color:var(--texte-doux)">${p.prix_ht.toFixed(2)} €</span>`
-          }
-          <small style="display:block;color:var(--texte-doux);font-size:0.63rem">HT / ${p.unite}</small>
+        <div class="prix-col">
+          ${prixRemise !== null
+            ? `<span class="prix-barre">${p.prix_ht.toFixed(2)} €</span><span class="prix-remise">${prixRemise.toFixed(2)} €</span>`
+            : `${p.prix_ht.toFixed(2)} €`}
+          <small>HT / ${p.unite}</small>
+        </div>
+        <div class="carton-col">
+          ${cartonRemise.toFixed(2)} €<br>
+          <span style="font-size:0.6rem;color:var(--beige-fonce)">/ carton</span>
         </div>
         <div style="text-align:center">
           <input class="qty-input" type="number" id="qty-${p.id}" min="0" step="1" value="0"
             data-prix="${prixAffiche.toFixed(4)}"
             data-nom="${p.nom.replace(/"/g,'&quot;')}"
-            data-unite="${p.unite}"
+            data-poids="${p.poids}"
+            data-pcb="${p.pcb}"
             data-tva="${p.tva}"
+            data-catid="${cat.id}"
             onchange="updateRecap()" oninput="updateRecap()">
         </div>
-        <div class="line-total" id="total-${p.id}">—</div>
+        <div class="total-col" id="total-${p.id}">—</div>
       </div>`;
     }).join('');
 
     return `
     <div class="catalogue-block">
       <div class="cat-header" onclick="toggleCat(this)">
-        <span class="cat-header-name">${cat.nom}${remise>0?` <span class="cat-remise">(-${remise}%)</span>`:''}</span>
+        <span class="cat-header-name">${cat.nom}${remise > 0 ? ` <span class="cat-remise-badge">(−${remise}%)</span>` : ''}</span>
         <span class="cat-toggle">▾</span>
       </div>
       <div class="cat-body">
-        <div class="product-row header">
-          <div>Produit</div><div style="text-align:right">Prix HT</div>
-          <div style="text-align:center">Qté</div><div style="text-align:right">Total HT</div>
-        </div>
+        ${headerRow}
         ${produits}
       </div>
     </div>`;
@@ -364,108 +602,310 @@ function renderCatalogue() {
 }
 
 function toggleCat(header) {
-  const body=header.nextElementSibling;
-  const icon=header.querySelector('.cat-toggle');
-  if(body.style.display==='none'){body.style.display='';icon.textContent='▾';}
-  else{body.style.display='none';icon.textContent='▸';}
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.cat-toggle');
+  if (body.style.display === 'none') { body.style.display = ''; icon.textContent = '▾'; }
+  else { body.style.display = 'none'; icon.textContent = '▸'; }
 }
 
 function updateRecap() {
-  const inputs=document.querySelectorAll('.qty-input');
-  let lignes=[]; let totalHT=0; let tvaMap={};
+  const inputs = document.querySelectorAll('.qty-input');
+  let lignes = []; let totalHT = 0; let tvaAmount = 0; let totalColis = 0;
 
-  inputs.forEach(inp=>{
-    const qty=parseInt(inp.value)||0;
-    const pid=inp.id.replace('qty-','');
-    const el=document.getElementById('total-'+pid);
-    if(qty<=0){if(el)el.textContent='—';return;}
-    const prix=parseFloat(inp.dataset.prix);
-    const tva=parseFloat(inp.dataset.tva);
-    const ht=prix*qty;
-    const montantTVA=ht*tva/100;
-    totalHT+=ht; tvaMap[tva]=(tvaMap[tva]||0)+montantTVA;
-    lignes.push({nom:inp.dataset.nom,unite:inp.dataset.unite,qty,prix,ht});
-    if(el)el.textContent=ht.toFixed(2)+' €';
+  inputs.forEach(inp => {
+    const qty = parseInt(inp.value) || 0;
+    const pid = inp.id.replace('qty-', '');
+    const el = document.getElementById('total-' + pid);
+    if (qty <= 0) { if (el) el.textContent = '—'; return; }
+    const prix = parseFloat(inp.dataset.prix);
+    const tva = parseFloat(inp.dataset.tva);
+    const pcb = parseInt(inp.dataset.pcb) || 1;
+    const ht = prix * qty;
+    const montantTVA = ht * tva / 100;
+    totalHT += ht; tvaAmount += montantTVA;
+    // Colis = nb unités / PCB (arrondi au supérieur)
+    totalColis += Math.ceil(qty / pcb);
+    lignes.push({ nom: inp.dataset.nom, poids: inp.dataset.poids, qty, prix, ht, pcb });
+    if (el) el.textContent = ht.toFixed(2) + ' €';
   });
 
   // Items
-  const itemsEl=document.getElementById('recap-items');
-  if(!lignes.length){itemsEl.innerHTML='<div class="recap-empty">Aucun article sélectionné</div>';}
-  else{
-    itemsEl.innerHTML=lignes.map(l=>`
+  const itemsEl = document.getElementById('recap-items');
+  if (!lignes.length) {
+    itemsEl.innerHTML = '<div class="recap-empty">Aucun article sélectionné</div>';
+  } else {
+    itemsEl.innerHTML = lignes.map(l => `
       <div class="recap-item">
-        <div class="recap-item-name">${l.nom}<div class="recap-item-sub">${l.qty} ${l.unite} × ${l.prix.toFixed(2)} €</div></div>
+        <div class="recap-item-name">
+          ${l.nom}
+          <div class="recap-item-sub">${l.qty} × ${l.poids} · ${l.prix.toFixed(2)} € HT</div>
+        </div>
         <div class="recap-item-prix">${l.ht.toFixed(2)} €</div>
       </div>`).join('');
   }
 
+  // Colis counter
+  const colisEl = document.getElementById('recap-colis');
+  const colisCount = document.getElementById('recap-colis-count');
+  if (lignes.length) { colisEl.style.display = 'flex'; colisCount.textContent = totalColis; }
+  else { colisEl.style.display = 'none'; }
+
   // Totaux
-  const totalTVA=Object.values(tvaMap).reduce((s,v)=>s+v,0);
-  const totalTTC=totalHT+totalTVA;
-  const tvaLines=Object.entries(tvaMap).map(([t,m])=>`<div class="recap-ligne"><span>TVA ${t}%</span><span>${m.toFixed(2)} €</span></div>`).join('');
-  document.getElementById('recap-totaux').innerHTML=`
+  const totalTTC = totalHT + tvaAmount;
+  document.getElementById('recap-totaux').innerHTML = `
     <div class="recap-ligne"><span>Total HT</span><span>${totalHT.toFixed(2)} €</span></div>
-    ${tvaLines}
+    <div class="recap-ligne"><span>TVA 5,5%</span><span>${tvaAmount.toFixed(2)} €</span></div>
     <div class="recap-total"><span>Total TTC</span><span>${totalTTC.toFixed(2)} €</span></div>`;
 
-  // Status
-  const minCmd=config.conditions?.minimum_commande_ht||150;
-  const franco=config.conditions?.franco_port||500;
-  let statusHtml='';
-  if(lignes.length&&totalHT<minCmd){
-    statusHtml=`<div class="recap-alert warn">⚠️ Minimum : ${minCmd} € HT — Manque ${(minCmd-totalHT).toFixed(2)} € HT</div>`;
-  } else if(lignes.length&&totalHT<franco){
-    statusHtml=`<div class="recap-alert ok">✅ Commande validée — Franco à partir de ${franco} € HT</div>`;
-  } else if(lignes.length){
-    statusHtml=`<div class="recap-alert ok">🌿 Franco de port atteint ! Livraison offerte.</div>`;
-  }
-  document.getElementById('recap-status').innerHTML=statusHtml;
+  // Status franco
+  const minHT = config.conditions?.minimum_commande_ht || 450;
+  const francoHT = config.conditions?.franco_port_ht || 450;
+  const francoColis = config.conditions?.franco_port_colis || 5;
+  const francoOk = totalHT >= francoHT || totalColis >= francoColis;
 
-  document.getElementById('btn-submit').disabled=!(lignes.length>0&&totalHT>=minCmd);
+  let statusHtml = '';
+  if (lignes.length && totalHT < minHT && totalColis < francoColis) {
+    statusHtml = `<div class="recap-alert warn">⚠️ Minimum : ${minHT} € HT ou ${francoColis} colis<br>Manque ${(minHT - totalHT).toFixed(2)} € ou ${Math.max(0, francoColis - totalColis)} colis</div>`;
+  } else if (lignes.length && !francoOk) {
+    statusHtml = `<div class="recap-alert ok">✅ Commande valide — port en sus<br>Franco : ${francoColis} colis ou ${francoHT} € HT</div>`;
+  } else if (lignes.length) {
+    statusHtml = `<div class="recap-alert ok">🌿 Franco de port atteint ! Livraison offerte.</div>`;
+  }
+  document.getElementById('recap-status').innerHTML = statusHtml;
+
+  const valid = lignes.length > 0 && (totalHT >= minHT || totalColis >= francoColis);
+  document.getElementById('btn-submit').disabled = !valid;
 }
 
+function setVal(id, val) { const el = document.getElementById(id); if (el && val) el.value = val; }
+
 function submitCommande() {
-  const societe=document.getElementById('f-societe').value.trim();
-  const email=document.getElementById('f-email').value.trim();
-  if(!societe||!email){alert('Merci de renseigner votre société et email.');return;}
+  const societe = document.getElementById('f-societe').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!societe || !email) { alert('Merci de renseigner le magasin et l\'email.'); return; }
 
-  const revId=document.getElementById('sel-revendeur').value;
-  const revNom=revId?config.revendeurs.find(r=>r.id===revId)?.nom:'Non précisé';
-  const tel=document.getElementById('f-tel').value.trim();
-  const adresse=document.getElementById('f-adresse').value.trim();
-  const comment=document.getElementById('f-comment').value.trim();
+  const revId = document.getElementById('sel-revendeur').value;
+  const revNom = revId ? config.revendeurs.find(r => r.id === revId)?.nom : 'Tarif Général';
+  const ville = document.getElementById('f-ville').value.trim();
+  const cp = document.getElementById('f-cp').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  const nom = document.getElementById('f-nom').value.trim();
+  const dateL = document.getElementById('f-date').value;
+  const comment = document.getElementById('f-comment').value.trim();
 
-  const inputs=document.querySelectorAll('.qty-input');
-  let lignes=[]; let totalHT=0;
-  inputs.forEach(inp=>{
-    const qty=parseInt(inp.value)||0; if(!qty)return;
-    const prix=parseFloat(inp.dataset.prix); const ht=prix*qty;
-    totalHT+=ht;
-    lignes.push(`${inp.dataset.nom} — ${qty} ${inp.dataset.unite} × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
+  const inputs = document.querySelectorAll('.qty-input');
+  let lignes = []; let totalHT = 0; let totalColis = 0;
+  inputs.forEach(inp => {
+    const qty = parseInt(inp.value) || 0; if (!qty) return;
+    const prix = parseFloat(inp.dataset.prix);
+    const pcb = parseInt(inp.dataset.pcb) || 1;
+    const ht = prix * qty; totalHT += ht;
+    totalColis += Math.ceil(qty / pcb);
+    lignes.push(`${inp.dataset.nom} (${inp.dataset.poids}) — ${qty} unité(s) × ${prix.toFixed(2)} € = ${ht.toFixed(2)} € HT`);
   });
 
-  const subject=encodeURIComponent(`BDC BIO N TRUFFE — ${societe} — ${new Date().toLocaleDateString('fr-FR')}`);
-  const body=encodeURIComponent([
-    `BON DE COMMANDE — BIO N TRUFFE`,`Date : ${new Date().toLocaleDateString('fr-FR')}`,``,
-    `=== REVENDEUR ===`,`Profil : ${revNom}`,`Société : ${societe}`,
-    `Email : ${email}`,`Téléphone : ${tel||'—'}`,`Adresse : ${adresse||'—'}`,``,
-    `=== COMMANDE ===`,...lignes,``,`TOTAL HT : ${totalHT.toFixed(2)} €`,``,
-    comment?`=== COMMENTAIRE ===\n${comment}`:'',``,`— Envoyé via BIO N TRUFFE CRM`
-  ].join('\n'));
+  const tva = totalHT * 0.055;
+  const subject = encodeURIComponent(`BDC BIO N TRUFFE — ${societe} ${ville} — ${new Date().toLocaleDateString('fr-FR')}`);
+  const body = encodeURIComponent([
+    `BON DE COMMANDE — BIO N TRUFFE`,
+    `Tarif V15 — applicable au 01/03/2026`,
+    `Date : ${new Date().toLocaleDateString('fr-FR')}`,
+    ``,
+    `=== CLIENT ===`,
+    `Profil : ${revNom}`,
+    `Magasin : ${societe}`,
+    `Ville : ${cp} ${ville}`,
+    `Téléphone : ${tel || '—'}`,
+    `Email : ${email}`,
+    `Contact : ${nom || '—'}`,
+    `Livraison souhaitée : ${dateL || 'Sur accord'}`,
+    ``,
+    `=== COMMANDE ===`,
+    ...lignes,
+    ``,
+    `Nombre de colis estimé : ${totalColis}`,
+    `TOTAL HT : ${totalHT.toFixed(2)} €`,
+    `TVA 5,5% : ${tva.toFixed(2)} €`,
+    `TOTAL TTC : ${(totalHT + tva).toFixed(2)} €`,
+    ``,
+    `Franco port : ${totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus'}`,
+    ``,
+    comment ? `=== COMMENTAIRE ===\n${comment}` : '',
+    ``,
+    `— Bon de commande généré via BIO N TRUFFE CRM`
+  ].filter(Boolean).join('\n'));
 
-  window.location.href=`mailto:${config.societe.email_commandes}?subject=${subject}&body=${body}`;
-  setTimeout(()=>{document.getElementById('success').style.display='flex';},800);
+  window.location.href = `mailto:${config.societe.email_commandes}?subject=${subject}&body=${body}`;
+
+  // ── Sauvegarde dans le CRM si client connu ──
+  if (window._crmClient) {
+    const inputsAll = document.querySelectorAll('.qty-input');
+    const crmLignes = [];
+    inputsAll.forEach(inp => {
+      const qty = parseInt(inp.value)||0; if (!qty) return;
+      const prix = parseFloat(inp.dataset.prix);
+      crmLignes.push({ nom:inp.dataset.nom, poids:inp.dataset.poids, qty, prix, ht:prix*qty });
+    });
+    const ref = `BDC-${window._crmClient.numClient}-${Date.now().toString().slice(-5)}`;
+    const commande = {
+      id: 'cmd_'+Date.now(), ref,
+      clientId: window._crmClient.clientId,
+      numClient: window._crmClient.numClient,
+      date: new Date().toISOString().slice(0,10),
+      totalHT, profil: window._crmClient.profil,
+      lignes: crmLignes
+    };
+    sessionStorage.setItem('bnt_new_commande', JSON.stringify(commande));
+  }
+
+  setTimeout(() => { document.getElementById('success').style.display = 'flex'; }, 800);
 }
 
 function resetForm() {
-  if(!confirm('Réinitialiser le bon de commande ?'))return;
-  document.querySelectorAll('.qty-input').forEach(i=>i.value=0);
-  ['f-societe','f-email','f-tel','f-adresse','f-comment'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('sel-revendeur').value='';
+  if (!confirm('Réinitialiser le bon de commande ?')) return;
+  document.querySelectorAll('.qty-input').forEach(i => i.value = 0);
+  ['f-societe','f-ville','f-cp','f-tel','f-email','f-nom','f-date','f-comment'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('sel-revendeur').value = '';
   onRevendeurChange(); updateRecap();
 }
 
 init();
+
+// ============================================================
+// RECHERCHE
+// ============================================================
+let searchMode = 'nom'; // 'nom' | 'ean'
+
+function setMode(mode) {
+  searchMode = mode;
+  document.getElementById('btn-mode-nom').classList.toggle('active', mode === 'nom');
+  document.getElementById('btn-mode-ean').classList.toggle('active', mode === 'ean');
+  document.getElementById('search-input').placeholder =
+    mode === 'ean' ? 'Rechercher par code EAN…' : 'Rechercher par désignation…';
+  onSearch();
+}
+
+function onSearch() {
+  const raw = document.getElementById('search-input').value.trim();
+  const q = raw.toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  const resultsBar = document.getElementById('search-results-bar');
+  const noResult = document.getElementById('search-no-result');
+
+  clearBtn.classList.toggle('visible', raw.length > 0);
+
+  if (!q) {
+    // Tout afficher
+    document.querySelectorAll('.product-row:not(.header)').forEach(r => r.classList.remove('search-hidden'));
+    document.querySelectorAll('.catalogue-block').forEach(b => b.classList.remove('search-hidden'));
+    // Rétablir les cat-body si elles ont été fermées par toggle
+    document.querySelectorAll('.cat-body').forEach(b => { if (b.dataset.manualClose !== '1') b.style.display = ''; });
+    resultsBar.classList.remove('visible');
+    noResult.style.display = 'none';
+    removeHighlights();
+    return;
+  }
+
+  removeHighlights();
+  let totalMatch = 0;
+
+  document.querySelectorAll('.catalogue-block').forEach(block => {
+    const rows = block.querySelectorAll('.product-row:not(.header)');
+    let blockMatch = 0;
+
+    rows.forEach(row => {
+      const nameEl = row.querySelector('.product-name');
+      const pcbEl = row.querySelector('.pcb-info');
+      if (!nameEl) return; // header row guard
+
+      // Extraire EAN depuis .pcb-info (format "PCB 12 · EAN 3770028175086")
+      const pcbText = pcbEl ? pcbEl.textContent : '';
+      const eanMatch = pcbText.match(/EAN\s*(\d+)/);
+      const ean = eanMatch ? eanMatch[1] : '';
+
+      // Texte de désignation (nœud texte direct + small, sans pcb-info)
+      const nameFull = nameEl.cloneNode(true);
+      nameFull.querySelectorAll('.pcb-info, .new-badge, .ean-code').forEach(n => n.remove());
+      const designation = nameFull.textContent.toLowerCase();
+
+      let matched = false;
+      if (searchMode === 'ean') {
+        matched = ean.includes(q);
+      } else {
+        matched = designation.includes(q);
+      }
+
+      if (matched) {
+        row.classList.remove('search-hidden');
+        blockMatch++;
+        totalMatch++;
+        // Highlight
+        if (searchMode === 'nom') highlightText(nameEl, q);
+        if (searchMode === 'ean' && pcbEl) highlightText(pcbEl, q);
+      } else {
+        row.classList.add('search-hidden');
+      }
+    });
+
+    if (blockMatch === 0) {
+      block.classList.add('search-hidden');
+    } else {
+      block.classList.remove('search-hidden');
+      // S'assurer que le body est visible
+      const body = block.querySelector('.cat-body');
+      if (body) body.style.display = '';
+    }
+  });
+
+  // Barre résultats
+  resultsBar.classList.add('visible');
+  document.getElementById('search-results-text').textContent =
+    totalMatch === 0 ? 'Aucun résultat' :
+    totalMatch === 1 ? '1 produit trouvé' :
+    `${totalMatch} produits trouvés`;
+  noResult.style.display = totalMatch === 0 ? 'block' : 'none';
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  onSearch();
+}
+
+function highlightText(el, q) {
+  // Parcourir les nœuds texte directs et dans les enfants (sauf .pcb-info, .new-badge)
+  walkTextNodes(el, q);
+}
+
+function walkTextNodes(node, q) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    const idx = text.toLowerCase().indexOf(q);
+    if (idx === -1) return;
+    const before = document.createTextNode(text.slice(0, idx));
+    const mark = document.createElement('mark');
+    mark.className = 'highlight';
+    mark.textContent = text.slice(idx, idx + q.length);
+    const after = document.createTextNode(text.slice(idx + q.length));
+    const parent = node.parentNode;
+    parent.replaceChild(after, node);
+    parent.insertBefore(mark, after);
+    parent.insertBefore(before, mark);
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    // Ignorer les badges et codes
+    if (node.classList.contains('new-badge') || node.classList.contains('ean-code')) return;
+    Array.from(node.childNodes).forEach(child => walkTextNodes(child, q));
+  }
+}
+
+function removeHighlights() {
+  document.querySelectorAll('.highlight').forEach(mark => {
+    const parent = mark.parentNode;
+    parent.replaceChild(document.createTextNode(mark.textContent), mark);
+    parent.normalize();
+  });
+}
 </script>
 </body>
 </html>

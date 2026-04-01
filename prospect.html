@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO N TRUFFE — Création Client</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert-fonce:  #1e3320;
+    --vert:        #2d4a2d;
+    --vert-mid:    #3d6140;
+    --vert-clair:  #5a8a5a;
+    --vert-pale:   #c8dcc8;
+    --beige-fonce: #8b7355;
+    --beige:       #c4a882;
+    --beige-clair: #e8dcc8;
+    --beige-pale:  #f5f0e8;
+    --blanc:       #fdfcf9;
+    --texte:       #2a2218;
+    --texte-doux:  #5a4e3a;
+    --ligne:       #ddd5c5;
+    --ok:          #2d7a3a;
+    --err:         #c0392b;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--beige-pale); color:var(--texte); font-family:'Lato',sans-serif; min-height:100vh; font-size:14px; }
+
+  /* HEADER */
+  .top-header {
+    background:var(--vert-fonce);
+    border-bottom:3px solid var(--vert-mid);
+    padding:1rem 2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .logo { text-decoration:none; }
+  .logo-main { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:700; color:var(--beige-clair); }
+  .logo-sub { font-size:0.6rem; color:rgba(200,220,200,0.55); letter-spacing:0.15em; text-transform:uppercase; display:block; margin-top:2px; }
+  .header-badge {
+    background:rgba(196,168,130,0.15); border:1px solid rgba(196,168,130,0.3);
+    color:var(--beige); font-size:0.68rem; font-weight:700;
+    letter-spacing:0.15em; text-transform:uppercase;
+    padding:0.3rem 0.85rem; border-radius:20px;
+  }
+
+  /* MAIN */
+  .main { max-width:860px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom:2rem; }
+  .page-header h1 {
+    font-family:'Libre Baskerville',serif;
+    font-size:1.6rem; font-weight:700; color:var(--vert-fonce);
+    display:flex; align-items:center; gap:0.6rem;
+  }
+  .page-header p { font-size:0.82rem; color:var(--texte-doux); margin-top:0.4rem; }
+
+  /* PROGRESS */
+  .progress-bar {
+    display:flex; gap:0; margin-bottom:2rem;
+    border:1px solid var(--ligne); border-radius:6px; overflow:hidden;
+    background:var(--blanc);
+  }
+  .progress-step {
+    flex:1; padding:0.6rem 0.5rem; text-align:center;
+    font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--texte-doux); cursor:pointer;
+    border-right:1px solid var(--ligne); transition:all 0.2s;
+    position:relative;
+  }
+  .progress-step:last-child { border-right:none; }
+  .progress-step.active { background:var(--vert); color:var(--blanc); }
+  .progress-step.done { background:rgba(45,74,45,0.08); color:var(--vert-mid); }
+  .progress-step .step-num {
+    display:inline-block; width:18px; height:18px; border-radius:50%;
+    background:rgba(255,255,255,0.25); color:inherit;
+    font-size:0.65rem; line-height:18px; text-align:center;
+    margin-right:0.35rem; font-weight:700;
+  }
+  .progress-step.done .step-num::after { content:'✓'; }
+  .progress-step.done .step-num-inner { display:none; }
+
+  /* SECTIONS */
+  .form-section { display:none; }
+  .form-section.active { display:block; }
+
+  .section-card {
+    background:var(--blanc); border:1px solid var(--ligne);
+    border-radius:6px; padding:1.75rem;
+    box-shadow:0 1px 8px rgba(45,74,45,0.06);
+    margin-bottom:1.25rem;
+  }
+  .section-card h2 {
+    font-family:'Libre Baskerville',serif;
+    font-size:1rem; font-weight:700; color:var(--vert-fonce);
+    margin-bottom:1.25rem; padding-bottom:0.6rem;
+    border-bottom:2px solid var(--ligne);
+    display:flex; align-items:center; gap:0.5rem;
+  }
+  .section-card h2 .ico { font-size:1.1rem; }
+
+  /* FORM GRID */
+  .fg { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:0.9rem; }
+  .fg-2 { grid-template-columns:1fr 1fr; }
+  .fg-3 { grid-template-columns:1fr 1fr 1fr; }
+  .fg-full { grid-column:1/-1; }
+  .form-group { display:flex; flex-direction:column; gap:0.3rem; }
+  label { font-size:0.68rem; color:var(--texte-doux); letter-spacing:0.08em; font-weight:700; text-transform:uppercase; }
+  label .req { color:var(--err); margin-left:2px; }
+  input[type=text], input[type=email], input[type=tel],
+  input[type=date], input[type=number], select, textarea {
+    background:var(--beige-pale); border:1px solid var(--ligne); border-radius:4px;
+    color:var(--texte); font-family:inherit; font-size:0.83rem;
+    padding:0.5rem 0.7rem; width:100%; transition:border-color 0.2s, background 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline:none; border-color:var(--vert-mid); background:var(--blanc);
+  }
+  input.error { border-color:var(--err); background:rgba(192,57,43,0.04); }
+  textarea { resize:vertical; min-height:65px; }
+  select option { background:var(--blanc); }
+
+  /* TVA FIELD */
+  .tva-wrap { display:flex; align-items:center; gap:0; }
+  .tva-prefix {
+    background:var(--beige-clair); border:1px solid var(--ligne); border-right:none;
+    border-radius:4px 0 0 4px; padding:0.5rem 0.65rem;
+    font-size:0.83rem; color:var(--texte-doux); font-weight:700; white-space:nowrap;
+  }
+  .tva-wrap input { border-radius:0 4px 4px 0; }
+
+  /* JOURS LIVRAISON */
+  .jours-wrap { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.1rem; }
+  .jour-btn {
+    padding:0.3rem 0.7rem; border-radius:20px;
+    border:1.5px solid var(--ligne); background:var(--beige-pale);
+    color:var(--texte-doux); font-family:inherit; font-size:0.75rem;
+    font-weight:700; cursor:pointer; transition:all 0.15s; user-select:none;
+  }
+  .jour-btn.selected { background:var(--vert); color:var(--blanc); border-color:var(--vert); }
+
+  /* HEURES */
+  .heures-wrap { display:flex; align-items:center; gap:0.5rem; }
+  .heures-wrap span { font-size:0.8rem; color:var(--texte-doux); }
+  .heures-wrap input { width:90px; }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border:2px dashed var(--beige);
+    border-radius:6px; padding:2rem;
+    text-align:center; cursor:pointer;
+    transition:all 0.2s; background:var(--beige-pale);
+    position:relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color:var(--vert-mid); background:rgba(45,74,45,0.04);
+  }
+  .upload-zone input[type=file] {
+    position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+  }
+  .upload-icon { font-size:2.5rem; display:block; margin-bottom:0.75rem; }
+  .upload-title { font-family:'Libre Baskerville',serif; font-size:0.95rem; font-weight:700; color:var(--vert-fonce); }
+  .upload-sub { font-size:0.75rem; color:var(--texte-doux); margin-top:0.3rem; }
+  .upload-sub strong { color:var(--vert-mid); }
+
+  /* FILE LIST */
+  .file-list { margin-top:1.25rem; display:flex; flex-direction:column; gap:0.5rem; }
+  .file-item {
+    display:flex; align-items:center; gap:0.75rem;
+    background:var(--blanc); border:1px solid var(--ligne);
+    border-radius:5px; padding:0.6rem 0.85rem;
+  }
+  .file-item-icon { font-size:1.3rem; flex-shrink:0; }
+  .file-item-info { flex:1; min-width:0; }
+  .file-item-name { font-size:0.82rem; font-weight:700; color:var(--texte); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .file-item-size { font-size:0.68rem; color:var(--texte-doux); margin-top:1px; }
+  .file-item-remove {
+    background:none; border:none; cursor:pointer;
+    color:var(--beige-fonce); font-size:1rem; padding:0.2rem;
+    border-radius:3px; transition:all 0.15s; flex-shrink:0;
+  }
+  .file-item-remove:hover { color:var(--err); background:rgba(192,57,43,0.07); }
+  .file-count-badge {
+    display:inline-block; background:var(--vert); color:var(--blanc);
+    font-size:0.65rem; font-weight:700; padding:0.1rem 0.45rem;
+    border-radius:10px; margin-left:0.4rem; vertical-align:middle;
+  }
+
+  /* NAV BUTTONS */
+  .nav-buttons {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:1.5rem; gap:1rem;
+  }
+  .btn {
+    display:inline-flex; align-items:center; gap:0.4rem;
+    padding:0.65rem 1.4rem; border-radius:5px;
+    border:none; cursor:pointer; font-family:inherit;
+    font-size:0.82rem; font-weight:700; letter-spacing:0.06em;
+    transition:all 0.2s; text-transform:uppercase;
+  }
+  .btn-vert { background:var(--vert); color:var(--blanc); }
+  .btn-vert:hover { background:var(--vert-mid); }
+  .btn-outline { background:transparent; border:1.5px solid var(--ligne); color:var(--texte-doux); }
+  .btn-outline:hover { border-color:var(--beige-fonce); color:var(--texte); }
+  .btn-send { background:var(--vert); color:var(--blanc); font-size:0.9rem; padding:0.8rem 2rem; }
+  .btn-send:hover { background:var(--vert-mid); }
+  .btn-send:disabled { background:var(--vert-pale); color:rgba(0,0,0,0.3); cursor:not-allowed; }
+
+  /* RECAP */
+  .recap-block {
+    background:rgba(45,74,45,0.05); border:1px solid rgba(45,74,45,0.15);
+    border-radius:5px; padding:1.25rem 1.5rem;
+    margin-bottom:1rem;
+  }
+  .recap-block h3 { font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--vert-mid); margin-bottom:0.75rem; }
+  .recap-row { display:flex; gap:0.5rem; margin-bottom:0.35rem; font-size:0.82rem; }
+  .recap-label { color:var(--texte-doux); min-width:160px; flex-shrink:0; }
+  .recap-value { color:var(--texte); font-weight:700; }
+  .recap-row:empty { display:none; }
+
+  /* ALERT */
+  .alert { border-radius:4px; padding:0.65rem 1rem; font-size:0.78rem; margin-bottom:1rem; }
+  .alert-info { background:rgba(45,74,45,0.07); border:1px solid rgba(45,74,45,0.2); color:var(--vert-fonce); }
+  .alert-warn { background:rgba(192,57,43,0.07); border:1px solid rgba(192,57,43,0.2); color:var(--err); }
+
+  /* SUCCESS */
+  .success-overlay {
+    position:fixed; inset:0; z-index:999;
+    background:var(--beige-pale);
+    display:none; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:1.5rem;
+  }
+  .success-overlay .s-icon { font-size:4rem; }
+  .success-overlay h2 { font-family:'Libre Baskerville',serif; font-size:2rem; color:var(--vert-fonce); }
+  .success-overlay p { color:var(--texte-doux); max-width:440px; line-height:1.7; font-size:0.88rem; }
+  .success-overlay .s-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+  .success-overlay a {
+    color:var(--vert); border:1.5px solid var(--vert);
+    padding:0.6rem 1.5rem; border-radius:5px;
+    text-decoration:none; font-size:0.8rem; font-weight:700;
+    letter-spacing:0.1em; text-transform:uppercase; transition:all 0.2s;
+  }
+  .success-overlay a:hover { background:var(--vert); color:var(--blanc); }
+  .success-overlay a.secondary { border-color:var(--ligne); color:var(--texte-doux); }
+  .success-overlay a.secondary:hover { background:var(--ligne); color:var(--texte); }
+
+  @media(max-width:680px){
+    .fg-2, .fg-3 { grid-template-columns:1fr; }
+    .progress-step { font-size:0.6rem; padding:0.5rem 0.25rem; }
+    .main { padding:1.25rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="success">
+  <div class="s-icon">🌿</div>
+  <h2>Fiche prospect envoyée !</h2>
+  <p id="success-msg">La fiche de création client a été transmise à Pierre BAUDIN avec les documents joints. Un suivi sera effectué prochainement.</p>
+  <div class="s-actions">
+    <a href="prospect.html">Nouveau prospect</a>
+    <a href="index.html" class="secondary">Retour au portail</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="top-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">🌿 BIO N TRUFFE</span>
+    <span class="logo-sub">Création de prospect client</span>
+  </a>
+  <span class="header-badge">Formulaire Eridan BNT</span>
+</header>
+
+<div class="main">
+
+  <div class="page-header">
+    <h1>👤 Nouveau Prospect Client</h1>
+    <p>Renseignez les informations du nouveau client et joignez les documents nécessaires. Le dossier sera envoyé par email à Pierre BAUDIN.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="progress-step active" id="step-tab-1" onclick="goStep(1)">
+      <span class="step-num"><span class="step-num-inner">1</span></span>Magasin
+    </div>
+    <div class="progress-step" id="step-tab-2" onclick="goStep(2)">
+      <span class="step-num"><span class="step-num-inner">2</span></span>Contacts
+    </div>
+    <div class="progress-step" id="step-tab-3" onclick="goStep(3)">
+      <span class="step-num"><span class="step-num-inner">3</span></span>Livraisons
+    </div>
+    <div class="progress-step" id="step-tab-4" onclick="goStep(4)">
+      <span class="step-num"><span class="step-num-inner">4</span></span>Documents
+    </div>
+    <div class="progress-step" id="step-tab-5" onclick="goStep(5)">
+      <span class="step-num"><span class="step-num-inner">5</span></span>Envoi
+    </div>
+  </div>
+
+  <!-- ========== ÉTAPE 1 : MAGASIN ========== -->
+  <div class="form-section active" id="section-1">
+    <div class="section-card">
+      <h2><span class="ico">🏪</span> Informations Magasin</h2>
+      <div class="fg" style="gap:0.9rem">
+        <div class="form-group fg-full">
+          <label>Raison sociale <span class="req">*</span></label>
+          <input type="text" id="raison-sociale" placeholder="Nom de l'enseigne ou de la société">
+        </div>
+        <div class="form-group fg-full">
+          <label>Adresse — Rue <span class="req">*</span></label>
+          <input type="text" id="adresse-rue" placeholder="Numéro et nom de rue">
+        </div>
+        <div class="form-group fg-full">
+          <label>Complément d'adresse</label>
+          <input type="text" id="adresse-complement" placeholder="Bâtiment, lieu-dit, ZA…">
+        </div>
+        <div class="form-group">
+          <label>Code postal <span class="req">*</span></label>
+          <input type="text" id="cp-magasin" placeholder="84000" maxlength="5">
+        </div>
+        <div class="form-group">
+          <label>Ville <span class="req">*</span></label>
+          <input type="text" id="ville-magasin" placeholder="Ville">
+        </div>
+        <div class="form-group">
+          <label>Téléphone magasin</label>
+          <input type="tel" id="tel-magasin" placeholder="04 XX XX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Email magasin</label>
+          <input type="email" id="email-magasin" placeholder="magasin@exemple.fr">
+        </div>
+        <div class="form-group">
+          <label>Surface commerciale (m²)</label>
+          <input type="number" id="surface" placeholder="Ex: 250" min="0">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2><span class="ico">🏛️</span> Informations Légales</h2>
+      <div class="fg fg-2">
+        <div class="form-group">
+          <label>N° de SIRET</label>
+          <input type="text" id="siret" placeholder="XXX XXX XXX XXXXX" maxlength="17">
+        </div>
+        <div class="form-group">
+          <label>N° TVA intracommunautaire</label>
+          <div class="tva-wrap">
+            <span class="tva-prefix">FR</span>
+            <input type="text" id="tva-intra" placeholder="XX XXXXXXXXX" maxlength="13">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Capital social</label>
+          <input type="text" id="capital" placeholder="Ex: 10 000 €">
+        </div>
+        <div class="form-group">
+          <label>Code NAF / APE</label>
+          <input type="text" id="code-naf" placeholder="Ex: 4711D" maxlength="6">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ÉTAPE 2 : CONTACTS ========== -->
+  <div class="form-section" id="section-2">
+
+    <div class="section-card">
+      <h2><span class="ico">👤</span> Contact Principal Épicerie</h2>
+      <div class="fg fg-2">
+        <div class="form-group">
+          <label>Contact 1 <span class="req">*</span></label>
+          <input type="text" id="contact1" placeholder="Prénom NOM">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="tel-contact1" placeholder="06 XX XX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Portable</label>
+          <input type="tel" id="portable-contact1" placeholder="07 XX XX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="email-contact1" placeholder="contact@magasin.fr">
+        </div>
+        <div class="form-group">
+          <label>Contact 2</label>
+          <input type="text" id="contact2" placeholder="Prénom NOM">
+        </div>
+        <div class="form-group">
+          <label>Téléphone Contact 2</label>
+          <input type="tel" id="tel-contact2" placeholder="06 XX XX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Fonction</label>
+          <input type="text" id="fonction" placeholder="Responsable rayon, Gérant…">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2><span class="ico">💼</span> Contact Facturation</h2>
+      <div class="fg fg-2">
+        <div class="form-group">
+          <label>Nom du contact facturation</label>
+          <input type="text" id="contact-facturation" placeholder="Prénom NOM">
+        </div>
+        <div class="form-group">
+          <label>Email facturation</label>
+          <input type="email" id="email-facturation" placeholder="compta@magasin.fr">
+        </div>
+        <div class="form-group">
+          <label>Téléphone facturation</label>
+          <input type="tel" id="tel-facturation" placeholder="04 XX XX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Email secondaire facturation</label>
+          <input type="email" id="email-facturation2" placeholder="Optionnel">
+        </div>
+      </div>
+      <div style="margin-top:1rem">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;cursor:pointer;text-transform:none;letter-spacing:0">
+          <input type="checkbox" id="same-address" onchange="toggleAdresseFactu(this)" style="width:auto;background:none;border:none;padding:0"> Adresse de facturation identique à l'adresse magasin
+        </label>
+      </div>
+      <div id="adresse-factu-block" style="margin-top:1rem">
+        <div class="fg fg-2" style="margin-top:0.75rem">
+          <div class="form-group fg-full">
+            <label>Rue de facturation</label>
+            <input type="text" id="factu-rue" placeholder="Adresse de facturation">
+          </div>
+          <div class="form-group fg-full">
+            <label>Complément</label>
+            <input type="text" id="factu-complement" placeholder="Bâtiment, etc.">
+          </div>
+          <div class="form-group">
+            <label>Code postal</label>
+            <input type="text" id="factu-cp" placeholder="84000" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label>Ville</label>
+            <input type="text" id="factu-ville" placeholder="Ville">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== ÉTAPE 3 : LIVRAISONS ========== -->
+  <div class="form-section" id="section-3">
+    <div class="section-card">
+      <h2><span class="ico">🚚</span> Commandes & Livraisons</h2>
+
+      <div class="fg" style="margin-bottom:1.25rem">
+        <div class="form-group fg-full">
+          <label>Jours de livraison possibles</label>
+          <div class="jours-wrap" id="jours-wrap">
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Lundi">Lun</button>
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Mardi">Mar</button>
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Mercredi">Mer</button>
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Jeudi">Jeu</button>
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Vendredi">Ven</button>
+            <button type="button" class="jour-btn" onclick="toggleJour(this)" data-jour="Samedi">Sam</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Heures de livraison</label>
+          <div class="heures-wrap">
+            <input type="text" id="heure-debut" placeholder="08h00" style="width:90px">
+            <span>→</span>
+            <input type="text" id="heure-fin" placeholder="18h00" style="width:90px">
+          </div>
+        </div>
+
+        <div class="form-group fg-full">
+          <label>Informations complémentaires livraison</label>
+          <textarea id="info-livraison" rows="3" placeholder="Instructions d'accès, quai de déchargement, interphone, code portail…"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-card">
+      <h2><span class="ico">📝</span> Notes commerciales</h2>
+      <div class="fg">
+        <div class="form-group">
+          <label>Potentiel estimé (€/mois)</label>
+          <input type="number" id="potentiel" placeholder="Ex: 500" min="0">
+        </div>
+        <div class="form-group">
+          <label>Profil revendeur souhaité</label>
+          <select id="profil-revendeur">
+            <option value="">— À définir —</option>
+            <option value="Tarif Général MBS">Tarif Général MBS</option>
+            <option value="Revendeur Premium">Revendeur Premium</option>
+            <option value="Distributeur Exclusif">Distributeur Exclusif</option>
+          </select>
+        </div>
+        <div class="form-group fg-full">
+          <label>Commentaire / observations</label>
+          <textarea id="commentaire" rows="3" placeholder="Contexte de la prise de contact, intérêts particuliers, conditions spéciales négociées…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ÉTAPE 4 : DOCUMENTS ========== -->
+  <div class="form-section" id="section-4">
+    <div class="section-card">
+      <h2><span class="ico">📎</span> Pièces jointes <span id="file-count-badge" class="file-count-badge" style="display:none">0</span></h2>
+
+      <div class="alert alert-info" style="margin-bottom:1.25rem">
+        📌 Joignez tous les documents utiles : formulaire de création client scanné, RIB, Kbis, carte de visite, bon de commande initial…
+      </div>
+
+      <div class="upload-zone" id="upload-zone"
+        ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+          onchange="onFilesSelected(this.files)">
+        <span class="upload-icon">📂</span>
+        <div class="upload-title">Glissez vos fichiers ici</div>
+        <div class="upload-sub">ou <strong>cliquez pour parcourir</strong></div>
+        <div class="upload-sub" style="margin-top:0.4rem">PDF, images, Word, Excel · Plusieurs fichiers acceptés</div>
+      </div>
+
+      <div class="file-list" id="file-list"></div>
+
+    </div>
+  </div>
+
+  <!-- ========== ÉTAPE 5 : ENVOI ========== -->
+  <div class="form-section" id="section-5">
+
+    <div class="alert alert-info" id="alert-recap">
+      Vérifiez le récapitulatif avant d'envoyer la fiche prospect.
+    </div>
+    <div id="recap-content"></div>
+
+    <div class="section-card">
+      <h2><span class="ico">📧</span> Envoi du dossier</h2>
+
+      <div class="fg fg-2" style="margin-bottom:1rem">
+        <div class="form-group">
+          <label>Email destinataire</label>
+          <input type="email" id="email-dest" value="contact@biontruffe.fr">
+        </div>
+        <div class="form-group">
+          <label>Email en copie (CC)</label>
+          <input type="email" id="email-cc" placeholder="Optionnel">
+        </div>
+      </div>
+
+      <div id="files-warn" class="alert alert-warn" style="display:none">
+        ⚠️ Des fichiers sont joints. L'email s'ouvrira dans votre client mail — <strong>pensez à les joindre manuellement</strong> depuis la liste affichée ci-dessus.
+      </div>
+
+      <div class="nav-buttons" style="margin-top:0">
+        <button class="btn btn-outline" onclick="goStep(4)">← Retour</button>
+        <button class="btn btn-send" id="btn-send" onclick="sendProspect()">📧 Envoyer le dossier prospect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV BUTTONS (hors étape 5) -->
+  <div class="nav-buttons" id="nav-main">
+    <button class="btn btn-outline" id="btn-prev" onclick="prevStep()" style="visibility:hidden">← Précédent</button>
+    <button class="btn btn-vert" id="btn-next" onclick="nextStep()">Suivant →</button>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+let uploadedFiles = [];
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goStep(n) {
+  if (n < 1 || n > TOTAL_STEPS) return;
+
+  // Validate current before going forward
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  // Mark previous as done
+  for (let i = 1; i < n; i++) {
+    document.getElementById(`step-tab-${i}`).classList.remove('active');
+    document.getElementById(`step-tab-${i}`).classList.add('done');
+  }
+  for (let i = n + 1; i <= TOTAL_STEPS; i++) {
+    document.getElementById(`step-tab-${i}`).classList.remove('active','done');
+  }
+
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`section-${n}`).classList.add('active');
+
+  document.querySelectorAll('.progress-step').forEach(t => t.classList.remove('active'));
+  document.getElementById(`step-tab-${n}`).classList.remove('done');
+  document.getElementById(`step-tab-${n}`).classList.add('active');
+
+  currentStep = n;
+  updateNav();
+
+  if (n === 5) buildRecap();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() { goStep(currentStep + 1); }
+function prevStep() { goStep(currentStep - 1); }
+
+function updateNav() {
+  const navMain = document.getElementById('nav-main');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  navMain.style.display = currentStep === 5 ? 'none' : 'flex';
+  btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+  btnNext.textContent = currentStep === 4 ? 'Continuer → Envoi' : 'Suivant →';
+}
+
+// ============================================================
+// VALIDATION
+// ============================================================
+function validateStep(step) {
+  clearErrors();
+  let ok = true;
+
+  if (step === 1) {
+    ok = requireField('raison-sociale', 'La raison sociale est obligatoire') && ok;
+    ok = requireField('adresse-rue', 'La rue est obligatoire') && ok;
+    ok = requireField('cp-magasin', 'Le code postal est obligatoire') && ok;
+    ok = requireField('ville-magasin', 'La ville est obligatoire') && ok;
+  }
+  if (step === 2) {
+    ok = requireField('contact1', 'Le nom du contact principal est obligatoire') && ok;
+    ok = requireField('email-contact1', 'L\'email du contact principal est obligatoire') && ok;
+  }
+
+  return ok;
+}
+
+function requireField(id, msg) {
+  const el = document.getElementById(id);
+  if (!el || !el.value.trim()) {
+    if (el) el.classList.add('error');
+    showFieldError(el, msg);
+    return false;
+  }
+  return true;
+}
+
+function showFieldError(el, msg) {
+  if (!el) return;
+  const err = document.createElement('span');
+  err.className = 'field-error';
+  err.style.cssText = 'font-size:0.68rem;color:var(--err);margin-top:2px;display:block';
+  err.textContent = '⚠ ' + msg;
+  el.parentNode.appendChild(err);
+}
+
+function clearErrors() {
+  document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
+  document.querySelectorAll('.field-error').forEach(e => e.remove());
+}
+
+// ============================================================
+// JOURS LIVRAISON
+// ============================================================
+function toggleJour(btn) { btn.classList.toggle('selected'); }
+
+function getJoursSelected() {
+  return Array.from(document.querySelectorAll('.jour-btn.selected')).map(b => b.dataset.jour);
+}
+
+// ============================================================
+// ADRESSE FACTURATION
+// ============================================================
+function toggleAdresseFactu(cb) {
+  document.getElementById('adresse-factu-block').style.display = cb.checked ? 'none' : 'block';
+}
+
+// ============================================================
+// UPLOAD FILES
+// ============================================================
+function onDragOver(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('drag-over');
+}
+function onDragLeave(e) {
+  document.getElementById('upload-zone').classList.remove('drag-over');
+}
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag-over');
+  onFilesSelected(e.dataTransfer.files);
+}
+
+function onFilesSelected(files) {
+  Array.from(files).forEach(file => {
+    if (uploadedFiles.find(f => f.name === file.name && f.size === file.size)) return;
+    uploadedFiles.push(file);
+  });
+  renderFileList();
+  // Reset input so same file can be re-added after removal
+  document.getElementById('file-input').value = '';
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  renderFileList();
+}
+
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  const badge = document.getElementById('file-count-badge');
+  const warn = document.getElementById('files-warn');
+
+  badge.textContent = uploadedFiles.length;
+  badge.style.display = uploadedFiles.length > 0 ? 'inline-block' : 'none';
+  if (warn) warn.style.display = uploadedFiles.length > 0 ? 'block' : 'none';
+
+  if (!uploadedFiles.length) { list.innerHTML = ''; return; }
+
+  list.innerHTML = uploadedFiles.map((f, i) => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    const icon = ext === 'pdf' ? '📄' : ['jpg','jpeg','png'].includes(ext) ? '🖼️' : ['doc','docx'].includes(ext) ? '📝' : '📎';
+    const size = f.size > 1024*1024 ? (f.size/1024/1024).toFixed(1)+' Mo' : (f.size/1024).toFixed(0)+' Ko';
+    return `
+    <div class="file-item">
+      <span class="file-item-icon">${icon}</span>
+      <div class="file-item-info">
+        <div class="file-item-name">${f.name}</div>
+        <div class="file-item-size">${size} · ${ext.toUpperCase()}</div>
+      </div>
+      <button class="file-item-remove" onclick="removeFile(${i})" title="Supprimer">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// RECAP
+// ============================================================
+function buildRecap() {
+  const raisonSociale = v('raison-sociale');
+  const rue = v('adresse-rue');
+  const complement = v('adresse-complement');
+  const cp = v('cp-magasin');
+  const ville = v('ville-magasin');
+  const tel = v('tel-magasin');
+  const emailMag = v('email-magasin');
+  const surface = v('surface');
+  const siret = v('siret');
+  const tvaIntra = v('tva-intra');
+  const capital = v('capital');
+  const naf = v('code-naf');
+
+  const contact1 = v('contact1');
+  const tel1 = v('tel-contact1');
+  const portable1 = v('portable-contact1');
+  const email1 = v('email-contact1');
+  const contact2 = v('contact2');
+  const fonction = v('fonction');
+  const contactFactu = v('contact-facturation');
+  const emailFactu = v('email-facturation');
+
+  const jours = getJoursSelected();
+  const hDebut = v('heure-debut');
+  const hFin = v('heure-fin');
+  const infoLiv = v('info-livraison');
+  const potentiel = v('potentiel');
+  const profil = v('profil-revendeur');
+  const commentaire = v('commentaire');
+
+  const sameAddr = document.getElementById('same-address').checked;
+  const factuRue = sameAddr ? rue : v('factu-rue');
+  const factuCp = sameAddr ? cp : v('factu-cp');
+  const factuVille = sameAddr ? ville : v('factu-ville');
+
+  const rows = (label, val) => val ? `<div class="recap-row"><span class="recap-label">${label}</span><span class="recap-value">${val}</span></div>` : '';
+
+  document.getElementById('recap-content').innerHTML = `
+    <div class="recap-block">
+      <h3>🏪 Magasin</h3>
+      ${rows('Raison sociale', raisonSociale)}
+      ${rows('Adresse', [rue, complement, cp, ville].filter(Boolean).join(', '))}
+      ${rows('Téléphone', tel)} ${rows('Email magasin', emailMag)}
+      ${rows('Surface', surface ? surface+' m²' : '')}
+      ${rows('SIRET', siret)} ${rows('TVA intra', tvaIntra ? 'FR '+tvaIntra : '')}
+      ${rows('Capital', capital)} ${rows('Code NAF', naf)}
+    </div>
+    <div class="recap-block">
+      <h3>👤 Contacts</h3>
+      ${rows('Contact principal', contact1)} ${rows('Fonction', fonction)}
+      ${rows('Tél / Portable', [tel1,portable1].filter(Boolean).join(' / '))}
+      ${rows('Email', email1)}
+      ${rows('Contact 2', contact2)}
+      ${rows('Contact facturation', contactFactu)} ${rows('Email facturation', emailFactu)}
+      ${rows('Adresse facturation', sameAddr ? '(identique magasin)' : [factuRue, factuCp, factuVille].filter(Boolean).join(', '))}
+    </div>
+    <div class="recap-block">
+      <h3>🚚 Livraisons</h3>
+      ${rows('Jours', jours.length ? jours.join(', ') : '—')}
+      ${rows('Horaires', hDebut&&hFin ? hDebut+' → '+hFin : hDebut||hFin||'')}
+      ${rows('Infos', infoLiv)}
+      ${rows('Potentiel', potentiel ? potentiel+' €/mois' : '')}
+      ${rows('Profil souhaité', profil)}
+      ${rows('Commentaire', commentaire)}
+    </div>
+    ${uploadedFiles.length ? `
+    <div class="recap-block">
+      <h3>📎 Documents (${uploadedFiles.length} fichier${uploadedFiles.length>1?'s':''})</h3>
+      ${uploadedFiles.map(f=>`<div class="recap-row"><span class="recap-label">📄</span><span class="recap-value">${f.name}</span></div>`).join('')}
+    </div>` : ''}
+  `;
+}
+
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+// ============================================================
+// SEND
+// ============================================================
+function sendProspect() {
+  const dest = v('email-dest') || 'contact@biontruffe.fr';
+  const cc = v('email-cc');
+  const raisonSociale = v('raison-sociale');
+  const cp = v('cp-magasin');
+  const ville = v('ville-magasin');
+  const rue = v('adresse-rue');
+  const complement = v('adresse-complement');
+  const telMag = v('tel-magasin');
+  const emailMag = v('email-magasin');
+  const surface = v('surface');
+  const siret = v('siret');
+  const tvaIntra = v('tva-intra');
+  const capital = v('capital');
+  const naf = v('code-naf');
+
+  const contact1 = v('contact1');
+  const tel1 = v('tel-contact1');
+  const portable1 = v('portable-contact1');
+  const email1 = v('email-contact1');
+  const contact2 = v('contact2');
+  const tel2 = v('tel-contact2');
+  const fonction = v('fonction');
+  const contactFactu = v('contact-facturation');
+  const emailFactu = v('email-facturation');
+  const emailFactu2 = v('email-facturation2');
+  const telFactu = v('tel-facturation');
+
+  const sameAddr = document.getElementById('same-address').checked;
+  const factuRue = sameAddr ? rue : v('factu-rue');
+  const factuComplement = sameAddr ? complement : v('factu-complement');
+  const factuCp = sameAddr ? cp : v('factu-cp');
+  const factuVille = sameAddr ? ville : v('factu-ville');
+
+  const jours = getJoursSelected();
+  const hDebut = v('heure-debut');
+  const hFin = v('heure-fin');
+  const infoLiv = v('info-livraison');
+  const potentiel = v('potentiel');
+  const profil = v('profil-revendeur');
+  const commentaire = v('commentaire');
+
+  const date = new Date().toLocaleDateString('fr-FR');
+
+  const lignes = [
+    `FORMULAIRE CRÉATION CLIENT — BIO N TRUFFE (ERIDAN BNT)`,
+    `Date : ${date}`,
+    ``,
+    `════════════════════════════════`,
+    `🏪 INFORMATIONS MAGASIN`,
+    `════════════════════════════════`,
+    `Raison sociale    : ${raisonSociale}`,
+    `Adresse           : ${rue}${complement ? ', '+complement : ''}`,
+    `Code postal / Ville : ${cp} ${ville}`,
+    `Téléphone         : ${telMag || '—'}`,
+    `Email magasin     : ${emailMag || '—'}`,
+    `Surface commerciale : ${surface ? surface+' m²' : '—'}`,
+    ``,
+    `SIRET             : ${siret || '—'}`,
+    `N° TVA intra      : ${tvaIntra ? 'FR '+tvaIntra : '—'}`,
+    `Capital           : ${capital || '—'}`,
+    `Code NAF/APE      : ${naf || '—'}`,
+    ``,
+    `════════════════════════════════`,
+    `👤 CONTACTS ÉPICERIE`,
+    `════════════════════════════════`,
+    `Contact 1         : ${contact1}`,
+    `Fonction          : ${fonction || '—'}`,
+    `Téléphone         : ${tel1 || '—'}`,
+    `Portable          : ${portable1 || '—'}`,
+    `Email             : ${email1}`,
+    contact2 ? `Contact 2         : ${contact2}` : '',
+    contact2 && tel2 ? `Téléphone C2      : ${tel2}` : '',
+    ``,
+    `════════════════════════════════`,
+    `💼 CONTACT FACTURATION`,
+    `════════════════════════════════`,
+    `Nom               : ${contactFactu || '—'}`,
+    `Email             : ${emailFactu || '—'}`,
+    emailFactu2 ? `Email (2)         : ${emailFactu2}` : '',
+    `Téléphone         : ${telFactu || '—'}`,
+    `Adresse facturation : ${sameAddr ? '(identique magasin)' : [factuRue, factuComplement, factuCp, factuVille].filter(Boolean).join(', ') || '—'}`,
+    ``,
+    `════════════════════════════════`,
+    `🚚 COMMANDES & LIVRAISONS`,
+    `════════════════════════════════`,
+    `Jours livraison   : ${jours.length ? jours.join(', ') : '—'}`,
+    `Horaires          : ${hDebut && hFin ? hDebut+' → '+hFin : hDebut || hFin || '—'}`,
+    `Infos livraison   : ${infoLiv || '—'}`,
+    ``,
+    `════════════════════════════════`,
+    `📊 INFORMATIONS COMMERCIALES`,
+    `════════════════════════════════`,
+    `Potentiel estimé  : ${potentiel ? potentiel+' €/mois' : '—'}`,
+    `Profil revendeur  : ${profil || '—'}`,
+    commentaire ? `Commentaire       : ${commentaire}` : '',
+    ``,
+    uploadedFiles.length ? `════════════════════════════════` : '',
+    uploadedFiles.length ? `📎 DOCUMENTS JOINTS (${uploadedFiles.length})` : '',
+    uploadedFiles.length ? `════════════════════════════════` : '',
+    ...uploadedFiles.map((f,i) => `  ${i+1}. ${f.name}`),
+    uploadedFiles.length ? `⚠ Les fichiers doivent être joints manuellement à cet email.` : '',
+    ``,
+    `— Fiche générée via BIO N TRUFFE CRM · Eridan BNT`,
+  ].filter(l => l !== '').join('\n');
+
+  const subject = encodeURIComponent(`Nouveau prospect — ${raisonSociale} (${cp} ${ville}) — ${date}`);
+  const body = encodeURIComponent(lignes);
+  const ccPart = cc ? `&cc=${encodeURIComponent(cc)}` : '';
+
+  // ── Sauvegarde dans sessionStorage pour le CRM ──
+  const sameAddr = document.getElementById('same-address').checked;
+  const prospectData = {
+    id:            'pro_' + Date.now(),
+    type:          'prospect',
+    createdAt:     new Date().toISOString(),
+    raisonSociale, rue, complement: v('adresse-complement'),
+    cp, ville,
+    telMagasin:    v('tel-magasin'), emailMagasin: v('email-magasin'),
+    surface:       v('surface'), siret, tvaIntra,
+    capital, naf:  v('code-naf'),
+    contact1, tel1, portable1: v('portable-contact1'), email1,
+    contact2, tel2: v('tel-contact2'), fonction,
+    contactFactu:  v('contact-facturation'),
+    emailFactu:    v('email-facturation'),
+    emailFactu2:   v('email-facturation2'),
+    telFactu:      v('tel-facturation'),
+    factuMemeAdresse: sameAddr,
+    factuRue:      sameAddr ? rue : v('factu-rue'),
+    factuComplement: sameAddr ? v('adresse-complement') : v('factu-complement'),
+    factuCp:       sameAddr ? cp : v('factu-cp'),
+    factuVille:    sameAddr ? ville : v('factu-ville'),
+    joursLivraison: jours,
+    heureDebut:    v('heure-debut'), heureFin: v('heure-fin'),
+    infoLivraison: v('info-livraison'),
+    potentiel:     v('potentiel'),
+    profil:        v('profil-revendeur'),
+    commentaire:   v('commentaire'),
+    fichiers:      uploadedFiles.map(f => ({ nom: f.name, taille: f.size }))
+  };
+  sessionStorage.setItem('bnt_new_prospect', JSON.stringify(prospectData));
+
+  window.location.href = `mailto:${dest}?subject=${subject}${ccPart}&body=${body}`;
+
+  setTimeout(() => {
+    const msg = uploadedFiles.length
+      ? `La fiche a été préparée dans votre client email. ⚠️ N'oubliez pas de joindre les ${uploadedFiles.length} fichier(s) manuellement avant d'envoyer.`
+      : `La fiche de création client a été transmise à Pierre BAUDIN. Un suivi sera effectué prochainement.`;
+    document.getElementById('success-msg').textContent = msg;
+    document.getElementById('success').style.display = 'flex';
+
+    // Bouton vers le CRM
+    document.querySelector('.s-actions').insertAdjacentHTML('afterbegin',
+      `<a href="clients.html" style="background:var(--vert);color:var(--blanc);border-color:var(--vert)">Voir dans le CRM →</a>`
+    );
+  }, 800);
+}
+</script>
+</body>
+</html>
