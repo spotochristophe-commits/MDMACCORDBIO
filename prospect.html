@@ -258,7 +258,7 @@
 <div class="success-overlay" id="success">
   <div class="s-icon">🌿</div>
   <h2>Fiche prospect envoyée !</h2>
-  <p id="success-msg">La fiche de création client a été transmise à Pierre BAUDIN avec les documents joints. Un suivi sera effectué prochainement.</p>
+  <p id="success-msg">La fiche de création client a été transmise à Christophe SPOTO avec les documents joints. Un suivi sera effectué prochainement.</p>
   <div class="s-actions">
     <a href="prospect.html">Nouveau prospect</a>
     <a href="index.html" class="secondary">Retour au portail</a>
@@ -278,7 +278,7 @@
 
   <div class="page-header">
     <h1>👤 Nouveau Prospect Client</h1>
-    <p>Renseignez les informations du nouveau client et joignez les documents nécessaires. Le dossier sera envoyé par email à Pierre BAUDIN.</p>
+    <p>Renseignez les informations du nouveau client et joignez les documents nécessaires. Le dossier sera envoyé par email à Christophe SPOTO.</p>
   </div>
 
   <!-- PROGRESS -->
@@ -549,7 +549,7 @@
       <div class="fg fg-2" style="margin-bottom:1rem">
         <div class="form-group">
           <label>Email destinataire</label>
-          <input type="email" id="email-dest" value="contact@biontruffe.fr">
+          <input type="email" id="email-dest" value="spoto.christophe@gmail.com">
         </div>
         <div class="form-group">
           <label>Email en copie (CC)</label>
@@ -834,7 +834,7 @@ function v(id) {
 // SEND
 // ============================================================
 function sendProspect() {
-  const dest = v('email-dest') || 'contact@biontruffe.fr';
+  const dest = v('email-dest') || 'spoto.christophe@gmail.com';
   const cc = v('email-cc');
   const raisonSociale = v('raison-sociale');
   const cp = v('cp-magasin');
@@ -980,7 +980,7 @@ function sendProspect() {
   setTimeout(() => {
     const msg = uploadedFiles.length
       ? `La fiche a été préparée dans votre client email. ⚠️ N'oubliez pas de joindre les ${uploadedFiles.length} fichier(s) manuellement avant d'envoyer.`
-      : `La fiche de création client a été transmise à Pierre BAUDIN. Un suivi sera effectué prochainement.`;
+      : `La fiche de création client a été transmise à Christophe SPOTO. Un suivi sera effectué prochainement.`;
     document.getElementById('success-msg').textContent = msg;
     document.getElementById('success').style.display = 'flex';
 

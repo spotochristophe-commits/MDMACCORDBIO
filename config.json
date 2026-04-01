@@ -2,11 +2,15 @@
   "societe": {
     "nom": "BIO N TRUFFE",
     "slogan": "L'épicerie fine à la truffe, certifiée bio",
-    "email_commandes": "commandes@bio-n-truffe.fr",
-    "telephone": "+33 (0)4 XX XX XX XX",
-    "adresse": "France",
-    "site_web": "www.bio-n-truffe.fr",
-    "siret": "XXX XXX XXX XXXXX"
+    "email_commandes": "spoto.christophe@gmail.com",
+    "telephone": "06 78 37 89 06",
+    "contact": "Christophe SPOTO",
+    "adresse": "65 Allée des Oliviers II, 84290 CAIRANNE",
+    "site_web": "www.biontruffe.fr",
+    "siret": "91796844800014",
+    "tva_intra": "FR 84917968448",
+    "ape": "4639B",
+    "forme_juridique": "ERIDAN BNT SARL au capital de 10 000 €"
   },
   "apparence": {
     "couleur_primaire": "#2d4a2d",
@@ -16,94 +20,245 @@
     "logo_texte": "BIO N TRUFFE"
   },
   "tva": {
-    "taux_reduit": 5.5,
-    "taux_normal": 20.0
+    "taux_unique": 5.5,
+    "note": "TVA 5,5% sur tous les produits"
   },
   "catalogue": [
     {
       "id": "cat1",
-      "nom": "Huiles & Condiments",
+      "nom": "Aides Culinaires — Pâtes & Sauces",
       "produits": [
-        { "id": "p01", "nom": "Huile d'olive bio à la truffe noire 100ml", "unite": "bouteille", "prix_ht": 14.50, "tva": 5.5, "description": "Huile d'olive extra vierge bio, aromatisée truffe noire" },
-        { "id": "p02", "nom": "Huile d'olive bio à la truffe noire 250ml", "unite": "bouteille", "prix_ht": 28.90, "tva": 5.5, "description": "Format familial, huile d'olive bio et truffe noire" },
-        { "id": "p03", "nom": "Vinaigre balsamique à la truffe 100ml", "unite": "bouteille", "prix_ht": 12.80, "tva": 5.5, "description": "Vinaigre balsamique de Modène IGP et truffe noire" },
-        { "id": "p04", "nom": "Sel de Guérande à la truffe noire 100g", "unite": "pot", "prix_ht": 8.90, "tva": 5.5, "description": "Sel de Guérande Label Rouge et brisures de truffe noire" },
-        { "id": "p05", "nom": "Fleur de sel à la truffe blanche 80g", "unite": "pot", "prix_ht": 12.50, "tva": 5.5, "description": "Fleur de sel et arôme truffe blanche d'Alba" }
+        {
+          "id": "p01",
+          "nom": "Tartuffade à la Truffe Noire 2% Bio",
+          "poids": "80g",
+          "ean": "3770028175086",
+          "pcb": 12,
+          "unite": "pot",
+          "prix_ht": 8.50,
+          "prix_carton_ht": 102.00,
+          "tva": 5.5,
+          "description": "Préparation à base de truffe noire 2%, certifiée bio"
+        },
+        {
+          "id": "p02",
+          "nom": "Délice de Cèpes et Truffe Noire 2% Bio",
+          "poids": "80g",
+          "ean": "3770028175079",
+          "pcb": 12,
+          "unite": "pot",
+          "prix_ht": 8.50,
+          "prix_carton_ht": 102.00,
+          "tva": 5.5,
+          "description": "Alliance de cèpes et truffe noire 2%, certifiée bio"
+        },
+        {
+          "id": "p03",
+          "nom": "Sauce Crémée à la Truffe Noire 1,5% Bio",
+          "poids": "80g",
+          "ean": "3770028175062",
+          "pcb": 12,
+          "unite": "pot",
+          "prix_ht": 8.50,
+          "prix_carton_ht": 102.00,
+          "tva": 5.5,
+          "description": "Sauce onctueuse à la truffe noire 1,5%, certifiée bio"
+        },
+        {
+          "id": "p04",
+          "nom": "Crème de Parmesan et Truffe Noire 1,5% Bio",
+          "poids": "80g",
+          "ean": "3770028175055",
+          "pcb": 12,
+          "unite": "pot",
+          "prix_ht": 8.50,
+          "prix_carton_ht": 102.00,
+          "tva": 5.5,
+          "description": "Crème de parmesan et truffe noire 1,5%, certifiée bio"
+        }
       ]
     },
     {
       "id": "cat2",
-      "nom": "Pâtes & Sauces",
+      "nom": "Crèmes Balsamiques & Huiles d'Olive",
       "produits": [
-        { "id": "p06", "nom": "Pâte de truffe noire bio 50g", "unite": "pot", "prix_ht": 19.80, "tva": 5.5, "description": "30% truffe melanosporum, huile d'olive bio, sel" },
-        { "id": "p07", "nom": "Sauce à la truffe noire 90g", "unite": "pot", "prix_ht": 16.50, "tva": 5.5, "description": "Sauce champignons et truffe noire, idéale sur pâtes" },
-        { "id": "p08", "nom": "Tapenade truffée bio 90g", "unite": "pot", "prix_ht": 11.90, "tva": 5.5, "description": "Olives noires bio et truffe noire, recette artisanale" },
-        { "id": "p09", "nom": "Beurre de truffe noire 100g", "unite": "pot", "prix_ht": 14.20, "tva": 5.5, "description": "Beurre doux bio et brisures de truffe noire" }
+        {
+          "id": "p05",
+          "nom": "Crème de Balsamique à la Truffe Noire 1,1% Bio — 150ml",
+          "poids": "150ml",
+          "ean": "3770028175017",
+          "pcb": 12,
+          "unite": "bouteille",
+          "prix_ht": 10.50,
+          "prix_carton_ht": 126.00,
+          "tva": 5.5,
+          "description": "Crème de balsamique et truffe noire 1,1%, certifiée bio"
+        },
+        {
+          "id": "p06",
+          "nom": "Crème de Balsamique à la Truffe Noire 1,1% Bio — 100ml",
+          "poids": "100ml",
+          "ean": "3770028175147",
+          "pcb": 12,
+          "unite": "bouteille",
+          "prix_ht": 10.50,
+          "prix_carton_ht": 126.00,
+          "tva": 5.5,
+          "description": "Format 100ml — crème de balsamique et truffe noire 1,1%, bio"
+        },
+        {
+          "id": "p07",
+          "nom": "Huile d'Olive Vierge Extra à la Truffe Noire Bio — 250ml",
+          "poids": "250ml",
+          "ean": "3770028175109",
+          "pcb": 12,
+          "unite": "bouteille",
+          "prix_ht": 19.00,
+          "prix_carton_ht": 228.00,
+          "tva": 5.5,
+          "description": "Huile d'olive vierge extra aromatisée à la truffe noire, bio"
+        },
+        {
+          "id": "p08",
+          "nom": "Huile d'Olive Vierge Extra à la Truffe Noire Bio — 100ml",
+          "poids": "100ml",
+          "ean": "3770028175116",
+          "pcb": 12,
+          "unite": "bouteille",
+          "prix_ht": 11.00,
+          "prix_carton_ht": 132.00,
+          "tva": 5.5,
+          "description": "Format 100ml — huile d'olive vierge extra à la truffe noire, bio"
+        }
       ]
     },
     {
       "id": "cat3",
-      "nom": "Féculents & Épicerie",
+      "nom": "Miels",
       "produits": [
-        { "id": "p10", "nom": "Tagliatelles à la truffe noire bio 250g", "unite": "sachet", "prix_ht": 9.80, "tva": 5.5, "description": "Pâtes aux œufs bio, parfumées à la truffe noire" },
-        { "id": "p11", "nom": "Risotto à la truffe noire bio 300g", "unite": "sachet", "prix_ht": 11.50, "tva": 5.5, "description": "Riz Arborio bio, champignons séchés et truffe noire" },
-        { "id": "p12", "nom": "Polenta à la truffe 375g", "unite": "sachet", "prix_ht": 8.60, "tva": 5.5, "description": "Polenta de maïs bio et arôme truffe" },
-        { "id": "p13", "nom": "Miel de fleurs à la truffe noire 150g", "unite": "pot", "prix_ht": 16.50, "tva": 5.5, "description": "Miel toutes fleurs bio et truffe noire, accord sucré-salé" },
-        { "id": "p14", "nom": "Chips à la truffe noire 100g", "unite": "sachet", "prix_ht": 6.90, "tva": 5.5, "description": "Chips artisanales huile de tournesol et truffe noire" }
+        {
+          "id": "p09",
+          "nom": "Miel d'Acacia à la Truffe Noire 1,1% Bio",
+          "poids": "100g",
+          "ean": "3770028175000",
+          "pcb": 12,
+          "unite": "pot",
+          "prix_ht": 10.50,
+          "prix_carton_ht": 126.00,
+          "tva": 5.5,
+          "description": "Miel d'acacia et truffe noire 1,1%, certifié bio"
+        }
       ]
     },
     {
       "id": "cat4",
-      "nom": "Fromages & Charcuterie",
+      "nom": "Truffes Brutes — Tuber melanosporum Bio",
       "produits": [
-        { "id": "p15", "nom": "Saucisson sec à la truffe noire 200g", "unite": "pièce", "prix_ht": 18.90, "tva": 5.5, "description": "Saucisson pur porc, affiné et parfumé à la truffe noire" },
-        { "id": "p16", "nom": "Foie gras de canard à la truffe 100g", "unite": "bocal", "prix_ht": 34.50, "tva": 5.5, "description": "Foie gras de canard IGP Sud-Ouest et truffe noire" }
+        {
+          "id": "p10",
+          "nom": "Truffes Noires Brossées 1ère Cuisson Bio",
+          "poids": "20g",
+          "ean": "3770028175130",
+          "pcb": 6,
+          "unite": "pot",
+          "prix_ht": 25.00,
+          "prix_carton_ht": 150.00,
+          "tva": 5.5,
+          "description": "Tuber melanosporum brossées, 1ère cuisson, origine France, bio"
+        },
+        {
+          "id": "p11",
+          "nom": "Truffe Noire Brisures 1ère Cuisson Bio",
+          "poids": "20g",
+          "ean": "3770028175123",
+          "pcb": 6,
+          "unite": "pot",
+          "prix_ht": 20.00,
+          "prix_carton_ht": 120.00,
+          "tva": 5.5,
+          "description": "Brisures de Tuber melanosporum, 1ère cuisson, origine France, bio"
+        }
       ]
     },
     {
       "id": "cat5",
-      "nom": "Coffrets Cadeaux",
+      "nom": "Snacking & Nouveautés",
       "produits": [
-        { "id": "p17", "nom": "Coffret Découverte 3 produits", "unite": "coffret", "prix_ht": 42.00, "tva": 20.0, "description": "Huile, sel et pâte de truffe noire bio — format cadeau" },
-        { "id": "p18", "nom": "Coffret Prestige 5 produits", "unite": "coffret", "prix_ht": 89.00, "tva": 20.0, "description": "Sélection de 5 produits phares, emballage luxe recyclé" },
-        { "id": "p19", "nom": "Box Épicerie Fine Mensuelle", "unite": "box", "prix_ht": 59.00, "tva": 20.0, "description": "Box surprise de saison, 4 à 5 produits expédiés chaque mois" }
+        {
+          "id": "p12",
+          "nom": "Duo Cajou Amande à la Truffe d'Été 1,4% Bio",
+          "poids": "100g",
+          "ean": "3770028175161",
+          "pcb": 6,
+          "unite": "sachet",
+          "prix_ht": 9.50,
+          "prix_carton_ht": 57.00,
+          "tva": 5.5,
+          "description": "✨ Nouveauté — Cajou & amande à la truffe d'été 1,4% bio, à croquer !"
+        },
+        {
+          "id": "p13",
+          "nom": "Chips Artisanales à la Truffe d'Été 1% Bio",
+          "poids": "100g",
+          "ean": "3770028175154",
+          "pcb": 16,
+          "unite": "sachet",
+          "prix_ht": 3.90,
+          "prix_carton_ht": 62.40,
+          "tva": 5.5,
+          "description": "✨ Nouveauté snacking — Pomme de terre origine France, truffe d'été 1% bio"
+        }
+      ]
+    },
+    {
+      "id": "cat6",
+      "nom": "Coffrets & Cadeaux",
+      "produits": [
+        {
+          "id": "p14",
+          "nom": "Coffret Festif Aides Culinaires à la Truffe",
+          "poids": "Sur mesure",
+          "ean": "3770028175093",
+          "pcb": null,
+          "unite": "coffret",
+          "prix_ht": null,
+          "prix_carton_ht": null,
+          "tva": 5.5,
+          "description": "Cadeaux clients, séminaires, CSE — composition sur mesure (vin, chocolats bio…). Prix sur demande."
+        }
       ]
     }
   ],
   "revendeurs": [
     {
       "id": "rev1",
-      "nom": "Revendeur Standard",
-      "remise_globale": 10,
+      "nom": "Tarif Général MBS",
+      "remise_globale": 0,
       "remises_categories": {}
     },
     {
       "id": "rev2",
       "nom": "Revendeur Premium",
-      "remise_globale": 15,
-      "remises_categories": {
-        "cat1": 18,
-        "cat2": 17
-      }
+      "remise_globale": 10,
+      "remises_categories": {}
     },
     {
       "id": "rev3",
       "nom": "Distributeur Exclusif",
-      "remise_globale": 20,
-      "remises_categories": {
-        "cat1": 22,
-        "cat2": 20,
-        "cat3": 18,
-        "cat4": 18
-      }
+      "remise_globale": 15,
+      "remises_categories": {}
     }
   ],
   "conditions": {
-    "minimum_commande_ht": 150,
-    "delai_livraison": "3 à 5 jours ouvrés",
-    "franco_port": 500,
-    "conditions_paiement": "30 jours fin de mois"
+    "minimum_commande_ht": 450,
+    "franco_port_ht": 450,
+    "franco_port_colis": 5,
+    "note_franco": "Franco à partir de 5 colis ou 450 €",
+    "delai_livraison": "Sur accord",
+    "conditions_paiement": "À réception de facture",
+    "tarif_version": "V15 — applicable au 01 Mars 2026",
+    "tva_note": "TVA 5,5% sur tous les produits"
   },
-  "version": "1.0.0",
-  "date_creation": "2026-03-31"
+  "version": "2.0.0",
+  "date_creation": "2026-03-01"
 }
