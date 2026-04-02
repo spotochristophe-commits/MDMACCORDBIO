@@ -239,7 +239,7 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
 <div class="success-overlay" id="success">
   <div class="icon">✅</div>
   <h2>Commande envoyée !</h2>
-  <p>Le bon de commande a été transmis directement à <strong>loacdev@outlook.fr</strong>. Christophe SPOTO vous contactera pour confirmer la livraison.</p>
+  <p>Le bon de commande a été transmis directement à <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afc3c0cecccbcad9efc0dadbc3c0c0c481c9dd">[email&#160;protected]</a></strong>. Christophe SPOTO vous contactera pour confirmer la livraison.</p>
   <a href="commande.html">Nouvelle commande</a>
 </div>
 
@@ -356,7 +356,7 @@ input::placeholder,textarea::placeholder{color:var(--s600);}
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 let config = null;
 let remiseGlobale = 0;
 let remisesCategories = {};
@@ -393,6 +393,13 @@ async function init() {
 
   renderCatalogue();
   updateRecap();
+
+  // Afficher succès si retour depuis FormSubmit
+  if (new URLSearchParams(window.location.search).get('sent') === '1') {
+    document.getElementById('success').style.display = 'flex';
+    // Nettoyer l'URL sans recharger
+    history.replaceState(null, '', window.location.pathname);
+  }
 }
 
 function populateRevendeurs() {
@@ -616,112 +623,100 @@ function submitCommande() {
   const dateL  = document.getElementById('f-date').value;
   const comment= document.getElementById('f-comment').value.trim();
 
+  // ── Calcul des lignes ──
   const inputs = document.querySelectorAll('.qty-input');
-  let lignes = []; let totalHT = 0; let totalColis = 0; let totalUVC = 0;
-
+  let detailLignes = []; let totalHT = 0; let totalColis = 0; let totalUVC = 0;
   inputs.forEach(inp => {
     const nbColis = parseInt(inp.value) || 0; if (!nbColis) return;
     const prixCarton = parseFloat(inp.dataset.prixCarton);
     const pcb        = parseInt(inp.dataset.pcb) || 1;
-    const uvc        = nbColis * pcb;
-    const ht         = nbColis * prixCarton;
+    const uvc = nbColis * pcb;
+    const ht  = nbColis * prixCarton;
     totalHT    += ht;
     totalColis += nbColis;
     totalUVC   += uvc;
-    lignes.push(
-      `${inp.dataset.nom} (${inp.dataset.poids}) — ${nbColis} colis · ${uvc} UVC (PCB ${pcb}) · ${prixCarton.toFixed(2)} €/colis = ${ht.toFixed(2)} € HT`
-    );
+    detailLignes.push(`${inp.dataset.nom} (${inp.dataset.poids}) : ${nbColis} colis x ${uvc} UVC (PCB ${pcb}) x ${prixCarton.toFixed(2)} EUR/colis = ${ht.toFixed(2)} EUR HT`);
   });
 
-  const tva     = totalHT * 0.055;
+  const tva      = totalHT * 0.055;
   const totalTTC = totalHT + tva;
   const dateStr  = new Date().toLocaleDateString('fr-FR');
-  const franco   = totalColis >= 5 || totalHT >= 450 ? 'OUI ✓' : 'NON — port en sus';
+  const franco   = (totalColis >= 5 || totalHT >= 450) ? 'OUI' : 'NON - port en sus';
 
-  // ── Construction du message structuré ──
-  const lignesText = lignes.map(l =>
-    `• ${l.nom} (${l.poids}) : ${l.nbColis} colis × ${l.prixCarton.toFixed(2)} € = ${l.ht.toFixed(2)} € HT  |  ${l.uvc} UVC (PCB ${l.pcb})`
-  ).join('\n');
+  // ── Construction du corps du message ──
+  const corps = [
+    '=== BON DE COMMANDE BIO N TRUFFE ===',
+    'Tarif V15 - 01/03/2026 - ' + dateStr,
+    '',
+    '--- CLIENT ---',
+    'Profil      : ' + revNom,
+    'Magasin     : ' + societe,
+    'Adresse     : ' + cp + ' ' + ville,
+    'Telephone   : ' + (tel||'-'),
+    'Email       : ' + email,
+    'Contact     : ' + (nom||'-'),
+    'Livraison   : ' + (dateL||'Sur accord'),
+    '',
+    '--- PRODUITS COMMANDES (au colis) ---',
+    ...detailLignes,
+    '',
+    '--- TOTAUX ---',
+    'Nb colis    : ' + totalColis,
+    'Nb UVC      : ' + totalUVC,
+    'Total HT    : ' + totalHT.toFixed(2) + ' EUR',
+    'TVA 5,5%    : ' + tva.toFixed(2) + ' EUR',
+    'Total TTC   : ' + totalTTC.toFixed(2) + ' EUR',
+    'Franco port : ' + franco,
+    comment ? ('Commentaire : ' + comment) : '',
+    '',
+    '--- Envoye via BIO N TRUFFE CRM ---',
+  ].filter(Boolean).join('\n');
 
-  const message = [
-    `BON DE COMMANDE — BIO N TRUFFE`,
-    `Tarif V15 · 01/03/2026 · ${dateStr}`,
-    ``,
-    `CLIENT`,
-    `Profil        : ${revNom}`,
-    `Magasin       : ${societe}`,
-    `Adresse       : ${cp} ${ville}`,
-    `Téléphone     : ${tel||'—'}`,
-    `Email         : ${email}`,
-    `Contact       : ${nom||'—'}`,
-    `Livraison     : ${dateL||'Sur accord'}`,
-    ``,
-    `COMMANDE (vendue au colis)`,
-    lignesText,
-    ``,
-    `Colis total   : ${totalColis}`,
-    `UVC total     : ${totalUVC}`,
-    `Total HT      : ${totalHT.toFixed(2)} €`,
-    `TVA 5,5%      : ${tva.toFixed(2)} €`,
-    `Total TTC     : ${totalTTC.toFixed(2)} €`,
-    `Franco port   : ${franco}`,
-    comment ? `\nCOMMENTAIRE\n${comment}` : '',
-    ``,
-    `— Envoyé via BIO N TRUFFE CRM`,
-  ].filter(l => l !== undefined).join('\n');
+  // ── Sauvegarde CRM ──
+  _saveCRM(detailLignes, totalHT, totalColis, totalUVC);
 
-  // ── Bouton en chargement ──
-  const btnSubmit = document.getElementById('btn-submit');
-  btnSubmit.disabled = true;
-  btnSubmit.textContent = 'Envoi en cours…';
+  // ── Création et soumission du formulaire caché ──
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://formsubmit.co/loacdev@outlook.fr';
+  form.style.display = 'none';
 
-  // ── Envoi via FormSubmit AJAX (reste sur la page) ──
-  fetch('https://formsubmit.co/ajax/loacdev@outlook.fr', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({
-      _subject: `BDC BIO N TRUFFE — ${societe} ${ville} — ${dateStr}`,
-      _template: 'table',
-      _captcha: 'false',
-      Magasin:     societe,
-      Profil:      revNom,
-      Ville:       `${cp} ${ville}`,
-      Email:       email,
-      Contact:     nom||'—',
-      Telephone:   tel||'—',
-      Livraison:   dateL||'Sur accord',
-      Colis_total: String(totalColis),
-      UVC_total:   String(totalUVC),
-      Total_HT:    `${totalHT.toFixed(2)} €`,
-      TVA_5_5:     `${tva.toFixed(2)} €`,
-      Total_TTC:   `${totalTTC.toFixed(2)} €`,
-      Franco_port: franco,
-      Commande:    lignesText,
-      Commentaire: comment||'—',
-      message,
-    })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (data.success === 'true' || data.success === true) {
-      // Sauvegarde CRM si besoin
-      _saveCRM();
-      setTimeout(() => { document.getElementById('success').style.display = 'flex'; }, 200);
-    } else {
-      alert('Erreur lors de l\'envoi. Vérifiez votre connexion et réessayez.');
-      btnSubmit.disabled = false;
-      btnSubmit.textContent = 'Envoyer la commande →';
-    }
-  })
-  .catch(() => {
-    alert('Erreur réseau. Vérifiez votre connexion internet et réessayez.');
-    btnSubmit.disabled = false;
-    btnSubmit.textContent = 'Envoyer la commande →';
+  const champs = {
+    '_subject'  : 'BDC BIO N TRUFFE - ' + societe + ' ' + ville + ' - ' + dateStr,
+    '_template' : 'box',
+    '_captcha'  : 'false',
+    '_next'     : window.location.href.split('?')[0] + '?sent=1',
+    'Magasin'   : societe,
+    'Profil'    : revNom,
+    'Ville'     : cp + ' ' + ville,
+    'Email_client' : email,
+    'Contact'   : nom||'-',
+    'Telephone' : tel||'-',
+    'Livraison' : dateL||'Sur accord',
+    'Nb_colis'  : String(totalColis),
+    'Nb_UVC'    : String(totalUVC),
+    'Total_HT'  : totalHT.toFixed(2) + ' EUR HT',
+    'TVA_5_5'   : tva.toFixed(2) + ' EUR',
+    'Total_TTC' : totalTTC.toFixed(2) + ' EUR TTC',
+    'Franco'    : franco,
+    'Commande'  : detailLignes.join(' | '),
+    'Commentaire': comment||'-',
+    'message'   : corps,
+  };
+
+  Object.entries(champs).forEach(([name, value]) => {
+    const input = document.createElement('input');
+    input.type  = 'hidden';
+    input.name  = name;
+    input.value = value;
+    form.appendChild(input);
   });
 
+  document.body.appendChild(form);
+  form.submit();
 }
 
-function _saveCRM() {
+function _saveCRM(detailLignes, totalHT, totalColis, totalUVC) {
   if (!window._crmClient) return;
   const inputs = document.querySelectorAll('.qty-input');
   const crmLignes = [];
@@ -734,9 +729,6 @@ function _saveCRM() {
       nbColis, uvc:nbColis*pcb, pcb, prixCarton, ht:nbColis*prixCarton
     });
   });
-  const totalHT    = crmLignes.reduce((s,l)=>s+l.ht, 0);
-  const totalColis = crmLignes.reduce((s,l)=>s+l.nbColis, 0);
-  const totalUVC   = crmLignes.reduce((s,l)=>s+l.uvc, 0);
   const ref = `BDC-${window._crmClient.numClient}-${Date.now().toString().slice(-5)}`;
   sessionStorage.setItem('bnt_new_commande', JSON.stringify({
     id:'cmd_'+Date.now(), ref,
@@ -829,11 +821,4 @@ function walkTextNodes(node, q) {
     Array.from(node.childNodes).forEach(child => walkTextNodes(child, q));
   }
 }
-function removeHighlights() {
-  document.querySelectorAll('.highlight').forEach(mark => {
-    const parent = mark.parentNode; parent.replaceChild(document.createTextNode(mark.textContent), mark); parent.normalize();
-  });
-}
-</script>
-</body>
-</html>
+function removeHighli
