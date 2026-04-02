@@ -331,6 +331,14 @@ textarea.finput{resize:vertical;min-height:56px;}
           <div id="db-clients"><div style="font-size:.78rem;color:var(--s500);font-style:italic">—</div></div>
         </div>
       </div>
+      <!-- DERNIÈRES COMMANDES -->
+      <div style="margin-top:1.25rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+          <div style="font-family:var(--fdisp);font-size:.9rem;color:var(--s100)">Dernières commandes</div>
+          <button class="btn btn-outline btn-sm" onclick="showPage('commandes',document.querySelector('.nav-item:nth-child(6)'))">Voir tout →</button>
+        </div>
+        <div id="db-commandes"><div style="font-size:.78rem;color:var(--s500);font-style:italic">—</div></div>
+      </div>
     </div>
 
     <!-- PROSPECTS -->
@@ -653,6 +661,40 @@ function renderDashboard() {
   document.getElementById('db-clients').innerHTML = rc.length
     ? rc.map(function(c) { return mkMiniCard(c, 'client'); }).join('')
     : '<div style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun client converti</div>';
+
+  /* Dernières commandes */
+  var ro = db.commandes.slice().sort(function(a, b) {
+    return (b.date || '').localeCompare(a.date || '');
+  }).slice(0, 8);
+
+  var dbCEl = document.getElementById('db-commandes');
+  if (!dbCEl) return;
+  if (!ro.length) {
+    dbCEl.innerHTML = '<div style="font-size:.78rem;color:var(--s500);font-style:italic">Aucune commande — envoyez un bon de commande pour commencer</div>';
+    return;
+  }
+  dbCEl.innerHTML = '<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff">'
+    + '<table style="width:100%;border-collapse:collapse;font-size:.8rem">'
+    + '<thead><tr>'
+    + '<th style="text-align:left;padding:7px 12px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Référence</th>'
+    + '<th style="text-align:left;padding:7px 12px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Magasin</th>'
+    + '<th style="text-align:left;padding:7px 12px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Date</th>'
+    + '<th style="text-align:right;padding:7px 12px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Total HT</th>'
+    + '<th style="text-align:center;padding:7px 12px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Colis</th>'
+    + '</tr></thead><tbody>'
+    + ro.map(function(o) {
+        var c   = db.clients.find(function(x) { return x.id === o.clientId; });
+        var nom = c ? c.raisonSociale : (o.societe || '—');
+        var tag = c ? '' : '<span style="font-size:.6rem;color:var(--s500);font-style:italic;margin-left:4px">hors CRM</span>';
+        return '<tr style="border-bottom:1px solid rgba(0,0,0,.04);transition:background .1s" onmouseover="this.style.background=\'rgba(34,197,94,.03)\'" onmouseout="this.style.background=\'\'">'
+          + '<td style="padding:7px 12px"><strong style="font-family:var(--fdisp);color:var(--v);font-size:.82rem">' + (o.ref || '—') + '</strong></td>'
+          + '<td style="padding:7px 12px;color:var(--s100)">' + nom + tag + '</td>'
+          + '<td style="padding:7px 12px;color:var(--s500);font-size:.75rem">' + fd(o.date) + '</td>'
+          + '<td style="padding:7px 12px;text-align:right;font-weight:700;color:var(--vf)">' + (o.totalHT || 0).toFixed(2) + ' €</td>'
+          + '<td style="padding:7px 12px;text-align:center;color:var(--s400)">' + (o.totalColis != null ? o.totalColis : '—') + '</td>'
+          + '</tr>';
+      }).join('')
+    + '</tbody></table></div>';
 }
 function mkStat(l, v, s) {
   return '<div class="stat"><div class="stat-lbl">' + l + '</div><div class="stat-val">' + v + '</div><div class="stat-sub">' + s + '</div></div>';
