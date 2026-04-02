@@ -158,7 +158,7 @@ mark.hl{background:rgba(245,158,11,.3);border-radius:2px;padding:0 2px;}
 <div class="success" id="success">
   <div class="success-icon">✅</div>
   <h2>Commande envoyée !</h2>
-  <p>Votre bon de commande a été transmis directement à <strong>loacdev@outlook.fr</strong>.<br>Christophe SPOTO vous contactera pour confirmer la livraison.</p>
+  <p>Votre bon de commande a été transmis directement à <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee82818f8d8a8b98ae819b9a82818185c0889c">[email&#160;protected]</a></strong>.<br>Christophe SPOTO vous contactera pour confirmer la livraison.</p>
   <a href="commande.html">Nouvelle commande</a>
 </div>
 
@@ -280,7 +280,7 @@ mark.hl{background:rgba(245,158,11,.3);border-radius:2px;padding:0 2px;}
 
 </div><!-- /layout -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════════
 // DONNÉES CATALOGUE (intégrées, pas de fetch)
 // ═══════════════════════════════════════════
@@ -626,24 +626,66 @@ function submitCommande() {
 }
 
 function saveCRM(lignesText, totalHT, totalColis, totalUVC) {
-  if (!window._crmClient) return;
+  // Construire les lignes détaillées depuis les inputs
   var inputs = document.querySelectorAll('.qty');
   var crmL = [];
   inputs.forEach(function(inp) {
     var n = parseInt(inp.value)||0; if (!n) return;
-    var pc = parseFloat(inp.dataset.pc);
+    var pc  = parseFloat(inp.dataset.pc);
     var pcb = parseInt(inp.dataset.pcb)||1;
-    crmL.push({nom:inp.dataset.nom,poids:inp.dataset.poids,nbColis:n,uvc:n*pcb,pcb:pcb,prixCarton:pc,ht:n*pc});
+    crmL.push({
+      nom: inp.dataset.nom,
+      poids: inp.dataset.poids,
+      nbColis: n,
+      uvc: n * pcb,
+      pcb: pcb,
+      prixCarton: pc,
+      ht: n * pc
+    });
   });
-  var ref = 'BDC-' + window._crmClient.numClient + '-' + Date.now().toString().slice(-5);
-  sessionStorage.setItem('bnt_new_commande', JSON.stringify({
-    id:'cmd_'+Date.now(), ref:ref,
-    clientId:window._crmClient.clientId,
-    numClient:window._crmClient.numClient,
-    date:new Date().toISOString().slice(0,10),
-    totalHT:totalHT, totalColis:totalColis, totalUVC:totalUVC,
-    profil:window._crmClient.profil, lignes:crmL
-  }));
+
+  // Informations client depuis le formulaire
+  var societeVal = document.getElementById('f-societe').value.trim();
+  var villeVal   = document.getElementById('f-ville').value.trim();
+  var cpVal      = document.getElementById('f-cp').value.trim();
+  var emailVal   = document.getElementById('f-email').value.trim();
+  var telVal     = document.getElementById('f-tel').value.trim();
+  var nomVal     = document.getElementById('f-nom').value.trim();
+
+  // Référence unique
+  var ts  = Date.now();
+  var ref = window._crmClient
+    ? 'BDC-' + window._crmClient.numClient + '-' + ts.toString().slice(-5)
+    : 'BDC-' + ts.toString().slice(-8);
+
+  var commande = {
+    id:          'cmd_' + ts,
+    ref:          ref,
+    date:         new Date().toISOString().slice(0, 10),
+    totalHT:      totalHT,
+    totalColis:   totalColis,
+    totalUVC:     totalUVC,
+    profil:       revNom,
+    lignes:       crmL,
+    // Infos client du formulaire (utile si pas lié à un client CRM)
+    societe:      societeVal,
+    ville:        villeVal,
+    cp:           cpVal,
+    email:        emailVal,
+    tel:          telVal,
+    contact:      nomVal,
+    // Lien client CRM si disponible
+    clientId:     window._crmClient ? window._crmClient.clientId   : null,
+    numClient:    window._crmClient ? window._crmClient.numClient  : null
+  };
+
+  // Enregistrement dans localStorage (file d'attente persistante)
+  // Le CRM lira cette liste au prochain chargement
+  try {
+    var pending = JSON.parse(localStorage.getItem('bnt_pending_commandes') || '[]');
+    pending.push(commande);
+    localStorage.setItem('bnt_pending_commandes', JSON.stringify(pending));
+  } catch(e) {}
 }
 
 function resetForm() {
@@ -775,11 +817,4 @@ updateRecap();
   } catch(e) {}
 })();
 
-// Succès après retour FormSubmit
-if (new URLSearchParams(window.location.search).get('sent') === '1') {
-  document.getElementById('success').style.display = 'flex';
-  history.replaceState(null, '', window.location.pathname);
-}
-</script>
-</body>
-</html>
+// Succès après retour Fo

@@ -496,18 +496,31 @@ function absorbProspect() {
 }
 
 function absorbCommande() {
-  var raw = sessionStorage.getItem('bnt_new_commande');
-  if (!raw) return;
-  sessionStorage.removeItem('bnt_new_commande');
+  // Lire toutes les commandes en attente depuis localStorage
   try {
-    var o = JSON.parse(raw);
-    // Éviter les doublons
-    if (!db.commandes.find(function(x){ return x.id===o.id; })) {
+    var pending = JSON.parse(localStorage.getItem('bnt_pending_commandes') || '[]');
+    if (!pending.length) return;
+
+    var added = 0;
+    pending.forEach(function(o) {
+      // Éviter les doublons
+      if (db.commandes.find(function(x){ return x.id === o.id; })) return;
       db.commandes.push(o);
+      added++;
+    });
+
+    if (added > 0) {
+      // Vider la file d'attente
+      localStorage.removeItem('bnt_pending_commandes');
       saveData();
-      toast('✅ Commande ' + (o.ref||'') + ' enregistrée');
+      toast('✅ ' + added + ' commande' + (added > 1 ? 's' : '') + ' importée' + (added > 1 ? 's' : '') + ' dans le CRM');
+    } else {
+      // Toutes déjà importées, on vide quand même
+      localStorage.removeItem('bnt_pending_commandes');
     }
-  } catch(e) {}
+  } catch(e) {
+    localStorage.removeItem('bnt_pending_commandes');
+  }
 }
 
 // ═══════════════════════════
@@ -658,9 +671,11 @@ function renderCommandes() {
   var list = db.commandes.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); })
     .filter(function(o){
       var c = db.clients.find(function(x){ return x.id===o.clientId; });
-      return !q || (c&&(c.raisonSociale||'').toLowerCase().includes(q))
+      var nom = c ? (c.raisonSociale||'') : (o.societe||'');
+      return !q || nom.toLowerCase().includes(q)
                 || (o.ref||'').toLowerCase().includes(q)
-                || (o.date||'').includes(q);
+                || (o.date||'').includes(q)
+                || (o.profil||'').toLowerCase().includes(q);
     });
   var tb = document.getElementById('tb-o'); if(!tb) return;
   if (!list.length) {
@@ -668,14 +683,19 @@ function renderCommandes() {
     return;
   }
   tb.innerHTML = list.map(function(o){
-    var c = db.clients.find(function(x){ return x.id===o.clientId; });
+    var c     = db.clients.find(function(x){ return x.id===o.clientId; });
+    // Nom affiché : client CRM si lié, sinon nom du magasin saisi dans le bon de commande
+    var nomAff = c ? c.raisonSociale : (o.societe || '—');
+    var numAff = c ? c.numClient : (o.numClient || '<span style="color:var(--s500);font-style:italic;font-size:.65rem">Hors CRM</span>');
+    var colis  = o.totalColis != null ? o.totalColis : (o.nbColis||'—');
+    var uvc    = o.totalUVC   != null ? o.totalUVC   : (o.nbUVC||'—');
     return '<tr>'
       +'<td><strong style="font-family:var(--fdisp);color:var(--v);font-size:.82rem">'+(o.ref||'—')+'</strong></td>'
-      +'<td>'+(c?c.raisonSociale:'—')+'<br><span style="font-size:.68rem;color:var(--s500)">'+(c?c.numClient:'')+'</span></td>'
+      +'<td><span style="color:var(--s100);font-weight:600">'+nomAff+'</span><br><span style="font-size:.68rem;color:var(--s500)">'+numAff+'</span></td>'
       +'<td style="font-size:.75rem;color:var(--s500)">'+fmtDate(o.date)+'</td>'
       +'<td style="font-weight:700;color:var(--vf)">'+(o.totalHT||0).toFixed(2)+' €</td>'
-      +'<td style="text-align:center">'+(o.totalColis||o.nbColis||'—')+'</td>'
-      +'<td style="text-align:center">'+(o.totalUVC||o.nbUVC||'—')+'</td>'
+      +'<td style="text-align:center">'+colis+'</td>'
+      +'<td style="text-align:center">'+uvc+'</td>'
       +'<td><button class="btn btn-danger btn-sm" onclick="delCommande(\''+o.id+'\')">🗑</button></td>'
       +'</tr>';
   }).join('');
