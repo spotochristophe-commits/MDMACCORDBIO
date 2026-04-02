@@ -464,9 +464,17 @@ function submitCommande() {
   var date   = new Date().toLocaleDateString('fr-FR');
   var franco = (totalColis >= 5 || totalHT >= 450) ? 'OUI' : 'NON';
 
-  /* Sauvegarde Supabase */
+  /* Bloquer le bouton */
+  var btnS = document.getElementById('btn-submit');
+  btnS.disabled = true;
+  btnS.textContent = 'Envoi en cours...';
+
+  /* Données Supabase */
   var ts  = Date.now();
-  var ref = window._crmClient ? 'BDC-' + window._crmClient.numClient + '-' + ts.toString().slice(-5) : 'BDC-' + ts.toString().slice(-8);
+  var ref = window._crmClient
+    ? 'BDC-' + window._crmClient.numClient + '-' + ts.toString().slice(-5)
+    : 'BDC-' + ts.toString().slice(-8);
+
   var crmRow = {
     id: 'cmd_' + ts, ref: ref,
     date: new Date().toISOString().slice(0, 10),
@@ -478,13 +486,8 @@ function submitCommande() {
     client_id:  window._crmClient ? window._crmClient.clientId  : null,
     num_client: window._crmClient ? window._crmClient.numClient : null
   };
-  fetch(SB_URL + '/rest/v1/commandes', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'resolution=merge-duplicates' },
-    body: JSON.stringify(crmRow)
-  }).catch(function() {});
 
-  /* Envoi FormSubmit via formulaire HTML POST */
+  /* Corps email */
   var corps = 'BON DE COMMANDE BIO N TRUFFE\nTarif V15 - 01/03/2026 - ' + date
     + '\n\nCLIENT\nProfil    : ' + REV_NOM
     + '\nMagasin   : ' + societe + '\nAdresse   : ' + cp + ' ' + ville
@@ -499,13 +502,7 @@ function submitCommande() {
     + (comment ? '\nCommentaire : ' + comment : '')
     + '\n\nEnvoye via BIO N TRUFFE CRM';
 
-  /* Envoi FormSubmit — URL construite en JS pour éviter détection Cloudflare */
-  var dest = ['loacdev', 'outlook.fr'].join('@');
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://formsubmit.co/' + dest;
-  form.style.display = 'none';
-
+  /* Champs FormSubmit */
   var champs = {
     '_subject'    : 'BDC BIO N TRUFFE - ' + societe + ' ' + ville + ' - ' + date,
     '_template'   : 'box',
@@ -529,14 +526,36 @@ function submitCommande() {
     'message'     : corps
   };
 
-  var keys = Object.keys(champs);
-  for (var k = 0; k < keys.length; k++) {
-    var inp2 = document.createElement('input');
-    inp2.type = 'hidden'; inp2.name = keys[k]; inp2.value = champs[keys[k]];
-    form.appendChild(inp2);
-  }
-  document.body.appendChild(form);
-  form.submit();
+  /* 1) Supabase — attendre la reponse avant de soumettre le form */
+  fetch(SB_URL + '/rest/v1/commandes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Prefer': 'resolution=merge-duplicates'
+    },
+    body: JSON.stringify(crmRow)
+  })
+  .catch(function() { /* continue meme si Supabase echoue */ })
+  .finally(function() {
+    /* 2) FormSubmit apres confirmation Supabase */
+    var form = document.createElement('form');
+    form.method = 'POST';
+    var dest = ['loacdev', 'outlook.fr'].join('@');
+    form.action = 'https://formsubmit.co/' + dest;
+    form.style.display = 'none';
+    var keys = Object.keys(champs);
+    for (var k = 0; k < keys.length; k++) {
+      var inp2 = document.createElement('input');
+      inp2.type = 'hidden';
+      inp2.name = keys[k];
+      inp2.value = champs[keys[k]];
+      form.appendChild(inp2);
+    }
+    document.body.appendChild(form);
+    form.submit();
+  });
 }
 
 function resetForm() {
