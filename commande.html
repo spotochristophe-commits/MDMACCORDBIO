@@ -444,7 +444,7 @@ function submitCommande() {
   var comment = document.getElementById('f-comment').value.trim();
 
   var inputs = document.querySelectorAll('.qty');
-  var lignes = [], totalHT = 0, totalColis = 0, totalUVC = 0;
+  var lignes = [], lignesTexte = [], totalHT = 0, totalColis = 0, totalUVC = 0;
   for (var i = 0; i < inputs.length; i++) {
     var inp = inputs[i];
     var nbColis = parseInt(inp.value) || 0;
@@ -456,7 +456,10 @@ function submitCommande() {
     totalHT    += ht;
     totalColis += nbColis;
     totalUVC   += uvc;
-    lignes.push(inp.dataset.nom + ' (' + inp.dataset.poids + ') : ' + nbColis + ' colis x ' + uvc + ' UVC (PCB ' + pcb + ') x ' + pc.toFixed(2) + ' EUR = ' + ht.toFixed(2) + ' EUR HT');
+    /* Objet JSON pour Supabase */
+    lignes.push({ nom: inp.dataset.nom, poids: inp.dataset.poids, nbColis: nbColis, uvc: uvc, pcb: pcb, prixCarton: pc, ht: ht });
+    /* Texte pour l'email FormSubmit */
+    lignesTexte.push(inp.dataset.nom + ' (' + inp.dataset.poids + ') : ' + nbColis + ' colis x ' + uvc + ' UVC (PCB ' + pcb + ') x ' + pc.toFixed(2) + ' EUR = ' + ht.toFixed(2) + ' EUR HT');
   }
 
   var tva    = totalHT * 0.055;
@@ -482,7 +485,8 @@ function submitCommande() {
     telephone: tel, contact: nom, profil: REV_NOM,
     total_ht: totalHT, total_colis: totalColis, total_uvc: totalUVC,
     tva: tva, total_ttc: ttc, franco: franco,
-    lignes: lignes, commentaire: comment,
+    lignes: lignes,  /* objets JSON pour Supabase */
+    commentaire: comment,
     client_id:  window._crmClient ? window._crmClient.clientId  : null,
     num_client: window._crmClient ? window._crmClient.numClient : null
   };
@@ -493,7 +497,7 @@ function submitCommande() {
     + '\nMagasin   : ' + societe + '\nAdresse   : ' + cp + ' ' + ville
     + '\nTelephone : ' + (tel || '-') + '\nEmail     : ' + email
     + '\nContact   : ' + (nom || '-') + '\nLivraison : ' + (dateL || 'Sur accord')
-    + '\n\nCOMMANDE (au colis)\n' + lignes.join('\n')
+    + '\n\nCOMMANDE (au colis)\n' + lignesTexte.join('\n')
     + '\n\nNb colis  : ' + totalColis + '\nNb UVC    : ' + totalUVC
     + '\nTotal HT  : ' + totalHT.toFixed(2) + ' EUR'
     + '\nTVA 5,5%  : ' + tva.toFixed(2) + ' EUR'
@@ -521,7 +525,7 @@ function submitCommande() {
     'TVA_5_5'     : tva.toFixed(2) + ' EUR',
     'Total_TTC'   : ttc.toFixed(2) + ' EUR',
     'Franco'      : franco,
-    'Commande'    : lignes.join(' | '),
+    'Commande'    : lignesTexte.join(' | '),
     'Commentaire' : comment || '-',
     'message'     : corps
   };
