@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BIO N TRUFFE — CRM Clients</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
   --v:#22c55e;--vf:#15803d;--vc:#4ade80;--vp:#f0fdf4;
@@ -178,6 +179,7 @@ textarea.finput{resize:vertical;min-height:56px;}
 .drop-zone{border:2px dashed rgba(34,197,94,.25);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;position:relative;transition:all .15s;}
 .drop-zone:hover{border-color:var(--v);background:rgba(34,197,94,.04);}
 .drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.drop-zone.drag-over{border-color:var(--v);background:rgba(34,197,94,.08);}
 
 @media(max-width:768px){
   .layout{flex-direction:column;}
@@ -376,23 +378,44 @@ textarea.finput{resize:vertical;min-height:56px;}
 
     <!-- EXPORT/IMPORT -->
     <div class="page" id="page-io">
-      <div class="ph"><div><h1>Export / Import</h1></div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-        <div class="scard">
-          <h2>⬇️ Exporter</h2>
-          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:1rem">Téléchargez tous vos prospects, clients et commandes en JSON.</p>
-          <button class="btn btn-v" onclick="exportData()">⬇️ Télécharger CRM.json</button>
-        </div>
-        <div class="scard">
-          <h2>⬆️ Importer</h2>
-          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:.85rem">Restaurez un fichier CRM.json. ⚠️ Les données actuelles seront remplacées.</p>
-          <div class="drop-zone">
-            <input type="file" accept=".json" onchange="importData(this)">
-            <div style="font-size:1.5rem;margin-bottom:.3rem">📂</div>
-            <div style="font-size:.8rem;color:var(--s500)">Glissez votre fichier CRM.json ici</div>
-          </div>
+      <div class="ph"><div><h1>Export / Import</h1><p>Synchronisé avec Supabase — accessible partout</p></div></div>
+
+      <!-- EXPORT -->
+      <div class="scard" style="margin-bottom:1rem">
+        <h2>⬇️ Exporter les données CRM</h2>
+        <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:1rem">Téléchargez prospects, clients et commandes en JSON (sauvegarde complète).</p>
+        <button class="btn btn-v" onclick="exportData()">⬇️ Télécharger CRM.json</button>
+      </div>
+
+      <!-- IMPORT JSON -->
+      <div class="scard" style="margin-bottom:1rem">
+        <h2>📂 Importer un fichier CRM.json</h2>
+        <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:.85rem">Restaurez une sauvegarde JSON. Les données existantes seront conservées (fusion).</p>
+        <div class="drop-zone">
+          <input type="file" accept=".json" onchange="importData(this)">
+          <div style="font-size:1.5rem;margin-bottom:.3rem">📂</div>
+          <div style="font-size:.8rem;color:var(--s500)">Glissez votre fichier CRM.json ici ou cliquez</div>
         </div>
       </div>
+
+      <!-- IMPORT EXCEL -->
+      <div class="scard" style="margin-bottom:1rem;border-left:3px solid var(--v)">
+        <h2>📊 Importer depuis Excel (.xlsx / .xls / .csv)</h2>
+        <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:.5rem">
+          Importez votre base clients ou prospects depuis un fichier Excel. Le CRM détecte automatiquement les colonnes et vous propose le mapping.
+        </p>
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:7px;padding:.65rem 1rem;margin-bottom:.85rem;font-size:.75rem;color:#15803d">
+          <strong>Colonnes reconnues automatiquement :</strong> Raison sociale, Nom, Société, CP, Ville, Adresse, Téléphone, Email, Contact, SIRET, Profil, Potentiel, Commentaire
+        </div>
+        <div class="drop-zone" id="excel-drop">
+          <input type="file" accept=".xlsx,.xls,.csv" onchange="chargerExcel(this)" id="excel-input">
+          <div style="font-size:1.8rem;margin-bottom:.3rem">📊</div>
+          <div style="font-size:.85rem;color:var(--s200);font-weight:600">Glissez votre fichier Excel ici</div>
+          <div style="font-size:.75rem;color:var(--s500);margin-top:.25rem">.xlsx · .xls · .csv acceptés</div>
+        </div>
+      </div>
+
+      <!-- ZONE DANGER -->
       <div class="scard" style="border-top:2px solid rgba(239,68,68,.3)">
         <h2 style="color:#dc2626">Zone de danger</h2>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap">
@@ -401,6 +424,47 @@ textarea.finput{resize:vertical;min-height:56px;}
         </div>
       </div>
     </div>
+
+<!-- MODAL MAPPING EXCEL -->
+<div class="modal-overlay" id="modal-excel">
+  <div class="modal" style="max-width:780px">
+    <div class="mh">
+      <h2>📊 Mapping colonnes Excel</h2>
+      <button class="mclose" onclick="closeM('modal-excel')">✕</button>
+    </div>
+    <div class="mbody">
+      <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:7px;padding:.65rem 1rem;margin-bottom:1rem;font-size:.78rem;color:#15803d">
+        <strong id="excel-info">Fichier chargé</strong> — Associez chaque colonne de votre Excel au champ CRM correspondant. Laissez "Ignorer" pour les colonnes non utilisées.
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-size:.68rem;font-weight:600;color:var(--s400);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.4rem">Importer comme :</label>
+        <div style="display:flex;gap:.5rem">
+          <button class="fbtn active" id="xtype-prospect" onclick="setXType('prospect')">🔍 Prospects</button>
+          <button class="fbtn" id="xtype-client" onclick="setXType('client')">✅ Clients</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:6px 10px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Colonne Excel</th>
+              <th style="text-align:left;padding:6px 10px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Aperçu (1ère ligne)</th>
+              <th style="text-align:left;padding:6px 10px;background:var(--s800);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);border-bottom:1px solid var(--border)">Champ CRM</th>
+            </tr>
+          </thead>
+          <tbody id="excel-mapping-rows"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;font-size:.75rem;color:var(--s400)">
+        <strong id="excel-count">0 lignes</strong> seront importées dans Supabase.
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-outline" onclick="closeM('modal-excel')">Annuler</button>
+      <button class="btn btn-v btn-lg" onclick="lancerImportExcel()">📊 Importer dans Supabase</button>
+    </div>
+  </div>
+</div>
 
   </main>
 </div>
@@ -1007,8 +1071,219 @@ function clearAll() {
 }
 
 /* ═══════════════════════════════════════
-   MODALS + UTILS
+   IMPORT EXCEL
 ═══════════════════════════════════════ */
+var xlsxData    = [];   // tableau de lignes brutes {colonne: valeur}
+var xlsxHeaders = [];   // noms de colonnes Excel
+var xlsxType    = 'prospect'; // 'prospect' ou 'client'
+
+// Champs CRM disponibles pour le mapping
+var CRM_FIELDS = [
+  { val: '',                   lbl: '— Ignorer —' },
+  { val: 'raisonSociale',      lbl: 'Raison sociale / Magasin *' },
+  { val: 'rue',                lbl: 'Adresse (rue)' },
+  { val: 'cp',                 lbl: 'Code postal' },
+  { val: 'ville',              lbl: 'Ville' },
+  { val: 'telMagasin',         lbl: 'Téléphone magasin' },
+  { val: 'emailMagasin',       lbl: 'Email magasin' },
+  { val: 'surface',            lbl: 'Surface (m²)' },
+  { val: 'siret',              lbl: 'SIRET' },
+  { val: 'tvaIntra',           lbl: 'N° TVA intra' },
+  { val: 'contact1',           lbl: 'Nom contact principal' },
+  { val: 'tel1',               lbl: 'Téléphone contact' },
+  { val: 'portable1',          lbl: 'Portable contact' },
+  { val: 'email1',             lbl: 'Email contact' },
+  { val: 'fonction',           lbl: 'Fonction contact' },
+  { val: 'profil',             lbl: 'Profil revendeur' },
+  { val: 'potentiel',          lbl: 'Potentiel (EUR/mois)' },
+  { val: 'commentaire',        lbl: 'Commentaire / Notes' },
+  { val: 'numClient',          lbl: 'N° Client (clients seulement)' },
+  { val: 'conditionsPaiement', lbl: 'Conditions paiement (clients seulement)' }
+];
+
+// Mots-clés pour auto-détection des colonnes
+var COL_DETECT = {
+  raisonSociale:      ['raison','societe','société','magasin','enseigne','nom','company','name','etablissement'],
+  rue:                ['rue','adresse','address','voie','street'],
+  cp:                 ['cp','code postal','postal','zip','codepostal'],
+  ville:              ['ville','city','commune','localite','localité'],
+  telMagasin:         ['tel','telephone','téléphone','phone','fixe','tel magasin','telmag'],
+  emailMagasin:       ['email magasin','emailmag','mail magasin','email boutique'],
+  surface:            ['surface','m2','m²','superficie'],
+  siret:              ['siret'],
+  tvaIntra:           ['tva','tva intra','intracom','numéro tva','numero tva'],
+  contact1:           ['contact','interlocuteur','responsable','nom contact','prenom'],
+  tel1:               ['tel contact','telephone contact','portable','mobile','gsm'],
+  email1:             ['email','mail','e-mail','courriel','email contact'],
+  fonction:           ['fonction','poste','titre','role','rôle'],
+  profil:             ['profil','tarif','categorie','catégorie'],
+  potentiel:          ['potentiel','ca potentiel','ca previsionnel','budget'],
+  commentaire:        ['commentaire','note','notes','observation','info'],
+  numClient:          ['numero client','num client','n° client','numclient','code client'],
+  conditionsPaiement: ['paiement','condition','reglement','règlement']
+};
+
+function autoDetectField(header) {
+  var h = header.toLowerCase().trim();
+  var fields = Object.keys(COL_DETECT);
+  for (var i = 0; i < fields.length; i++) {
+    var keywords = COL_DETECT[fields[i]];
+    for (var j = 0; j < keywords.length; j++) {
+      if (h.includes(keywords[j])) return fields[i];
+    }
+  }
+  return '';
+}
+
+function chargerExcel(input) {
+  var file = input.files[0];
+  if (!file) return;
+  toast('Lecture du fichier...');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var wb = XLSX.read(e.target.result, { type: 'binary' });
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      if (!rows.length) { alert('Le fichier semble vide.'); return; }
+      xlsxData    = rows;
+      xlsxHeaders = Object.keys(rows[0]);
+      afficherMappingExcel();
+    } catch(err) {
+      alert('Impossible de lire le fichier : ' + err.message);
+    }
+  };
+  reader.readAsBinaryString(file);
+}
+
+function setXType(type) {
+  xlsxType = type;
+  document.getElementById('xtype-prospect').classList.toggle('active', type === 'prospect');
+  document.getElementById('xtype-client').classList.toggle('active', type === 'client');
+}
+
+function afficherMappingExcel() {
+  document.getElementById('excel-info').textContent =
+    xlsxData.length + ' lignes détectées, ' + xlsxHeaders.length + ' colonnes';
+  document.getElementById('excel-count').textContent = xlsxData.length + ' lignes';
+
+  var preview = xlsxData[0];
+  var rows = '';
+  for (var i = 0; i < xlsxHeaders.length; i++) {
+    var col     = xlsxHeaders[i];
+    var sample  = String(preview[col] || '').slice(0, 40);
+    var autoVal = autoDetectField(col);
+    var opts    = CRM_FIELDS.map(function(f) {
+      return '<option value="' + f.val + '"' + (f.val === autoVal ? ' selected' : '') + '>' + f.lbl + '</option>';
+    }).join('');
+    rows += '<tr>'
+      + '<td style="padding:5px 10px;font-weight:600;color:var(--s100);white-space:nowrap">' + col + '</td>'
+      + '<td style="padding:5px 10px;color:var(--s500);font-size:.75rem;font-style:italic;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + sample + '</td>'
+      + '<td style="padding:5px 10px"><select class="finput" id="map-' + i + '" style="font-size:.75rem;padding:4px 8px">' + opts + '</select></td>'
+      + '</tr>';
+  }
+  document.getElementById('excel-mapping-rows').innerHTML = rows;
+  openM('modal-excel');
+}
+
+function lancerImportExcel() {
+  // Récupérer le mapping utilisateur
+  var mapping = {};
+  for (var i = 0; i < xlsxHeaders.length; i++) {
+    var sel = document.getElementById('map-' + i);
+    if (sel && sel.value) mapping[xlsxHeaders[i]] = sel.value;
+  }
+
+  var rows = [];
+  for (var ri = 0; ri < xlsxData.length; ri++) {
+    var excelRow = xlsxData[ri];
+    var obj = {};
+    var cols = Object.keys(mapping);
+    for (var ci = 0; ci < cols.length; ci++) {
+      var excelCol = cols[ci];
+      var crmField = mapping[excelCol];
+      var val      = String(excelRow[excelCol] || '').trim();
+      if (val) obj[crmField] = val;
+    }
+    if (!obj.raisonSociale) continue; // ligne vide ou sans nom
+    rows.push(obj);
+  }
+
+  if (!rows.length) { alert('Aucune ligne valide (colonne "Raison sociale / Magasin" requise).'); return; }
+  if (!confirm('Importer ' + rows.length + ' ' + (xlsxType === 'client' ? 'clients' : 'prospects') + ' dans Supabase ?')) return;
+
+  toast('Import en cours...');
+  closeM('modal-excel');
+
+  var table = xlsxType === 'client' ? 'clients' : 'prospects';
+  var sbRows = rows.map(function(obj) {
+    var ts  = Date.now() + Math.random();
+    var row = {
+      id:              'xl_' + Math.floor(ts),
+      raison_sociale:  obj.raisonSociale || '',
+      rue:             obj.rue || '',
+      complement:      '',
+      cp:              obj.cp || '',
+      ville:           obj.ville || '',
+      tel_magasin:     obj.telMagasin || '',
+      email_magasin:   obj.emailMagasin || '',
+      surface:         obj.surface || '',
+      siret:           obj.siret || '',
+      tva_intra:       obj.tvaIntra || '',
+      capital:         '',
+      naf:             '',
+      contact1:        obj.contact1 || '',
+      tel1:            obj.tel1 || '',
+      portable1:       obj.portable1 || '',
+      email1:          obj.email1 || '',
+      contact2:        '',
+      tel2:            '',
+      fonction:        obj.fonction || '',
+      contact_factu:   '',
+      email_factu:     '',
+      jours_livraison: [],
+      heure_debut:     '',
+      heure_fin:       '',
+      info_livraison:  '',
+      potentiel:       obj.potentiel || '',
+      profil:          obj.profil || 'Tarif Général MBS',
+      commentaire:     obj.commentaire || ''
+    };
+    if (xlsxType === 'client') {
+      row.num_client          = obj.numClient || ('BNT-EXCEL-' + Math.floor(Math.random() * 9999));
+      row.conditions_paiement = obj.conditionsPaiement || 'À réception de facture';
+      row.notes_internes      = obj.commentaire || '';
+      row.converted_at        = new Date().toISOString().slice(0, 10);
+    }
+    return row;
+  });
+
+  // Envoyer par lots de 50 pour éviter les timeouts
+  var BATCH = 50;
+  var batches = [];
+  for (var b = 0; b < sbRows.length; b += BATCH) {
+    batches.push(sbRows.slice(b, b + BATCH));
+  }
+
+  var done = 0;
+  function sendBatch(idx) {
+    if (idx >= batches.length) {
+      loadData();
+      toast('✅ ' + rows.length + ' ' + (xlsxType === 'client' ? 'clients' : 'prospects') + ' importés dans Supabase !');
+      return;
+    }
+    sbUpsert(table, batches[idx]).then(function() {
+      done += batches[idx].length;
+      toast('Import... ' + done + ' / ' + rows.length);
+      sendBatch(idx + 1);
+    }).catch(function() {
+      toast('⚠ Erreur sur le lot ' + (idx + 1));
+      sendBatch(idx + 1);
+    });
+  }
+  sendBatch(0);
+}
+
 function openM(id)  { document.getElementById(id).classList.add('open'); }
 function closeM(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(function(m) {
