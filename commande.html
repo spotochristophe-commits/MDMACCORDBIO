@@ -499,10 +499,11 @@ function submitCommande() {
     + (comment ? '\nCommentaire : ' + comment : '')
     + '\n\nEnvoye via BIO N TRUFFE CRM';
 
+  /* Envoi FormSubmit — URL construite en JS pour éviter détection Cloudflare */
+  var dest = ['loacdev', 'outlook.fr'].join('@');
   var form = document.createElement('form');
   form.method = 'POST';
-  /* hash MD5 de l adresse - evite injection Cloudflare */
-  form.action = 'https://formsubmit.co/136a95b30a3ee98c863f8dcc8c02a141';
+  form.action = 'https://formsubmit.co/' + dest;
   form.style.display = 'none';
 
   var champs = {
