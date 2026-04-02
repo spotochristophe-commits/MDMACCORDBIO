@@ -6,276 +6,187 @@
 <title>BIO N TRUFFE — CRM Clients</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
-:root {
-  --s950:#f7fdf9;--s900:#ffffff;--s800:#f1f5f9;--s700:#e2e8f0;
-  --s600:#64748b;--s500:#94a3b8;--s400:#64748b;--s300:#475569;
-  --s200:#334155;--s100:#1e293b;
-  --em700:#15803d;--em600:#22c55e;--em500:#4ade80;--em400:#16a34a;
-  --amber:#f59e0b;--red:#ef4444;--orange:#f97316;--white:#fff;
-  --fd:'DM Sans',sans-serif;--fdisp:'DM Serif Display',serif;
+:root{
+  --v:#22c55e;--vf:#15803d;--vc:#4ade80;--vp:#f0fdf4;
+  --s100:#1e293b;--s200:#334155;--s400:#64748b;--s500:#94a3b8;--s600:#64748b;
+  --s700:#e2e8f0;--s800:#f1f5f9;--s900:#fff;
+  --amber:#f59e0b;--red:#ef4444;--orange:#f97316;
   --border:rgba(0,0,0,.08);
+  --fd:'DM Sans',sans-serif;--fdisp:'DM Serif Display',serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--fd);background:#f8f9fb;color:var(--s200);min-height:100vh;font-size:14px;}
-body::before{content:'';position:fixed;inset:0;background:none;pointer-events:none;z-index:0;}
+body{font-family:var(--fd);background:#f7fdf9;color:var(--s200);min-height:100vh;font-size:14px;}
 
-/* ── LOCK ── */
-.lock-screen{
-  position:fixed;inset:0;z-index:9999;
-  background:#f8f9fb;
-  display:flex;align-items:center;justify-content:center;
-}
-.lock-box{
-  background:#ffffff;border:1px solid var(--border);border-radius:12px;
-  padding:2.5rem 2rem;width:340px;text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-.lock-ico{font-size:2.5rem;margin-bottom:.85rem;display:block;}
-.lock-box h2{font-family:var(--fdisp);font-size:1.25rem;color:#1e293b;margin-bottom:.3rem;}
-.lock-box p{font-size:.78rem;color:var(--s500);margin-bottom:1.5rem;}
-.lock-box input{
-  width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;
-  border-radius:8px;font-size:1.1rem;text-align:center;letter-spacing:.35em;
-  font-family:var(--fd);background:#f1f5f9;color:#1e293b;
-  margin-bottom:1rem;transition:border-color .2s;
-}
-.lock-box input:focus{outline:none;border-color:#22c55e;}
-.lock-box input.shake{animation:sk .35s ease;border-color:var(--red);}
+/* LOCK */
+.lock{position:fixed;inset:0;z-index:9999;background:#f7fdf9;display:flex;align-items:center;justify-content:center;}
+.lock-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem;width:330px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.1);}
+.lock-box h2{font-family:var(--fdisp);font-size:1.2rem;color:var(--s100);margin-bottom:.3rem;}
+.lock-box p{font-size:.78rem;color:var(--s500);margin-bottom:1.25rem;}
+.lock-box input{width:100%;padding:10px 14px;border:1.5px solid var(--s700);border-radius:8px;font-size:1.1rem;text-align:center;letter-spacing:.35em;font-family:var(--fd);background:var(--s800);color:var(--s100);margin-bottom:.85rem;}
+.lock-box input:focus{outline:none;border-color:var(--v);}
+.lock-box input.shake{animation:sk .35s;border-color:var(--red);}
 @keyframes sk{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-.lock-box button{
-  width:100%;background:#22c55e;color:#1e293b;border:none;border-radius:8px;
-  padding:11px;font-family:var(--fd);font-size:.85rem;font-weight:600;cursor:pointer;
-  letter-spacing:.05em;text-transform:uppercase;transition:background .2s;
-}
-.lock-box button:hover{background:#4ade80;}
-.lock-error{font-size:.72rem;color:#fca5a5;margin-top:.5rem;min-height:1rem;}
-.lock-hint{font-size:.68rem;color:var(--s700);margin-top:1rem;}
+.lock-btn{width:100%;background:var(--v);color:#fff;border:none;border-radius:8px;padding:11px;font-family:var(--fd);font-size:.85rem;font-weight:600;cursor:pointer;}
+.lock-btn:hover{background:var(--vc);}
+.lock-err{font-size:.72rem;color:var(--red);margin-top:.5rem;min-height:1rem;}
+.lock-hint{font-size:.65rem;color:var(--s500);margin-top:.85rem;}
 
-/* ── TOAST ── */
-#toast{
-  position:fixed;bottom:1.5rem;right:1.5rem;z-index:9998;
-  background:#f1f5f9;color:#22c55e;
-  padding:10px 18px;border-radius:8px;font-size:.82rem;font-weight:600;
-  border:1px solid rgba(34,197,94,.18);
-  transform:translateY(120%);transition:transform .3s;
-  box-shadow:0 4px 20px rgba(0,0,0,.4);
-}
-#toast.show{transform:translateY(0);}
+/* TOAST */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:#fff;color:var(--vf);padding:10px 18px;border-radius:8px;font-size:.82rem;font-weight:600;border:1px solid rgba(34,197,94,.2);transform:translateY(120%);transition:transform .3s;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+#toast.on{transform:translateY(0);}
 
-/* ── LAYOUT ── */
-.layout{display:flex;min-height:100vh;position:relative;z-index:1;}
+/* LAYOUT */
+.layout{display:flex;min-height:100vh;}
 
-/* ── SIDEBAR ── */
-.sidebar{
-  width:220px;flex-shrink:0;background:#ffffff;
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  position:sticky;top:0;height:100vh;overflow-y:auto;
-}
-.sidebar-logo{padding:1.25rem 1rem;border-bottom:1px solid var(--border);}
-.sidebar-logo a{text-decoration:none;display:flex;align-items:center;gap:9px;}
-.logo-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#22c55e,#4ade80);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.logo-name{font-family:var(--fdisp);font-size:.95rem;color:#1e293b;display:block;}
-.logo-sub{font-size:.6rem;color:var(--s500);display:block;letter-spacing:.04em;text-transform:uppercase;margin-top:1px;}
-nav{flex:1;padding:.5rem 0;}
-.nav-section{padding:.65rem 1rem .2rem;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--s700);}
-.nav-item{
-  display:flex;align-items:center;gap:.6rem;
-  padding:.55rem 1rem;cursor:pointer;font-size:.8rem;
-  color:var(--s400);border-left:2px solid transparent;
-  transition:all .15s;border-radius:0 6px 6px 0;margin-right:.5rem;
-}
-.nav-item:hover{color:#1e293b;background:#f8f9fb;}
-.nav-item.active{color:#22c55e;border-left-color:#22c55e;background:rgba(34,197,94,.06);}
-.nav-item .ico{font-size:.9rem;width:16px;text-align:center;flex-shrink:0;}
-.nav-count{margin-left:auto;background:rgba(34,197,94,.1);color:#22c55e;font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:10px;min-width:18px;text-align:center;}
-.sidebar-footer{padding:.85rem 1rem;border-top:1px solid var(--border);}
-.sidebar-footer a{font-size:.72rem;color:#22c55e;text-decoration:none;display:block;margin-bottom:.3rem;}
-.sidebar-footer a:hover{color:var(--em300);}
-.sidebar-footer span{font-size:.64rem;color:var(--s700);display:block;margin-top:.5rem;}
+/* SIDEBAR */
+.sidebar{width:210px;flex-shrink:0;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sb-logo{padding:1.1rem 1rem;border-bottom:1px solid var(--border);}
+.sb-logo a{text-decoration:none;display:flex;align-items:center;gap:9px;}
+.sb-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#22c55e,#4ade80);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.sb-name{font-family:var(--fdisp);font-size:.9rem;color:var(--s100);display:block;}
+.sb-sub{font-size:.6rem;color:var(--s500);display:block;letter-spacing:.04em;text-transform:uppercase;margin-top:1px;}
+.sb-nav{flex:1;padding:.4rem 0;}
+.sb-sec{padding:.6rem 1rem .15rem;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--s500);}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem 1rem;cursor:pointer;font-size:.8rem;color:var(--s400);border-left:2px solid transparent;transition:all .15s;border-radius:0 6px 6px 0;margin-right:.4rem;}
+.nav-item:hover{color:var(--s100);background:rgba(34,197,94,.05);}
+.nav-item.active{color:var(--vf);border-left-color:var(--v);background:rgba(34,197,94,.08);}
+.nav-item .ico{font-size:.85rem;width:16px;text-align:center;flex-shrink:0;}
+.nav-count{margin-left:auto;background:rgba(34,197,94,.15);color:var(--vf);font-size:.62rem;font-weight:700;padding:1px 7px;border-radius:10px;min-width:18px;text-align:center;}
+.sb-foot{padding:.75rem 1rem;border-top:1px solid var(--border);}
+.sb-foot a{font-size:.72rem;color:var(--v);text-decoration:none;display:block;margin-bottom:.25rem;}
+.sb-foot a:hover{color:var(--vf);}
+.sb-foot span{font-size:.62rem;color:var(--s500);display:block;margin-top:.4rem;}
 
-/* ── MAIN ── */
-.main{flex:1;padding:1.75rem 2rem;overflow-x:auto;}
+/* MAIN */
+.main{flex:1;padding:1.5rem 2rem;overflow-x:auto;}
 .page{display:none;}.page.active{display:block;}
 
-/* ── PAGE HEADER ── */
-.page-header{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:.85rem;
-  margin-bottom:1.5rem;padding-bottom:1rem;
-  border-bottom:1px solid var(--border);
-}
-.page-header h1{font-family:var(--fdisp);font-size:1.4rem;color:#1e293b;}
-.page-header p{font-size:.75rem;color:var(--s500);margin-top:2px;}
+/* PAGE HEADER */
+.ph{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;padding-bottom:.85rem;border-bottom:1px solid var(--border);}
+.ph h1{font-family:var(--fdisp);font-size:1.35rem;color:var(--s100);}
+.ph p{font-size:.73rem;color:var(--s500);margin-top:2px;}
 
-/* ── STATS ── */
-.stats{display:flex;gap:.85rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.stat{
-  background:#f1f5f9;border:1px solid var(--border);border-radius:9px;
-  padding:1rem 1.1rem;flex:1;min-width:110px;border-top:2px solid #22c55e;
-}
-.stat-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);margin-bottom:.35rem;}
-.stat-val{font-family:var(--fdisp);font-size:1.6rem;color:#1e293b;}
-.stat-sub{font-size:.65rem;color:var(--s600);margin-top:2px;}
+/* STATS */
+.stats{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:9px;padding:.9rem 1rem;flex:1;min-width:110px;border-top:2px solid var(--v);}
+.stat-lbl{font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);margin-bottom:.25rem;}
+.stat-val{font-family:var(--fdisp);font-size:1.5rem;color:var(--s100);}
+.stat-sub{font-size:.63rem;color:var(--s500);margin-top:2px;}
 
-/* ── TOOLBAR ── */
-.toolbar{display:flex;gap:.65rem;align-items:center;flex-wrap:wrap;margin-bottom:1.1rem;}
-.search-wrap{position:relative;flex:1;min-width:180px;}
-.search-wrap input{
-  width:100%;padding:8px 11px 8px 34px;
-  border:1px solid #e2e8f0;border-radius:8px;
-  background:#f8f9fb;color:#1e293b;
-  font-family:var(--fd);font-size:.83rem;
-  transition:border-color .2s;
-}
-.search-wrap input:focus{outline:none;border-color:#22c55e;}
-.search-wrap input::placeholder{color:var(--s600);}
-.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--s500);font-size:.85rem;pointer-events:none;}
-.filter-btn{
-  padding:7px 13px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;
-  border:1px solid var(--border);background:#f8f9fb;color:var(--s400);
-  font-family:var(--fd);transition:all .15s;white-space:nowrap;
-}
-.filter-btn.active{background:#22c55e;color:#1e293b;border-color:#22c55e;}
+/* TOOLBAR */
+.toolbar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.85rem;}
+.sw{position:relative;flex:1;min-width:180px;}
+.sw input{width:100%;padding:7px 10px 7px 30px;border:1px solid var(--s700);border-radius:8px;background:#fff;color:var(--s100);font-family:var(--fd);font-size:.83rem;}
+.sw input:focus{outline:none;border-color:var(--v);}
+.sw input::placeholder{color:var(--s500);}
+.sw-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--s500);font-size:.82rem;pointer-events:none;}
+.fbtn{padding:7px 12px;border-radius:7px;font-size:.73rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--s400);font-family:var(--fd);transition:all .15s;white-space:nowrap;}
+.fbtn.active{background:var(--v);color:#fff;border-color:var(--v);}
 
-/* ── CARD TABLE ── */
-.card-table{
-  background:#ffffff;border:1px solid var(--border);
-  border-radius:10px;overflow:hidden;
-}
+/* TABLE */
+.card-tbl{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 table{width:100%;border-collapse:collapse;font-size:.82rem;}
-th{
-  text-align:left;padding:8px 12px;
-  background:rgba(34,197,94,.02);
-  font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--s500);font-weight:600;border-bottom:1px solid var(--border);
-  white-space:nowrap;
-}
-td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+th{text-align:left;padding:7px 11px;background:var(--s800);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--s500);font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:7px 11px;border-bottom:1px solid rgba(0,0,0,.04);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:rgba(34,197,94,.02);}
-.empty-row td{text-align:center;color:var(--s500);font-style:italic;padding:2.5rem;}
+.empty td{text-align:center;color:var(--s500);font-style:italic;padding:2.5rem;}
 
-/* ── BADGES ── */
-.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:.65rem;font-weight:700;letter-spacing:.05em;white-space:nowrap;}
-.badge-client{background:rgba(34,197,94,.08);color:#22c55e;border:1px solid rgba(34,197,94,.18);}
-.badge-prospect{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.25);}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:.65rem;font-weight:700;letter-spacing:.05em;}
+.badge-v{background:rgba(34,197,94,.1);color:var(--vf);border:1px solid rgba(34,197,94,.2);}
+.badge-o{background:rgba(249,115,22,.1);color:var(--orange);border:1px solid rgba(249,115,22,.2);}
 
-/* ── BUTTONS ── */
-.btn{
-  display:inline-flex;align-items:center;gap:.35rem;
-  padding:.42rem .9rem;border-radius:7px;border:none;cursor:pointer;
-  font-family:var(--fd);font-size:.76rem;font-weight:600;
-  letter-spacing:.03em;transition:all .15s;
-}
-.btn-vert{background:#22c55e;color:#1e293b;}
-.btn-vert:hover{background:#4ade80;}
-.btn-orange{background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.25);color:var(--orange);}
-.btn-orange:hover{background:rgba(249,115,22,.2);}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--s400);}
-.btn-outline:hover{border-color:rgba(255,255,255,.2);color:var(--s200);}
-.btn-danger{background:transparent;border:1px solid rgba(239,68,68,.3);color:#f87171;}
-.btn-danger:hover{background:rgba(239,68,68,.08);}
-.btn-sm{padding:.28rem .65rem;font-size:.72rem;}
-.btn-lg{padding:.75rem 1.6rem;font-size:.85rem;}
+/* BOUTONS */
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .85rem;border-radius:7px;border:none;cursor:pointer;font-family:var(--fd);font-size:.76rem;font-weight:600;transition:all .15s;}
+.btn-v{background:var(--v);color:#fff;}.btn-v:hover{background:var(--vc);}
+.btn-o{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);color:var(--orange);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--s400);}.btn-outline:hover{border-color:#94a3b8;color:var(--s200);}
+.btn-danger{background:transparent;border:1px solid rgba(239,68,68,.25);color:#dc2626;}.btn-danger:hover{background:rgba(239,68,68,.06);}
+.btn-sm{padding:.26px .6rem;font-size:.72rem;}
+.btn-lg{padding:.72rem 1.5rem;font-size:.85rem;}
 
-/* ── MINI CARDS (dashboard) ── */
-.mini-card{
-  border:1px solid var(--border);border-radius:8px;padding:.65rem .9rem;
-  margin-bottom:.45rem;cursor:pointer;background:rgba(34,197,94,.02);
-  transition:border-color .15s,background .15s;
-}
-.mini-card:hover{border-color:rgba(34,197,94,.18);background:rgba(34,197,94,.04);}
-.mini-card-name{font-size:.83rem;font-weight:600;color:#1e293b;}
-.mini-card-sub{font-size:.7rem;color:var(--s500);margin-top:2px;}
+/* MINI CARD dashboard */
+.mini-card{border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;margin-bottom:.4rem;cursor:pointer;background:#fff;transition:border-color .15s;}
+.mini-card:hover{border-color:rgba(34,197,94,.25);}
+.mc-name{font-size:.82rem;font-weight:600;color:var(--s100);}
+.mc-sub{font-size:.68rem;color:var(--s500);margin-top:2px;}
 
-/* ── SECTION CARD ── */
-.section-card{background:#ffffff;border:1px solid var(--border);border-radius:10px;padding:1.35rem;margin-bottom:1.1rem;}
-.section-card h2{font-family:var(--fdisp);font-size:1rem;color:#1e293b;margin-bottom:1.1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);}
+/* SECTION CARD */
+.scard{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:1rem;}
+.scard h2{font-family:var(--fdisp);font-size:.95rem;color:var(--s100);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
 
-/* ── MODAL ── */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;
-}
-.modal-overlay.open{display:flex;}
-.modal{
-  background:#ffffff;border:1px solid var(--border);border-radius:12px;
-  width:100%;max-width:700px;max-height:90vh;
-  overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);
-  display:flex;flex-direction:column;
-}
-.modal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 20px;border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-.modal-header h2{font-family:var(--fdisp);font-size:1rem;color:#1e293b;}
-.modal-close{background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--s500);padding:.2rem .4rem;border-radius:4px;transition:color .15s;}
-.modal-close:hover{color:var(--s200);}
-.modal-body{padding:1.35rem 1.5rem;overflow-y:auto;flex:1;}
-.modal-footer{
-  padding:11px 1.5rem;border-top:1px solid var(--border);
-  display:flex;justify-content:flex-end;gap:.65rem;flex-wrap:wrap;flex-shrink:0;
-}
-
-/* ── FICHE ── */
-.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-.fiche-block{background:rgba(34,197,94,.03);border:1px solid var(--border);border-radius:8px;padding:.95rem 1.1rem;}
-.fiche-block h3{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#22c55e;margin-bottom:.65rem;font-weight:600;}
-.fiche-row{display:flex;gap:.5rem;margin-bottom:.3rem;font-size:.8rem;}
-.fiche-key{color:var(--s500);min-width:115px;flex-shrink:0;font-size:.75rem;}
-.fiche-val{color:#1e293b;font-weight:600;word-break:break-word;}
-
-/* ── HISTO ── */
-.histo-item{border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.6rem;cursor:pointer;transition:border-color .15s;background:rgba(34,197,94,.02);}
-.histo-item:hover{border-color:rgba(34,197,94,.18);}
-.histo-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
-.histo-ref{font-size:.78rem;font-weight:700;color:#22c55e;}
-.histo-date{font-size:.72rem;color:var(--s500);}
-.histo-total{font-family:var(--fdisp);font-size:1rem;color:var(--em500);font-weight:700;}
-.histo-detail{margin-top:.65rem;font-size:.75rem;display:none;}
-.histo-detail.open{display:block;}
-.histo-line{display:flex;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
-.histo-line:last-child{border-bottom:none;}
-
-/* ── CONV FORM ── */
-.conv-form{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
-.conv-form label{font-size:.68rem;font-weight:600;color:var(--s400);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.3rem;}
-.conv-form input,.conv-form select,.conv-form textarea{
-  background:#f1f5f9;border:1px solid #e2e8f0;
-  border-radius:7px;color:#1e293b;font-family:var(--fd);font-size:.83rem;
-  padding:8px 11px;width:100%;transition:border-color .2s;
-}
-.conv-form input:focus,.conv-form select:focus,.conv-form textarea:focus{outline:none;border-color:#22c55e;}
-.conv-form select option{background:#f1f5f9;}
-.conv-form textarea{resize:vertical;min-height:60px;}
-.conv-form .full{grid-column:1/-1;}
-.num-display{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:#22c55e;font-weight:700;}
-
-/* ── IMPORT/EXPORT ── */
-.import-drop{
-  border:2px dashed rgba(34,197,94,.18);border-radius:8px;padding:1.5rem;
-  text-align:center;cursor:pointer;background:rgba(34,197,94,.03);position:relative;
-  transition:all .2s;
-}
-.import-drop:hover{border-color:#22c55e;background:rgba(34,197,94,.05);}
-.import-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-
-/* ── DASHBOARD GRID ── */
+/* DB GRID */
 .db-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 
-/* ── LOADING ── */
-.loading{color:var(--s500);font-style:italic;text-align:center;padding:2rem;font-size:.82rem;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border:1px solid var(--border);border-radius:12px;width:100%;max-width:700px;max-height:90vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.15);display:flex;flex-direction:column;}
+.modal-sm{max-width:480px;}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.mh h2{font-family:var(--fdisp);font-size:.95rem;color:var(--s100);}
+.mclose{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--s500);padding:.2rem;}
+.mbody{padding:1.25rem 1.5rem;overflow-y:auto;flex:1;}
+.mfoot{padding:10px 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.6rem;flex-wrap:wrap;flex-shrink:0;}
+
+/* FICHE */
+.fiche-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.fblock{background:var(--s800);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;}
+.fblock h3{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:var(--vf);margin-bottom:.6rem;font-weight:600;}
+.frow{display:flex;gap:.5rem;margin-bottom:.3rem;font-size:.8rem;}
+.fkey{color:var(--s500);min-width:115px;flex-shrink:0;font-size:.74rem;}
+.fval{color:var(--s100);font-weight:600;word-break:break-word;}
+
+/* HISTORIQUE */
+.histo{border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;margin-bottom:.5rem;cursor:pointer;background:#fff;transition:border-color .15s;}
+.histo:hover{border-color:rgba(34,197,94,.2);}
+.histo-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;}
+.histo-ref{font-size:.78rem;font-weight:700;color:var(--v);}
+.histo-date{font-size:.7rem;color:var(--s500);}
+.histo-ht{font-family:var(--fdisp);font-size:.95rem;color:var(--vf);font-weight:700;}
+.histo-detail{margin-top:.6rem;font-size:.75rem;display:none;}
+.histo-detail.open{display:block;}
+.histo-line{display:flex;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid var(--border);}
+.histo-line:last-child{border-bottom:none;}
+
+/* FORMULAIRE modal */
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;}
+.fg2 .full{grid-column:1/-1;}
+.fg1{margin-bottom:.75rem;}
+.flabel{font-size:.67rem;font-weight:600;color:var(--s400);letter-spacing:.05em;text-transform:uppercase;display:block;margin-bottom:.28rem;}
+.finput{background:var(--s800);border:1px solid var(--s700);border-radius:7px;color:var(--s100);font-family:var(--fd);font-size:.83rem;padding:7px 10px;width:100%;}
+.finput:focus{outline:none;border-color:var(--v);}
+.finput.green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:var(--vf);font-weight:700;}
+select.finput option{background:#fff;}
+textarea.finput{resize:vertical;min-height:56px;}
+
+/* SAISIE COMMANDE */
+.cmd-table{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:.75rem;}
+.cmd-head{display:grid;grid-template-columns:1fr 80px 95px 32px;background:var(--s800);padding:6px 10px;font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--s500);border-bottom:1px solid var(--border);}
+.cmd-row{display:grid;grid-template-columns:1fr 80px 95px 32px;padding:5px 8px;gap:6px;align-items:center;border-bottom:1px solid rgba(0,0,0,.04);}
+.cmd-row:last-child{border-bottom:none;}
+.cinput{background:var(--s800);border:1px solid var(--s700);border-radius:5px;color:var(--s100);font-family:var(--fd);font-size:.8rem;padding:5px 7px;width:100%;}
+.cinput:focus{outline:none;border-color:var(--v);}
+.cinput.center{text-align:center;}
+.cinput.right{text-align:right;}
+.cmd-footer{padding:7px 10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.add-line{background:none;border:none;cursor:pointer;color:var(--vf);font-size:.78rem;font-weight:600;font-family:var(--fd);}
+.cmd-total{font-family:var(--fdisp);font-size:1rem;color:var(--s100);font-weight:700;}
+
+/* IMPORT DROP */
+.drop-zone{border:2px dashed rgba(34,197,94,.25);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;position:relative;transition:all .15s;}
+.drop-zone:hover{border-color:var(--v);background:rgba(34,197,94,.04);}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 
 @media(max-width:768px){
   .layout{flex-direction:column;}
   .sidebar{width:100%;height:auto;position:relative;}
-  nav{display:flex;flex-wrap:wrap;padding:.4rem;}
+  .sb-nav{display:flex;flex-wrap:wrap;padding:.4rem;}
   .nav-item{padding:.4rem .75rem;border-left:none;border-bottom:2px solid transparent;border-radius:6px;font-size:.72rem;}
-  .nav-item.active{border-bottom-color:var(--em500);border-left:none;}
-  .nav-section{display:none;}
-  .fiche-grid,.conv-form,.db-grid{grid-template-columns:1fr;}
+  .nav-item.active{border-bottom-color:var(--v);border-left:none;}
+  .sb-sec{display:none;}
+  .fiche-grid,.db-grid{grid-template-columns:1fr;}
   .main{padding:1rem;}
 }
 </style>
@@ -283,14 +194,14 @@ tr:hover td{background:rgba(34,197,94,.02);}
 <body>
 
 <!-- LOCK -->
-<div class="lock-screen" id="lock-screen">
+<div class="lock" id="lock">
   <div class="lock-box">
-    <span class="lock-ico">🔒</span>
+    <span style="font-size:2.2rem;display:block;margin-bottom:.6rem">🔒</span>
     <h2>CRM BIO N TRUFFE</h2>
-    <p>Accès réservé · Eridan BNT</p>
-    <input type="password" id="lock-input" placeholder="••••••" onkeydown="if(event.key==='Enter')checkPassword()">
-    <button onclick="checkPassword()">Accéder</button>
-    <div class="lock-error" id="lock-error"></div>
+    <p>Accès réservé · Eridan BNT SARL</p>
+    <input type="password" id="lock-input" placeholder="••••••">
+    <button class="lock-btn" onclick="checkPwd()">Accéder</button>
+    <div class="lock-err" id="lock-err"></div>
     <div class="lock-hint">Mot de passe : biontruffe2026</div>
   </div>
 </div>
@@ -300,76 +211,69 @@ tr:hover td{background:rgba(34,197,94,.02);}
 <!-- MODAL FICHE -->
 <div class="modal-overlay" id="modal-fiche">
   <div class="modal">
-    <div class="modal-header">
-      <h2 id="modal-fiche-title">Fiche</h2>
-      <button class="modal-close" onclick="closeModal('modal-fiche')">✕</button>
-    </div>
-    <div class="modal-body" id="modal-fiche-body"></div>
-    <div class="modal-footer" id="modal-fiche-footer"></div>
+    <div class="mh"><h2 id="mf-title">Fiche</h2><button class="mclose" onclick="closeM('modal-fiche')">✕</button></div>
+    <div class="mbody" id="mf-body"></div>
+    <div class="mfoot" id="mf-foot"></div>
   </div>
 </div>
 
 <!-- MODAL CONVERSION -->
 <div class="modal-overlay" id="modal-conv">
-  <div class="modal" style="max-width:520px">
-    <div class="modal-header">
-      <h2>Convertir en client</h2>
-      <button class="modal-close" onclick="closeModal('modal-conv')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:7px;padding:9px 13px;margin-bottom:1.1rem;font-size:.8rem;color:#22c55e">
-        ✅ Attribution d'un numéro client et activation du compte revendeur.
-      </div>
-      <div class="conv-form">
-        <div>
-          <label>N° Client (auto)</label>
-          <input type="text" id="conv-num" readonly class="num-display">
-        </div>
-        <div>
-          <label>Profil revendeur</label>
-          <select id="conv-profil">
-            <option value="Tarif Général MBS">Tarif Général MBS</option>
-            <option value="Revendeur Premium">Revendeur Premium (−10%)</option>
-            <option value="Distributeur Exclusif">Distributeur Exclusif (−15%)</option>
+  <div class="modal modal-sm">
+    <div class="mh"><h2>Convertir en client</h2><button class="mclose" onclick="closeM('modal-conv')">✕</button></div>
+    <div class="mbody">
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:7px;padding:8px 12px;margin-bottom:1rem;font-size:.8rem;color:var(--vf)" id="conv-info"></div>
+      <div class="fg2">
+        <div><label class="flabel">N° Client (auto)</label><input class="finput green" id="conv-num" readonly></div>
+        <div><label class="flabel">Profil revendeur</label>
+          <select class="finput" id="conv-profil">
+            <option>Tarif Général MBS</option>
+            <option>Revendeur Premium</option>
+            <option>Distributeur Exclusif</option>
           </select>
         </div>
-        <div>
-          <label>Date d'activation</label>
-          <input type="date" id="conv-date">
-        </div>
-        <div>
-          <label>Conditions paiement</label>
-          <select id="conv-paiement">
+        <div><label class="flabel">Date d'activation</label><input class="finput" type="date" id="conv-date"></div>
+        <div><label class="flabel">Conditions paiement</label>
+          <select class="finput" id="conv-paiement">
             <option>À réception de facture</option>
             <option>30 jours fin de mois</option>
             <option>60 jours</option>
             <option>Comptant</option>
           </select>
         </div>
-        <div class="full">
-          <label>Notes internes</label>
-          <textarea id="conv-notes" rows="2" placeholder="Conditions négociées, contexte…"></textarea>
-        </div>
+        <div class="full"><label class="flabel">Notes internes</label><textarea class="finput" id="conv-notes" rows="2"></textarea></div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-conv')">Annuler</button>
-      <button class="btn btn-vert btn-lg" onclick="confirmConversion()">✅ Confirmer la conversion</button>
+    <div class="mfoot">
+      <button class="btn btn-outline" onclick="closeM('modal-conv')">Annuler</button>
+      <button class="btn btn-v btn-lg" onclick="confirmerConv()">✅ Confirmer la conversion</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL BDC -->
-<div class="modal-overlay" id="modal-bdc">
-  <div class="modal" style="max-width:480px">
-    <div class="modal-header">
-      <h2>Nouveau Bon de Commande</h2>
-      <button class="modal-close" onclick="closeModal('modal-bdc')">✕</button>
+<!-- MODAL SAISIE COMMANDE -->
+<div class="modal-overlay" id="modal-cmd">
+  <div class="modal modal-sm" style="max-width:540px">
+    <div class="mh"><h2>Saisir une commande</h2><button class="mclose" onclick="closeM('modal-cmd')">✕</button></div>
+    <div class="mbody">
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:7px;padding:8px 12px;margin-bottom:1rem;font-size:.8rem;color:var(--vf)" id="cmd-client-info"></div>
+      <div class="fg2" style="margin-bottom:.85rem">
+        <div><label class="flabel">Référence</label><input class="finput" id="cmd-ref"></div>
+        <div><label class="flabel">Date</label><input class="finput" type="date" id="cmd-date"></div>
+      </div>
+      <div class="cmd-table">
+        <div class="cmd-head"><span>Désignation</span><span style="text-align:center">Qté</span><span style="text-align:right">Prix HT</span><span></span></div>
+        <div id="cmd-lignes"></div>
+        <div class="cmd-footer">
+          <button class="add-line" onclick="addLigne()">+ Ajouter une ligne</button>
+          <span class="cmd-total" id="cmd-total">0,00 €</span>
+        </div>
+      </div>
+      <div class="fg1"><label class="flabel">Commentaire</label><textarea class="finput" id="cmd-comment" rows="2"></textarea></div>
     </div>
-    <div class="modal-body" id="modal-bdc-body"></div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-bdc')">Annuler</button>
-      <button class="btn btn-vert btn-lg" onclick="openBDC()">Ouvrir le bon de commande →</button>
+    <div class="mfoot">
+      <button class="btn btn-outline" onclick="closeM('modal-cmd')">Annuler</button>
+      <button class="btn btn-v btn-lg" onclick="enregistrerCmd()">💾 Enregistrer</button>
     </div>
   </div>
 </div>
@@ -380,42 +284,27 @@ tr:hover td{background:rgba(34,197,94,.02);}
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-logo">
+    <div class="sb-logo">
       <a href="index.html">
-        <div class="logo-ico">🌿</div>
-        <div>
-          <span class="logo-name">BIO N TRUFFE</span>
-          <span class="logo-sub">CRM Clients</span>
-        </div>
+        <div class="sb-ico">🌿</div>
+        <div><span class="sb-name">BIO N TRUFFE</span><span class="sb-sub">CRM Clients</span></div>
       </a>
     </div>
-    <nav>
-      <div class="nav-section">Vue d'ensemble</div>
-      <div class="nav-item active" onclick="showPage('dashboard',this)">
-        <span class="ico">📊</span> Dashboard
-      </div>
-      <div class="nav-section">Portefeuille</div>
-      <div class="nav-item" onclick="showPage('prospects',this)">
-        <span class="ico">🔍</span> Prospects
-        <span class="nav-count" id="cnt-prospects">0</span>
-      </div>
-      <div class="nav-item" onclick="showPage('clients',this)">
-        <span class="ico">✅</span> Clients
-        <span class="nav-count" id="cnt-clients">0</span>
-      </div>
-      <div class="nav-section">Activité</div>
-      <div class="nav-item" onclick="showPage('commandes',this)">
-        <span class="ico">📋</span> Commandes
-      </div>
-      <div class="nav-section">Outils</div>
-      <div class="nav-item" onclick="showPage('import-export',this)">
-        <span class="ico">📤</span> Export / Import
-      </div>
+    <nav class="sb-nav">
+      <div class="sb-sec">Vue d'ensemble</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="ico">📊</span>Dashboard</div>
+      <div class="sb-sec">Portefeuille</div>
+      <div class="nav-item" onclick="showPage('prospects',this)"><span class="ico">🔍</span>Prospects<span class="nav-count" id="cnt-p">0</span></div>
+      <div class="nav-item" onclick="showPage('clients',this)"><span class="ico">✅</span>Clients<span class="nav-count" id="cnt-c">0</span></div>
+      <div class="sb-sec">Activité</div>
+      <div class="nav-item" onclick="showPage('commandes',this)"><span class="ico">📋</span>Commandes<span class="nav-count" id="cnt-o">0</span></div>
+      <div class="sb-sec">Outils</div>
+      <div class="nav-item" onclick="showPage('io',this)"><span class="ico">📤</span>Export / Import</div>
     </nav>
-    <div class="sidebar-footer">
+    <div class="sb-foot">
       <a href="prospect.html">+ Nouveau prospect</a>
       <a href="commande.html">📋 Bon de commande</a>
-      <a href="index.html" style="color:var(--s700)">← Portail</a>
+      <a href="index.html" style="color:var(--s500)">← Portail</a>
       <span>Christophe SPOTO · 06 78 37 89 06</span>
     </div>
   </aside>
@@ -425,111 +314,90 @@ tr:hover td{background:rgba(34,197,94,.02);}
 
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="page-header">
+      <div class="ph">
         <div><h1>Dashboard</h1><p>Vue d'ensemble BIO N TRUFFE · Eridan BNT</p></div>
-        <a href="prospect.html"><button class="btn btn-vert">+ Nouveau prospect</button></a>
+        <button class="btn btn-v" onclick="location.href='prospect.html'">+ Nouveau prospect</button>
       </div>
-      <div class="stats" id="db-stats"><div class="loading">Chargement…</div></div>
+      <div class="stats" id="db-stats"></div>
       <div class="db-grid">
         <div>
-          <h3 style="font-family:var(--fdisp);font-size:.95rem;color:#1e293b;margin-bottom:.85rem">Derniers prospects</h3>
-          <div id="db-prospects"><div class="loading">…</div></div>
+          <div style="font-family:var(--fdisp);font-size:.9rem;color:var(--s100);margin-bottom:.75rem">Derniers prospects</div>
+          <div id="db-prospects"><div style="font-size:.78rem;color:var(--s500);font-style:italic">—</div></div>
         </div>
         <div>
-          <h3 style="font-family:var(--fdisp);font-size:.95rem;color:#1e293b;margin-bottom:.85rem">Derniers clients</h3>
-          <div id="db-clients"><div class="loading">…</div></div>
+          <div style="font-family:var(--fdisp);font-size:.9rem;color:var(--s100);margin-bottom:.75rem">Derniers clients</div>
+          <div id="db-clients"><div style="font-size:.78rem;color:var(--s500);font-style:italic">—</div></div>
         </div>
       </div>
     </div>
 
     <!-- PROSPECTS -->
     <div class="page" id="page-prospects">
-      <div class="page-header">
-        <div><h1>Prospects</h1><p>Leads en cours de qualification</p></div>
-        <a href="prospect.html"><button class="btn btn-vert">+ Nouveau prospect</button></a>
+      <div class="ph">
+        <div><h1>Prospects</h1><p>Leads en qualification</p></div>
+        <button class="btn btn-v" onclick="location.href='prospect.html'">+ Nouveau</button>
       </div>
       <div class="toolbar">
-        <div class="search-wrap">
-          <span class="search-ico">⌕</span>
-          <input type="text" id="search-prospects" placeholder="Rechercher un prospect…" oninput="renderProspects()">
-        </div>
+        <div class="sw"><span class="sw-ico">🔍</span><input type="text" id="sq-p" placeholder="Rechercher…" oninput="renderProspects()"></div>
       </div>
-      <div class="card-table">
-        <table>
-          <thead><tr><th>Raison sociale</th><th>Ville</th><th>Contact</th><th>Créé le</th><th>Potentiel</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-prospects"></tbody>
-        </table>
+      <div class="card-tbl">
+        <table><thead><tr><th>Raison sociale</th><th>Ville</th><th>Contact</th><th>Créé le</th><th>Potentiel</th><th>Actions</th></tr></thead>
+        <tbody id="tb-p"></tbody></table>
       </div>
     </div>
 
     <!-- CLIENTS -->
     <div class="page" id="page-clients">
-      <div class="page-header">
-        <div><h1>Clients</h1><p>Comptes clients actifs</p></div>
-      </div>
+      <div class="ph"><div><h1>Clients</h1><p>Comptes actifs</p></div></div>
       <div class="toolbar">
-        <div class="search-wrap">
-          <span class="search-ico">⌕</span>
-          <input type="text" id="search-clients" placeholder="Rechercher un client…" oninput="renderClients()">
-        </div>
-        <button class="filter-btn active" id="f-all" onclick="setFilter('all')">Tous</button>
-        <button class="filter-btn" id="f-std" onclick="setFilter('Tarif Général MBS')">Standard</button>
-        <button class="filter-btn" id="f-prem" onclick="setFilter('Revendeur Premium')">Premium</button>
-        <button class="filter-btn" id="f-excl" onclick="setFilter('Distributeur Exclusif')">Exclusif</button>
+        <div class="sw"><span class="sw-ico">🔍</span><input type="text" id="sq-c" placeholder="Rechercher…" oninput="renderClients()"></div>
+        <button class="fbtn active" id="f-all" onclick="setFilter('all')">Tous</button>
+        <button class="fbtn" id="f-std" onclick="setFilter('Tarif Général MBS')">Standard</button>
+        <button class="fbtn" id="f-pre" onclick="setFilter('Revendeur Premium')">Premium</button>
+        <button class="fbtn" id="f-exc" onclick="setFilter('Distributeur Exclusif')">Exclusif</button>
       </div>
-      <div class="card-table">
-        <table>
-          <thead><tr><th>N° Client</th><th>Raison sociale</th><th>Ville</th><th>Profil</th><th>Commandes</th><th>CA HT</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-clients"></tbody>
-        </table>
+      <div class="card-tbl">
+        <table><thead><tr><th>N° Client</th><th>Raison sociale</th><th>Ville</th><th>Profil</th><th>Commandes</th><th>CA HT</th><th>Actions</th></tr></thead>
+        <tbody id="tb-c"></tbody></table>
       </div>
     </div>
 
     <!-- COMMANDES -->
     <div class="page" id="page-commandes">
-      <div class="page-header">
-        <div><h1>Commandes</h1><p>Historique complet des commandes enregistrées</p></div>
-      </div>
+      <div class="ph"><div><h1>Commandes</h1><p id="ph-ca">CA total : 0,00 €</p></div></div>
       <div class="toolbar">
-        <div class="search-wrap">
-          <span class="search-ico">⌕</span>
-          <input type="text" id="search-commandes" placeholder="Rechercher (client, date, ref…)" oninput="renderCommandes()">
-        </div>
+        <div class="sw"><span class="sw-ico">🔍</span><input type="text" id="sq-o" placeholder="Rechercher…" oninput="renderCommandes()"></div>
       </div>
-      <div class="card-table">
-        <table>
-          <thead><tr><th>Réf.</th><th>Client</th><th>Date</th><th>Total HT</th><th>Profil</th><th>Lignes</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-commandes"></tbody>
-        </table>
+      <div class="card-tbl">
+        <table><thead><tr><th>Référence</th><th>Client</th><th>Date</th><th>Total HT</th><th>Colis</th><th>UVC</th><th>Actions</th></tr></thead>
+        <tbody id="tb-o"></tbody></table>
       </div>
     </div>
 
-    <!-- IMPORT / EXPORT -->
-    <div class="page" id="page-import-export">
-      <div class="page-header">
-        <div><h1>Export / Import</h1><p>Sauvegardez ou restaurez vos données CRM</p></div>
-      </div>
+    <!-- EXPORT/IMPORT -->
+    <div class="page" id="page-io">
+      <div class="ph"><div><h1>Export / Import</h1></div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-        <div class="section-card">
-          <h2>⬇️ Exporter les données</h2>
-          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:1rem">Téléchargez l'intégralité des prospects, clients et commandes en JSON daté.</p>
-          <button class="btn btn-vert" onclick="exportJSON()">⬇️ Télécharger CRM.json</button>
+        <div class="scard">
+          <h2>⬇️ Exporter</h2>
+          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:1rem">Téléchargez tous vos prospects, clients et commandes en JSON.</p>
+          <button class="btn btn-v" onclick="exportData()">⬇️ Télécharger CRM.json</button>
         </div>
-        <div class="section-card">
-          <h2>⬆️ Importer des données</h2>
-          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:1rem">Restaurez un fichier CRM.json exporté. ⚠️ Les données actuelles seront remplacées.</p>
-          <div class="import-drop">
-            <input type="file" id="import-input" accept=".json" onchange="importJSON(this)">
-            <div style="font-size:1.5rem;margin-bottom:.35rem">📂</div>
-            <div style="font-size:.82rem;color:var(--s500)">Glissez votre fichier CRM.json ici</div>
+        <div class="scard">
+          <h2>⬆️ Importer</h2>
+          <p style="font-size:.78rem;color:var(--s500);line-height:1.6;margin-bottom:.85rem">Restaurez un fichier CRM.json. ⚠️ Les données actuelles seront remplacées.</p>
+          <div class="drop-zone">
+            <input type="file" accept=".json" onchange="importData(this)">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">📂</div>
+            <div style="font-size:.8rem;color:var(--s500)">Glissez votre fichier CRM.json ici</div>
           </div>
         </div>
       </div>
-      <div class="section-card" style="border-top:2px solid rgba(239,68,68,.3)">
-        <h2 style="color:#f87171">Zone de danger</h2>
-        <div style="display:flex;gap:.65rem;flex-wrap:wrap">
-          <button class="btn btn-danger" onclick="clearAll()">Supprimer toutes les données CRM</button>
-          <button class="btn btn-outline" onclick="if(confirm('Réinitialiser le mot de passe admin ?'))resetPwd()">Réinitialiser le mot de passe</button>
+      <div class="scard" style="border-top:2px solid rgba(239,68,68,.3)">
+        <h2 style="color:#dc2626">Zone de danger</h2>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-danger" onclick="clearAll()">Supprimer toutes les données</button>
+          <button class="btn btn-outline" onclick="resetPwd()">Réinitialiser le mot de passe</button>
         </div>
       </div>
     </div>
@@ -539,54 +407,115 @@ tr:hover td{background:rgba(34,197,94,.02);}
 </div>
 
 <script>
-const PWD_KEY   = 'bnt_crm_pwd';
-const DATA_KEY  = 'bnt_crm_data';
-const DEFAULT_PWD = 'biontruffe2026';
+// ═══════════════════════════
+// CONFIG
+// ═══════════════════════════
+var PWD_KEY  = 'bnt_pwd';
+var DATA_KEY = 'bnt_crm_data';
+var DEF_PWD  = 'biontruffe2026';
 
-let db = { prospects:[], clients:[], commandes:[] };
-let currentClientId = null;
-let convProspectId  = null;
-let bdcClientId     = null;
-let clientFilter    = 'all';
+var db = { prospects:[], clients:[], commandes:[] };
+var convId  = null;
+var cmdCId  = null;
+var ficheId = null;
+var ficheType = null;
+var profFilter = 'all';
+var cmdLignes = [];
 
-function checkPassword() {
-  const stored = localStorage.getItem(PWD_KEY) || DEFAULT_PWD;
-  const input  = document.getElementById('lock-input').value;
-  if (input === stored) {
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadData();
+// ═══════════════════════════
+// LOCK
+// ═══════════════════════════
+document.getElementById('lock-input').addEventListener('keydown', function(e){ if(e.key==='Enter') checkPwd(); });
+
+function checkPwd() {
+  var stored = localStorage.getItem(PWD_KEY) || DEF_PWD;
+  var val    = document.getElementById('lock-input').value;
+  if (val === stored) {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    loadData(); // charge les données ET absorbe les sessionStorage
   } else {
-    const inp = document.getElementById('lock-input');
+    var inp = document.getElementById('lock-input');
     inp.classList.add('shake');
-    document.getElementById('lock-error').textContent = 'Mot de passe incorrect.';
-    setTimeout(()=>inp.classList.remove('shake'), 400);
+    document.getElementById('lock-err').textContent = 'Mot de passe incorrect.';
+    setTimeout(function(){ inp.classList.remove('shake'); }, 400);
   }
 }
 
 function resetPwd() {
-  const np = prompt('Nouveau mot de passe admin :');
+  var np = prompt('Nouveau mot de passe admin (min 4 car.) :');
   if (np && np.trim().length >= 4) { localStorage.setItem(PWD_KEY, np.trim()); toast('✅ Mot de passe mis à jour'); }
 }
 
-document.getElementById('lock-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
-
+// ═══════════════════════════
+// DONNÉES
+// ═══════════════════════════
 function loadData() {
-  try { const raw = localStorage.getItem(DATA_KEY); if (raw) db = JSON.parse(raw); else db = { prospects:[], clients:[], commandes:[] }; }
-  catch(e) { db = { prospects:[], clients:[], commandes:[] }; }
-  renderAll(); updateNavCounts();
+  try {
+    var raw = localStorage.getItem(DATA_KEY);
+    db = raw ? JSON.parse(raw) : { prospects:[], clients:[], commandes:[] };
+    if (!db.prospects) db.prospects = [];
+    if (!db.clients)   db.clients   = [];
+    if (!db.commandes) db.commandes = [];
+  } catch(e) {
+    db = { prospects:[], clients:[], commandes:[] };
+  }
+
+  // Absorber les données venant de prospect.html ou commande.html
+  absorbProspect();
+  absorbCommande();
+
+  renderAll();
+  updateCounts();
 }
 
-function saveData() { localStorage.setItem(DATA_KEY, JSON.stringify(db)); updateNavCounts(); }
-
-function updateNavCounts() {
-  document.getElementById('cnt-prospects').textContent = db.prospects.length;
-  document.getElementById('cnt-clients').textContent   = db.clients.length;
+function saveData() {
+  localStorage.setItem(DATA_KEY, JSON.stringify(db));
+  updateCounts();
 }
 
+function updateCounts() {
+  document.getElementById('cnt-p').textContent = db.prospects.length;
+  document.getElementById('cnt-c').textContent = db.clients.length;
+  document.getElementById('cnt-o').textContent = db.commandes.length;
+}
+
+function absorbProspect() {
+  var raw = sessionStorage.getItem('bnt_new_prospect');
+  if (!raw) return;
+  sessionStorage.removeItem('bnt_new_prospect');
+  try {
+    var p = JSON.parse(raw);
+    // Éviter les doublons
+    if (!db.prospects.find(function(x){ return x.id===p.id; })) {
+      db.prospects.push(p);
+      saveData();
+      toast('✅ Prospect "' + p.raisonSociale + '" enregistré');
+    }
+  } catch(e) {}
+}
+
+function absorbCommande() {
+  var raw = sessionStorage.getItem('bnt_new_commande');
+  if (!raw) return;
+  sessionStorage.removeItem('bnt_new_commande');
+  try {
+    var o = JSON.parse(raw);
+    // Éviter les doublons
+    if (!db.commandes.find(function(x){ return x.id===o.id; })) {
+      db.commandes.push(o);
+      saveData();
+      toast('✅ Commande ' + (o.ref||'') + ' enregistrée');
+    }
+  } catch(e) {}
+}
+
+// ═══════════════════════════
+// NAVIGATION
+// ═══════════════════════════
 function showPage(page, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
   document.getElementById('page-'+page).classList.add('active');
   if (el) el.classList.add('active');
   renderAll();
@@ -594,347 +523,428 @@ function showPage(page, el) {
 
 function renderAll() { renderDashboard(); renderProspects(); renderClients(); renderCommandes(); }
 
+// ═══════════════════════════
+// DASHBOARD
+// ═══════════════════════════
 function renderDashboard() {
-  const totalCA = db.commandes.reduce((s,c) => s+(c.totalHT||0), 0);
-  document.getElementById('db-stats').innerHTML = `
-    <div class="stat"><div class="stat-label">Prospects</div><div class="stat-val">${db.prospects.length}</div><div class="stat-sub">en qualification</div></div>
-    <div class="stat"><div class="stat-label">Clients</div><div class="stat-val">${db.clients.length}</div><div class="stat-sub">comptes actifs</div></div>
-    <div class="stat"><div class="stat-label">Commandes</div><div class="stat-val">${db.commandes.length}</div><div class="stat-sub">enregistrées</div></div>
-    <div class="stat"><div class="stat-label">CA Total HT</div><div class="stat-val">${totalCA.toFixed(0)} €</div><div class="stat-sub">tous clients</div></div>
-  `;
-  const rp = [...db.prospects].reverse().slice(0,5);
+  var totalCA = db.commandes.reduce(function(s,o){ return s+(o.totalHT||0); }, 0);
+  document.getElementById('db-stats').innerHTML =
+    stat('Prospects', db.prospects.length, 'en qualification') +
+    stat('Clients', db.clients.length, 'comptes actifs') +
+    stat('Commandes', db.commandes.length, 'enregistrées') +
+    stat('CA Total HT', totalCA.toFixed(2)+' €', 'tous clients');
+
+  var rp = db.prospects.slice().reverse().slice(0,5);
   document.getElementById('db-prospects').innerHTML = rp.length
-    ? rp.map(p => miniCard(p,'prospect')).join('')
-    : '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun prospect — <a href="prospect.html" style="color:#22c55e">en créer un</a></p>';
-  const rc = [...db.clients].reverse().slice(0,5);
+    ? rp.map(function(p){ return miniCard(p,'prospect'); }).join('')
+    : '<div style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun prospect — <a href="prospect.html" style="color:var(--v)">en créer un</a></div>';
+
+  var rc = db.clients.slice().reverse().slice(0,5);
   document.getElementById('db-clients').innerHTML = rc.length
-    ? rc.map(c => miniCard(c,'client')).join('')
-    : '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun client converti</p>';
+    ? rc.map(function(c){ return miniCard(c,'client'); }).join('')
+    : '<div style="font-size:.78rem;color:var(--s500);font-style:italic">Aucun client converti</div>';
+}
+
+function stat(lbl, val, sub) {
+  return '<div class="stat"><div class="stat-lbl">'+lbl+'</div><div class="stat-val">'+val+'</div><div class="stat-sub">'+sub+'</div></div>';
 }
 
 function miniCard(e, type) {
-  const click = type==='prospect' ? `openFicheProspect('${e.id}')` : `openFicheClient('${e.id}')`;
-  return `<div onclick="${click}" class="mini-card">
-    <div class="mini-card-name">${e.raisonSociale}</div>
-    <div class="mini-card-sub">${e.cp||''} ${e.ville||''}</div>
-  </div>`;
+  var fn = type==='prospect' ? "openFiche('prospect','"+e.id+"')" : "openFiche('client','"+e.id+"')";
+  return '<div class="mini-card" onclick="'+fn+'"><div class="mc-name">'+e.raisonSociale+'</div><div class="mc-sub">'+(e.cp||'')+' '+(e.ville||'')+'</div></div>';
 }
 
+// ═══════════════════════════
+// PROSPECTS
+// ═══════════════════════════
 function renderProspects() {
-  const q = (document.getElementById('search-prospects')?.value||'').toLowerCase();
-  const list = db.prospects.filter(p =>
-    !q || (p.raisonSociale||'').toLowerCase().includes(q) ||
-    (p.ville||'').toLowerCase().includes(q) || (p.contact1||'').toLowerCase().includes(q)
-  );
-  const tbody = document.getElementById('tbody-prospects');
-  if (!tbody) return;
+  var q = (document.getElementById('sq-p')||{}).value||'';
+  q = q.toLowerCase();
+  var list = db.prospects.filter(function(p){
+    return !q || (p.raisonSociale||'').toLowerCase().includes(q)
+              || (p.ville||'').toLowerCase().includes(q)
+              || (p.contact1||'').toLowerCase().includes(q);
+  });
+  var tb = document.getElementById('tb-p');
+  if (!tb) return;
   if (!list.length) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">${q ? 'Aucun résultat' : 'Aucun prospect — <a href="prospect.html" style="color:#22c55e">Créer un prospect</a>'}</td></tr>`;
+    tb.innerHTML = '<tr class="empty"><td colspan="6">'+(q?'Aucun résultat':'Aucun prospect — <a href="prospect.html" style="color:var(--v)">Créer un prospect</a>')+'</td></tr>';
     return;
   }
-  tbody.innerHTML = list.map(p => `
-    <tr>
-      <td><strong style="color:#1e293b">${p.raisonSociale}</strong></td>
-      <td style="font-size:.78rem;color:var(--s400)">${p.cp||''} ${p.ville||''}</td>
-      <td style="font-size:.76rem">${p.contact1||'—'}<br><span style="color:var(--s500)">${p.email1||''}</span></td>
-      <td style="font-size:.72rem;color:var(--s500)">${formatDate(p.createdAt)}</td>
-      <td style="font-size:.76rem;color:var(--s400)">${p.potentiel ? p.potentiel+' €/mois' : '—'}</td>
-      <td style="white-space:nowrap">
-        <button class="btn btn-outline btn-sm" onclick="openFicheProspect('${p.id}')">👁 Fiche</button>
-        <button class="btn btn-orange btn-sm" onclick="openConversion('${p.id}')">✅ Convertir</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteProspect('${p.id}')">🗑</button>
-      </td>
-    </tr>`).join('');
+  tb.innerHTML = list.map(function(p){
+    return '<tr>'
+      +'<td><strong style="color:var(--s100)">'+p.raisonSociale+'</strong></td>'
+      +'<td style="font-size:.76rem;color:var(--s500)">'+(p.cp||'')+' '+(p.ville||'')+'</td>'
+      +'<td style="font-size:.76rem">'+(p.contact1||'—')+'<br><span style="color:var(--s500)">'+(p.email1||'')+'</span></td>'
+      +'<td style="font-size:.7rem;color:var(--s500)">'+fmtDate(p.createdAt)+'</td>'
+      +'<td style="font-size:.76rem;color:var(--s500)">'+(p.potentiel?p.potentiel+' €/mois':'—')+'</td>'
+      +'<td style="white-space:nowrap">'
+        +'<button class="btn btn-outline btn-sm" onclick="openFiche(\'prospect\',\''+p.id+'\')">👁 Fiche</button> '
+        +'<button class="btn btn-o btn-sm" onclick="openConv(\''+p.id+'\')">✅ Convertir</button> '
+        +'<button class="btn btn-danger btn-sm" onclick="delProspect(\''+p.id+'\')">🗑</button>'
+      +'</td>'
+      +'</tr>';
+  }).join('');
 }
 
-function deleteProspect(id) {
+function delProspect(id) {
   if (!confirm('Supprimer ce prospect ?')) return;
-  db.prospects = db.prospects.filter(p => p.id !== id);
-  saveData(); renderProspects(); renderDashboard(); toast('Prospect supprimé');
+  db.prospects = db.prospects.filter(function(p){ return p.id!==id; });
+  saveData(); renderProspects(); renderDashboard(); closeM('modal-fiche'); toast('Prospect supprimé');
 }
 
-function openFicheProspect(id) {
-  const p = db.prospects.find(x => x.id === id);
-  if (!p) return;
-  currentClientId = id;
-  document.getElementById('modal-fiche-title').textContent = `Prospect — ${p.raisonSociale}`;
-  document.getElementById('modal-fiche-body').innerHTML = buildFicheHTML(p, 'prospect');
-  document.getElementById('modal-fiche-footer').innerHTML = `
-    <button class="btn btn-outline" onclick="closeModal('modal-fiche')">Fermer</button>
-    <button class="btn btn-orange" onclick="closeModal('modal-fiche');openConversion('${p.id}')">✅ Convertir en client</button>
-  `;
-  openModal('modal-fiche');
-}
-
-let filterProfil = 'all';
+// ═══════════════════════════
+// CLIENTS
+// ═══════════════════════════
 function setFilter(f) {
-  filterProfil = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(f==='all'?'f-all':f==='Tarif Général MBS'?'f-std':f==='Revendeur Premium'?'f-prem':'f-excl').classList.add('active');
+  profFilter = f;
+  ['f-all','f-std','f-pre','f-exc'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.classList.remove('active');
+  });
+  var map={all:'f-all','Tarif Général MBS':'f-std','Revendeur Premium':'f-pre','Distributeur Exclusif':'f-exc'};
+  var el=document.getElementById(map[f]); if(el) el.classList.add('active');
   renderClients();
 }
 
 function renderClients() {
-  const q = (document.getElementById('search-clients')?.value||'').toLowerCase();
-  const list = db.clients.filter(c =>
-    (filterProfil==='all' || c.profil===filterProfil) &&
-    (!q || (c.raisonSociale||'').toLowerCase().includes(q) || (c.ville||'').toLowerCase().includes(q) || (c.numClient||'').toLowerCase().includes(q))
-  );
-  const tbody = document.getElementById('tbody-clients');
-  if (!tbody) return;
+  var q = (document.getElementById('sq-c')||{}).value||'';
+  q = q.toLowerCase();
+  var list = db.clients.filter(function(c){
+    return (profFilter==='all'||c.profil===profFilter)
+        && (!q||(c.raisonSociale||'').toLowerCase().includes(q)
+              ||(c.ville||'').toLowerCase().includes(q)
+              ||(c.numClient||'').toLowerCase().includes(q));
+  });
+  var tb = document.getElementById('tb-c'); if(!tb) return;
   if (!list.length) {
-    tbody.innerHTML = `<tr class="empty-row"><td colspan="7">${q ? 'Aucun résultat' : 'Aucun client — convertissez un prospect pour commencer'}</td></tr>`;
+    tb.innerHTML = '<tr class="empty"><td colspan="7">'+(q?'Aucun résultat':'Aucun client — convertissez un prospect')+'</td></tr>';
     return;
   }
-  tbody.innerHTML = list.map(c => {
-    const cmds = db.commandes.filter(o => o.clientId === c.id);
-    const ca   = cmds.reduce((s,o) => s+(o.totalHT||0), 0);
-    return `
-    <tr>
-      <td><strong style="font-family:var(--fdisp);color:#22c55e">${c.numClient}</strong></td>
-      <td><strong style="color:#1e293b">${c.raisonSociale}</strong></td>
-      <td style="font-size:.78rem;color:var(--s400)">${c.cp||''} ${c.ville||''}</td>
-      <td><span class="badge badge-client">${c.profil||'—'}</span></td>
-      <td style="text-align:center;font-weight:600">${cmds.length}</td>
-      <td style="font-weight:700;color:#22c55e">${ca.toFixed(2)} €</td>
-      <td style="white-space:nowrap">
-        <button class="btn btn-outline btn-sm" onclick="openFicheClient('${c.id}')">👁 Fiche</button>
-        <button class="btn btn-vert btn-sm" onclick="openBDCModal('${c.id}')">📋 BDC</button>
-      </td>
-    </tr>`;
+  tb.innerHTML = list.map(function(c){
+    var cmds = db.commandes.filter(function(o){ return o.clientId===c.id; });
+    var ca   = cmds.reduce(function(s,o){ return s+(o.totalHT||0); }, 0);
+    return '<tr>'
+      +'<td><strong style="font-family:var(--fdisp);color:var(--v)">'+c.numClient+'</strong></td>'
+      +'<td><strong style="color:var(--s100)">'+c.raisonSociale+'</strong></td>'
+      +'<td style="font-size:.76rem;color:var(--s500)">'+(c.cp||'')+' '+(c.ville||'')+'</td>'
+      +'<td><span class="badge badge-v">'+c.profil+'</span></td>'
+      +'<td style="text-align:center;font-weight:600">'+cmds.length+'</td>'
+      +'<td style="font-weight:700;color:var(--vf)">'+ca.toFixed(2)+' €</td>'
+      +'<td style="white-space:nowrap">'
+        +'<button class="btn btn-outline btn-sm" onclick="openFiche(\'client\',\''+c.id+'\')">👁 Fiche</button> '
+        +'<button class="btn btn-v btn-sm" onclick="ouvrirSaisieCmd(\''+c.id+'\')">📋 Commande</button>'
+      +'</td>'
+      +'</tr>';
   }).join('');
 }
 
-function openFicheClient(id) {
-  const c = db.clients.find(x => x.id === id);
-  if (!c) return;
-  currentClientId = id;
-  const cmds = db.commandes.filter(o => o.clientId === id);
-  const ca   = cmds.reduce((s,o) => s+(o.totalHT||0), 0);
-  const histoHTML = cmds.length
-    ? cmds.sort((a,b)=>b.date.localeCompare(a.date)).map(o => `
-      <div class="histo-item" onclick="toggleHisto(this)">
-        <div class="histo-top">
-          <span class="histo-ref">${o.ref}</span>
-          <span class="histo-date">${formatDate(o.date)}</span>
-          <span class="histo-total">${(o.totalHT||0).toFixed(2)} € HT</span>
-        </div>
-        <div class="histo-detail">
-          ${(o.lignes||[]).map(l=>`<div class="histo-line"><span>${l.nom} × ${l.qty}</span><span style="font-weight:600;color:#22c55e">${(l.ht||0).toFixed(2)} €</span></div>`).join('')}
-          <div style="font-size:.72rem;color:var(--s500);margin-top:.4rem">TVA 5,5% : ${((o.totalHT||0)*0.055).toFixed(2)} € · TTC : ${((o.totalHT||0)*1.055).toFixed(2)} €</div>
-        </div>
-      </div>`).join('')
-    : '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucune commande enregistrée</p>';
-  document.getElementById('modal-fiche-title').textContent = `${c.raisonSociale} · ${c.numClient}`;
-  document.getElementById('modal-fiche-body').innerHTML = `
-    ${buildFicheHTML(c,'client')}
-    <div style="margin-top:1.25rem">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-        <span style="font-family:var(--fdisp);font-size:.95rem;color:#1e293b">Historique commandes</span>
-        <span style="font-size:.78rem;color:var(--s500)">${cmds.length} cmd · CA : <strong style="color:#22c55e">${ca.toFixed(2)} € HT</strong></span>
-      </div>
-      ${histoHTML}
-    </div>`;
-  document.getElementById('modal-fiche-footer').innerHTML = `
-    <button class="btn btn-danger btn-sm" onclick="if(confirm('Supprimer ce client ?')){deleteClient('${c.id}');closeModal('modal-fiche')}">🗑 Supprimer</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-fiche')">Fermer</button>
-    <button class="btn btn-vert" onclick="closeModal('modal-fiche');openBDCModal('${c.id}')">📋 Nouveau BDC</button>
-  `;
-  openModal('modal-fiche');
+function delClient(id) {
+  if (!confirm('Supprimer ce client et tout son historique ?')) return;
+  db.clients    = db.clients.filter(function(c){ return c.id!==id; });
+  db.commandes  = db.commandes.filter(function(o){ return o.clientId!==id; });
+  saveData(); renderAll(); closeM('modal-fiche'); toast('Client supprimé');
 }
 
-function deleteClient(id) { db.clients = db.clients.filter(c => c.id !== id); saveData(); renderAll(); toast('Client supprimé'); }
-function toggleHisto(el) { el.querySelector('.histo-detail').classList.toggle('open'); }
-
-function buildFicheHTML(e, type) {
-  const row = (k,v) => v ? `<div class="fiche-row"><span class="fiche-key">${k}</span><span class="fiche-val">${v}</span></div>` : '';
-  return `
-  <div class="fiche-grid">
-    <div class="fiche-block">
-      <h3>🏪 Magasin</h3>
-      ${row('Raison sociale', e.raisonSociale)}
-      ${row('Adresse', [e.rue,e.complement,e.cp,e.ville].filter(Boolean).join(', '))}
-      ${row('Téléphone', e.telMagasin)} ${row('Email', e.emailMagasin)}
-      ${row('Surface', e.surface ? e.surface+' m²' : '')}
-      ${row('SIRET', e.siret)} ${row('TVA intra', e.tvaIntra ? 'FR '+e.tvaIntra : '')}
-      ${row('Capital', e.capital)} ${row('NAF', e.naf)}
-    </div>
-    <div class="fiche-block">
-      <h3>👤 Contacts</h3>
-      ${row('Contact principal', e.contact1)} ${row('Fonction', e.fonction)}
-      ${row('Tél / Portable', [e.tel1,e.portable1].filter(Boolean).join(' / '))}
-      ${row('Email', e.email1)}
-      ${row('Contact 2', e.contact2)} ${row('Tél C2', e.tel2)}
-      ${row('Facturation', e.contactFactu)} ${row('Email factu', e.emailFactu)}
-    </div>
-    <div class="fiche-block">
-      <h3>🚚 Livraisons</h3>
-      ${row('Jours', e.joursLivraison ? e.joursLivraison.join(', ') : '')}
-      ${row('Horaires', e.heureDebut&&e.heureFin ? e.heureDebut+' → '+e.heureFin : '')}
-      ${row('Infos', e.infoLivraison)}
-    </div>
-    <div class="fiche-block">
-      <h3>📊 Commercial</h3>
-      ${type==='client' ? row('N° client', e.numClient) : ''}
-      ${row('Profil', e.profil)}
-      ${row('Potentiel', e.potentiel ? e.potentiel+' €/mois' : '')}
-      ${type==='client' ? row('Activation', formatDate(e.convertedAt)) : ''}
-      ${type==='client' ? row('Paiement', e.conditionsPaiement) : ''}
-      ${row('Notes', e.notesInternes || e.commentaire)}
-    </div>
-  </div>`;
-}
-
-function openConversion(id) {
-  convProspectId = id;
-  const p = db.prospects.find(x => x.id === id);
-  if (!p) return;
-  const nextNum = (db.clients.length + 1).toString().padStart(4,'0');
-  document.getElementById('conv-num').value = 'BNT-' + nextNum;
-  document.getElementById('conv-date').value = new Date().toISOString().slice(0,10);
-  document.getElementById('conv-profil').value = p.profil || 'Tarif Général MBS';
-  document.getElementById('conv-notes').value = p.commentaire || '';
-  openModal('modal-conv');
-}
-
-function confirmConversion() {
-  const p = db.prospects.find(x => x.id === convProspectId);
-  if (!p) return;
-  const client = {
-    ...p, id:'cli_'+Date.now(),
-    numClient: document.getElementById('conv-num').value,
-    profil: document.getElementById('conv-profil').value,
-    conditionsPaiement: document.getElementById('conv-paiement').value,
-    notesInternes: document.getElementById('conv-notes').value,
-    convertedAt: document.getElementById('conv-date').value,
-    type:'client'
-  };
-  db.clients.push(client);
-  db.prospects = db.prospects.filter(x => x.id !== convProspectId);
-  saveData(); closeModal('modal-conv'); renderAll();
-  toast(`✅ ${client.raisonSociale} → ${client.numClient}`);
-  setTimeout(() => openFicheClient(client.id), 400);
-}
-
-function openBDCModal(id) {
-  bdcClientId = id;
-  const c = db.clients.find(x => x.id === id);
-  if (!c) return;
-  document.getElementById('modal-bdc-body').innerHTML = `
-    <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:8px;padding:12px 16px;margin-bottom:14px">
-      <div style="font-size:.85rem;font-weight:700;color:#1e293b;margin-bottom:3px">${c.raisonSociale} · ${c.numClient}</div>
-      <div style="font-size:.75rem;color:var(--s500)">${c.cp||''} ${c.ville||''} · ${c.profil||''}</div>
-    </div>
-    <p style="font-size:.8rem;color:var(--s400);line-height:1.65;margin-bottom:12px">
-      Le bon de commande s'ouvrira avec les informations de ce client pré-remplies (magasin, email, profil revendeur). La commande sera enregistrée dans son historique.
-    </p>
-    <div style="background:#f8f9fb;border:1px solid var(--border);border-radius:7px;padding:9px 13px;font-size:.75rem;color:var(--s500)">
-      CA actuel : <strong style="color:#22c55e">${db.commandes.filter(o=>o.clientId===c.id).reduce((s,o)=>s+(o.totalHT||0),0).toFixed(2)} € HT</strong>
-      · ${db.commandes.filter(o=>o.clientId===c.id).length} commande(s)
-    </div>`;
-  openModal('modal-bdc');
-}
-
-function openBDC() {
-  const c = db.clients.find(x => x.id === bdcClientId);
-  if (!c) return;
-  sessionStorage.setItem('bnt_bdc_client', JSON.stringify({
-    clientId:c.id, numClient:c.numClient, societe:c.raisonSociale,
-    ville:c.ville, cp:c.cp, email:c.email1||c.emailMagasin,
-    tel:c.tel1||c.telMagasin, profil:c.profil, nom:c.contact1
-  }));
-  closeModal('modal-bdc'); window.open('commande.html','_blank');
-}
-
+// ═══════════════════════════
+// COMMANDES
+// ═══════════════════════════
 function renderCommandes() {
-  const q = (document.getElementById('search-commandes')?.value||'').toLowerCase();
-  const list = db.commandes.filter(o => {
-    const c = db.clients.find(x => x.id === o.clientId);
-    const nom = (c?.raisonSociale||'').toLowerCase();
-    return !q || nom.includes(q) || (o.ref||'').toLowerCase().includes(q) || (o.date||'').includes(q);
-  }).sort((a,b) => b.date.localeCompare(a.date));
-  const tbody = document.getElementById('tbody-commandes');
-  if (!tbody) return;
-  if (!list.length) { tbody.innerHTML = `<tr class="empty-row"><td colspan="7">Aucune commande enregistrée</td></tr>`; return; }
-  tbody.innerHTML = list.map(o => {
-    const c = db.clients.find(x => x.id === o.clientId);
-    return `
-    <tr>
-      <td><strong style="font-family:var(--fdisp);color:#22c55e;font-size:.82rem">${o.ref}</strong></td>
-      <td>${c?.raisonSociale||'—'}<br><span style="font-size:.68rem;color:var(--s500)">${c?.numClient||''}</span></td>
-      <td style="font-size:.76rem;color:var(--s500)">${formatDate(o.date)}</td>
-      <td style="font-weight:700;color:#22c55e">${(o.totalHT||0).toFixed(2)} €</td>
-      <td style="font-size:.72rem;color:var(--s500)">${o.profil||'—'}</td>
-      <td style="text-align:center">${(o.lignes||[]).length}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteCommande('${o.id}')">🗑</button></td>
-    </tr>`;
+  var totalCA = db.commandes.reduce(function(s,o){ return s+(o.totalHT||0); }, 0);
+  var phCa = document.getElementById('ph-ca');
+  if (phCa) phCa.textContent = 'CA total : '+totalCA.toFixed(2)+' €';
+
+  var q = (document.getElementById('sq-o')||{}).value||'';
+  q = q.toLowerCase();
+  var list = db.commandes.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); })
+    .filter(function(o){
+      var c = db.clients.find(function(x){ return x.id===o.clientId; });
+      return !q || (c&&(c.raisonSociale||'').toLowerCase().includes(q))
+                || (o.ref||'').toLowerCase().includes(q)
+                || (o.date||'').includes(q);
+    });
+  var tb = document.getElementById('tb-o'); if(!tb) return;
+  if (!list.length) {
+    tb.innerHTML = '<tr class="empty"><td colspan="7">Aucune commande enregistrée</td></tr>';
+    return;
+  }
+  tb.innerHTML = list.map(function(o){
+    var c = db.clients.find(function(x){ return x.id===o.clientId; });
+    return '<tr>'
+      +'<td><strong style="font-family:var(--fdisp);color:var(--v);font-size:.82rem">'+(o.ref||'—')+'</strong></td>'
+      +'<td>'+(c?c.raisonSociale:'—')+'<br><span style="font-size:.68rem;color:var(--s500)">'+(c?c.numClient:'')+'</span></td>'
+      +'<td style="font-size:.75rem;color:var(--s500)">'+fmtDate(o.date)+'</td>'
+      +'<td style="font-weight:700;color:var(--vf)">'+(o.totalHT||0).toFixed(2)+' €</td>'
+      +'<td style="text-align:center">'+(o.totalColis||o.nbColis||'—')+'</td>'
+      +'<td style="text-align:center">'+(o.totalUVC||o.nbUVC||'—')+'</td>'
+      +'<td><button class="btn btn-danger btn-sm" onclick="delCommande(\''+o.id+'\')">🗑</button></td>'
+      +'</tr>';
   }).join('');
 }
 
-function deleteCommande(id) {
+function delCommande(id) {
   if (!confirm('Supprimer cette commande ?')) return;
-  db.commandes = db.commandes.filter(o => o.id !== id);
+  db.commandes = db.commandes.filter(function(o){ return o.id!==id; });
   saveData(); renderCommandes(); renderDashboard(); toast('Commande supprimée');
 }
 
-function exportJSON() {
-  const blob = new Blob([JSON.stringify(db,null,2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = `BNT_CRM_${new Date().toISOString().slice(0,10)}.json`; a.click();
-  toast('⬇️ Export téléchargé');
+// ═══════════════════════════
+// FICHE (prospect ou client)
+// ═══════════════════════════
+function openFiche(type, id) {
+  ficheType = type; ficheId = id;
+  var e = type==='prospect'
+    ? db.prospects.find(function(x){ return x.id===id; })
+    : db.clients.find(function(x){ return x.id===id; });
+  if (!e) return;
+
+  document.getElementById('mf-title').textContent = (type==='client' ? e.raisonSociale+' · '+e.numClient : 'Prospect — '+e.raisonSociale);
+
+  var bodyHtml = ficheHTML(e, type);
+
+  if (type==='client') {
+    var cmds = db.commandes.filter(function(o){ return o.clientId===id; }).sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
+    var ca   = cmds.reduce(function(s,o){ return s+(o.totalHT||0); }, 0);
+    bodyHtml += '<div style="margin-top:1.25rem">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">'
+      +'<span style="font-family:var(--fdisp);font-size:.9rem;color:var(--s100)">Historique commandes</span>'
+      +'<span style="font-size:.75rem;color:var(--s500)">'+cmds.length+' cmd · CA : <strong style="color:var(--vf)">'+ca.toFixed(2)+' € HT</strong></span>'
+      +'</div>';
+    if (!cmds.length) {
+      bodyHtml += '<p style="font-size:.78rem;color:var(--s500);font-style:italic">Aucune commande — cliquez "Saisir une commande" pour commencer</p>';
+    } else {
+      bodyHtml += cmds.map(function(o){
+        var lignes = (o.lignes||[]);
+        var tva    = ((o.totalHT||0)*0.055).toFixed(2);
+        var ttc    = ((o.totalHT||0)*1.055).toFixed(2);
+        var lignesHtml = lignes.map(function(l){
+          var qte = l.nbColis ? l.nbColis+' colis · '+l.uvc+' UVC' : (l.qty||'')+'×';
+          var ht  = (l.ht||0).toFixed(2);
+          return '<div class="histo-line"><span>'+l.nom+' – '+qte+'</span><span style="font-weight:600">'+ht+' €</span></div>';
+        }).join('');
+        return '<div class="histo" onclick="this.querySelector(\'.histo-detail\').classList.toggle(\'open\')">'
+          +'<div class="histo-top">'
+          +'<span class="histo-ref">'+(o.ref||'—')+'</span>'
+          +'<span class="histo-date">'+fmtDate(o.date)+'</span>'
+          +'<span class="histo-ht">'+(o.totalHT||0).toFixed(2)+' € HT</span>'
+          +'</div>'
+          +'<div class="histo-detail">'
+          + lignesHtml
+          +'<div style="font-size:.7rem;color:var(--s500);margin-top:.4rem">TVA 5,5% : '+tva+' € · TTC : '+ttc+' €'
+          +(o.totalColis ? ' · '+o.totalColis+' colis · '+(o.totalUVC||'')+ ' UVC' : '')+'</div>'
+          +'<button class="btn btn-danger btn-sm" style="margin-top:.5rem" onclick="event.stopPropagation();delCommande(\''+o.id+'\')">🗑 Supprimer</button>'
+          +'</div>'
+          +'</div>';
+      }).join('');
+    }
+    bodyHtml += '</div>';
+  }
+
+  document.getElementById('mf-body').innerHTML = bodyHtml;
+
+  var footHtml = '<button class="btn btn-danger btn-sm" onclick="'+(type==='client'?"delClient('"+id+"')":"delProspect('"+id+"')")+'">'
+    +'🗑 Supprimer</button>'
+    +'<button class="btn btn-outline" onclick="closeM(\'modal-fiche\')">Fermer</button>';
+  if (type==='prospect') footHtml += '<button class="btn btn-o" onclick="closeM(\'modal-fiche\');openConv(\''+id+'\')">✅ Convertir en client</button>';
+  if (type==='client')   footHtml += '<button class="btn btn-v" onclick="closeM(\'modal-fiche\');ouvrirSaisieCmd(\''+id+'\')">📋 Saisir une commande</button>';
+  document.getElementById('mf-foot').innerHTML = footHtml;
+
+  openM('modal-fiche');
 }
 
-function importJSON(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
+function ficheHTML(e, type) {
+  var addr = [e.rue,e.complement,e.cp,e.ville].filter(Boolean).join(', ');
+  function row(k,v){ return v?'<div class="frow"><span class="fkey">'+k+'</span><span class="fval">'+v+'</span></div>':''; }
+  return '<div class="fiche-grid">'
+    +'<div class="fblock"><h3>🏪 Magasin</h3>'
+    +row('Raison sociale',e.raisonSociale)+row('Adresse',addr)
+    +row('Téléphone',e.telMagasin)+row('Email',e.emailMagasin)
+    +row('Surface',e.surface?e.surface+' m²':null)+row('SIRET',e.siret)
+    +row('TVA intra',e.tvaIntra?'FR '+e.tvaIntra:null)+row('Capital',e.capital)+row('NAF',e.naf)
+    +'</div>'
+    +'<div class="fblock"><h3>👤 Contacts</h3>'
+    +row('Contact',e.contact1)+row('Fonction',e.fonction)
+    +row('Tél / Portable',[e.tel1,e.portable1].filter(Boolean).join(' / ')||null)
+    +row('Email',e.email1)+row('Contact 2',e.contact2)+row('Facturation',e.contactFactu)+row('Email factu.',e.emailFactu)
+    +'</div>'
+    +'<div class="fblock"><h3>🚚 Livraisons</h3>'
+    +row('Jours',e.joursLivraison?e.joursLivraison.join(', '):null)
+    +row('Horaires',e.heureDebut&&e.heureFin?e.heureDebut+' → '+e.heureFin:null)
+    +row('Infos',e.infoLivraison)
+    +'</div>'
+    +'<div class="fblock"><h3>📊 Commercial</h3>'
+    +(type==='client'?row('N° client',e.numClient):'')
+    +row('Profil',e.profil)+row('Potentiel',e.potentiel?e.potentiel+' €/mois':null)
+    +(type==='client'?row('Activation',fmtDate(e.convertedAt)):'')
+    +(type==='client'?row('Paiement',e.conditionsPaiement):'')
+    +row('Notes',e.notesInternes||e.commentaire)
+    +'</div>'
+    +'</div>';
+}
+
+// ═══════════════════════════
+// CONVERSION
+// ═══════════════════════════
+function openConv(id) {
+  convId = id;
+  var p = db.prospects.find(function(x){ return x.id===id; }); if(!p) return;
+  document.getElementById('conv-info').textContent = p.raisonSociale+' · '+(p.cp||'')+' '+(p.ville||'');
+  document.getElementById('conv-num').value   = 'BNT-'+String(db.clients.length+1).padStart(4,'0');
+  document.getElementById('conv-date').value  = new Date().toISOString().slice(0,10);
+  document.getElementById('conv-profil').value = p.profil||'Tarif Général MBS';
+  document.getElementById('conv-notes').value  = p.commentaire||'';
+  openM('modal-conv');
+}
+
+function confirmerConv() {
+  var p = db.prospects.find(function(x){ return x.id===convId; }); if(!p) return;
+  var c = Object.assign({}, p, {
+    id:         'cli_'+Date.now(),
+    numClient:  document.getElementById('conv-num').value,
+    profil:     document.getElementById('conv-profil').value,
+    conditionsPaiement: document.getElementById('conv-paiement').value,
+    notesInternes: document.getElementById('conv-notes').value,
+    convertedAt: document.getElementById('conv-date').value,
+    type:        'client'
+  });
+  db.clients.push(c);
+  db.prospects = db.prospects.filter(function(x){ return x.id!==convId; });
+  saveData();
+  closeM('modal-conv');
+  renderAll();
+  toast('✅ '+c.raisonSociale+' → '+c.numClient);
+  setTimeout(function(){ openFiche('client',c.id); showPage('clients', null); }, 300);
+}
+
+// ═══════════════════════════
+// SAISIE COMMANDE DIRECTE
+// ═══════════════════════════
+function ouvrirSaisieCmd(clientId) {
+  cmdCId = clientId;
+  var c = db.clients.find(function(x){ return x.id===clientId; }); if(!c) return;
+  document.getElementById('cmd-client-info').textContent = c.raisonSociale+' · '+c.numClient+' · '+c.profil;
+  document.getElementById('cmd-ref').value  = 'BDC-'+c.numClient+'-'+Date.now().toString().slice(-5);
+  document.getElementById('cmd-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('cmd-comment').value = '';
+  cmdLignes = [{nom:'',qty:1,prix:0}];
+  renderLignes();
+  openM('modal-cmd');
+}
+
+function renderLignes() {
+  document.getElementById('cmd-lignes').innerHTML = cmdLignes.map(function(l,i){
+    return '<div class="cmd-row">'
+      +'<input class="cinput" type="text" placeholder="Nom du produit" value="'+l.nom+'" oninput="cmdLignes['+i+'].nom=this.value">'
+      +'<input class="cinput center" type="number" min="0" value="'+l.qty+'" oninput="cmdLignes['+i+'].qty=parseFloat(this.value)||0;calcTotal()">'
+      +'<input class="cinput right" type="number" min="0" step="0.01" value="'+l.prix+'" oninput="cmdLignes['+i+'].prix=parseFloat(this.value)||0;calcTotal()">'
+      +'<button onclick="supprLigne('+i+')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:1rem">✕</button>'
+      +'</div>';
+  }).join('');
+  calcTotal();
+}
+
+function addLigne() {
+  cmdLignes.push({nom:'',qty:1,prix:0});
+  renderLignes();
+}
+
+function supprLigne(i) {
+  cmdLignes.splice(i,1);
+  if (!cmdLignes.length) cmdLignes = [{nom:'',qty:1,prix:0}];
+  renderLignes();
+}
+
+function calcTotal() {
+  var total = cmdLignes.reduce(function(s,l){ return s+(l.qty||0)*(l.prix||0); }, 0);
+  document.getElementById('cmd-total').textContent = total.toFixed(2)+' €';
+}
+
+function enregistrerCmd() {
+  var ref   = document.getElementById('cmd-ref').value.trim();
+  var date  = document.getElementById('cmd-date').value;
+  var comm  = document.getElementById('cmd-comment').value.trim();
+  var c     = db.clients.find(function(x){ return x.id===cmdCId; }); if(!c) return;
+
+  var lignes = cmdLignes.filter(function(l){ return l.nom && l.qty>0; })
+    .map(function(l){ return { nom:l.nom, qty:l.qty, prix:l.prix, ht:l.qty*l.prix }; });
+
+  if (!lignes.length) { alert('Ajoutez au moins une ligne de produit.'); return; }
+
+  var totalHT = lignes.reduce(function(s,l){ return s+l.ht; }, 0);
+
+  var o = {
+    id:        'cmd_'+Date.now(),
+    ref:        ref||('BDC-'+c.numClient+'-'+Date.now().toString().slice(-5)),
+    clientId:   cmdCId,
+    numClient:  c.numClient,
+    profil:     c.profil,
+    date:       date||new Date().toISOString().slice(0,10),
+    totalHT:    totalHT,
+    totalColis: null,
+    totalUVC:   null,
+    commentaire: comm,
+    lignes:     lignes
+  };
+
+  db.commandes.push(o);
+  saveData();
+  closeM('modal-cmd');
+  renderAll();
+  toast('✅ Commande '+o.ref+' enregistrée — '+totalHT.toFixed(2)+' € HT');
+}
+
+// ═══════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════
+function exportData() {
+  var blob = new Blob([JSON.stringify(db,null,2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'BNT_CRM_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click(); toast('⬇️ Export téléchargé');
+}
+
+function importData(input) {
+  var file = input.files[0]; if(!file) return;
+  var r = new FileReader();
+  r.onload = function(e) {
     try {
-      const data = JSON.parse(e.target.result);
-      if (!data.prospects || !data.clients) throw new Error('Format invalide');
-      if (!confirm(`Importer ${data.prospects.length} prospects, ${data.clients.length} clients, ${(data.commandes||[]).length} commandes ?`)) return;
-      db = { prospects:data.prospects||[], clients:data.clients||[], commandes:data.commandes||[] };
+      var d = JSON.parse(e.target.result);
+      if (!d.prospects||!d.clients) throw new Error('Format invalide');
+      if (!confirm('Importer '+d.prospects.length+' prospects, '+d.clients.length+' clients, '+(d.commandes||[]).length+' commandes ?')) return;
+      db = { prospects:d.prospects||[], clients:d.clients||[], commandes:d.commandes||[] };
       saveData(); renderAll(); toast('✅ Import réussi');
     } catch(err) { alert('Fichier JSON invalide : '+err.message); }
   };
-  reader.readAsText(file);
+  r.readAsText(file);
 }
 
 function clearAll() {
-  if (!confirm('⚠️ Supprimer TOUTES les données CRM ? Cette action est irréversible.')) return;
-  db = { prospects:[], clients:[], commandes:[] }; saveData(); renderAll(); toast('Données supprimées');
+  if (!confirm('⚠️ Supprimer TOUTES les données CRM ? Action irréversible.')) return;
+  db = { prospects:[], clients:[], commandes:[] };
+  saveData(); renderAll(); toast('Données supprimées');
 }
 
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(m => { m.addEventListener('click', e => { if (e.target===m) m.classList.remove('open'); }); });
+// ═══════════════════════════
+// MODALS
+// ═══════════════════════════
+function openM(id) { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(function(m){
+  m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('open'); });
+});
+
+// ═══════════════════════════
+// UTILS
+// ═══════════════════════════
+function fmtDate(d) {
+  if (!d) return '—';
+  try { var dt=new Date(d); return isNaN(dt)?d:dt.toLocaleDateString('fr-FR'); } catch(e){ return d; }
+}
 
 function toast(msg) {
-  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+  setTimeout(function(){ t.classList.remove('on'); }, 3200);
 }
-
-function formatDate(d) {
-  if (!d) return '—';
-  try { const dt = new Date(d); return isNaN(dt) ? d : dt.toLocaleDateString('fr-FR'); } catch { return d; }
-}
-
-function checkIncomingProspect() {
-  const raw = sessionStorage.getItem('bnt_new_prospect'); if (!raw) return;
-  sessionStorage.removeItem('bnt_new_prospect');
-  try {
-    const p = JSON.parse(raw); db.prospects.push(p); saveData();
-    toast(`✅ Prospect "${p.raisonSociale}" enregistré`);
-    showPage('prospects', document.querySelector('.nav-item:nth-child(3)'));
-  } catch(e) {}
-}
-
-function checkIncomingCommande() {
-  const raw = sessionStorage.getItem('bnt_new_commande'); if (!raw) return;
-  sessionStorage.removeItem('bnt_new_commande');
-  try { const o = JSON.parse(raw); db.commandes.push(o); saveData(); toast(`✅ Commande ${o.ref} enregistrée`); } catch(e) {}
-}
-
-window.addEventListener('load', () => { checkIncomingProspect(); checkIncomingCommande(); });
 </script>
 </body>
 </html>
